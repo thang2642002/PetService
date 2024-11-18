@@ -1,0 +1,21 @@
+.promotion {
+  margin-top: 35px;
+  font-size: 14px;
+  gap: 20px;
+  .item {
+    width: 100%;
+    border: 1px solid #6b4433;
+    padding: 10px;
+    border-radius: 4px;
+
+    .title {
+      font-size: 16px;
+      color: #6b4433;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .desc {
+      font-weight: 400;
+    }
+  }
+}

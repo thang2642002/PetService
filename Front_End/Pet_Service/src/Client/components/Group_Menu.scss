@@ -1,0 +1,33 @@
+.group_menu {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  margin-top: 10px;
+  .icon {
+    margin: 0 15px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .group-carts {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    .cart-item {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #522f1f;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #252a2b;
+      transition: background-color 0.3s ease;
+      text-transform: uppercase;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

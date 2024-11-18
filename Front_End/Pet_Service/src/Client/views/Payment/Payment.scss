@@ -1,0 +1,109 @@
+.payment-container {
+  background-color: #f0f0f0;
+  padding: 15px 0;
+  .content-payment {
+    padding: 50px 0;
+    background-color: #fff;
+    margin: 50px 0px;
+    border-radius: 5px;
+    .delivery-address {
+      padding: 0 20px;
+      .title {
+        font-size: 20px;
+        font-weight: 600;
+        padding: 10px 0;
+        border-bottom: 1px solid #ced4da;
+      }
+      .info-user {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+        font-size: 16px;
+        .name {
+          border-right: 1px solid #ced4da;
+          padding-right: 20px;
+        }
+        .address {
+          border-right: 1px solid #ced4da;
+          padding-right: 20px;
+        }
+        .phone {
+        }
+      }
+    }
+    .payment-transaction {
+      padding: 0 20px;
+      margin-top: 20px;
+      .title {
+        padding: 10px 0;
+        font-size: 20px;
+        font-weight: 600;
+        border-bottom: 1px solid #ced4da;
+      }
+      .transaction {
+        display: block;
+        .check {
+          margin: 20px 0;
+        }
+        .check-radio {
+        }
+      }
+    }
+    .check-product {
+      padding: 0 20px;
+      margin-top: 20px;
+      .title {
+        padding: 10px 0;
+        font-size: 20px;
+        font-weight: 600;
+        border-bottom: 1px solid #ced4da;
+      }
+      .product {
+        display: flex;
+        margin-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+        .img-product {
+          width: 100%;
+          height: 100%;
+          flex: 1;
+          img {
+            width: 75%;
+            height: 100%;
+          }
+        }
+        .title-product {
+          flex: 3;
+        }
+        .sales-product {
+          flex: 1;
+        }
+        .quantity-product {
+          flex: 1;
+        }
+        .price-product {
+          flex: 1;
+        }
+      }
+    }
+    .btn-confirm {
+      padding: 0 20px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: end;
+    }
+  }
+  .total {
+    display: flex;
+    justify-content: end;
+    .total_price {
+      padding: 10px;
+      background-color: #c92127;
+      border-radius: 5px;
+      margin-right: 20px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+}

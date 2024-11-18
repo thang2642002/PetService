@@ -1,0 +1,44 @@
+.header {
+  padding: 10px 0;
+  font-size: 14px;
+  .menu {
+    padding: 0 15px;
+    display: block;
+    cursor: pointer;
+  }
+  .icon {
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+  .search {
+    width: 680px;
+    margin-left: 100px;
+
+    input {
+      width: 100%;
+      height: 40px;
+      margin-top: 5px;
+      border: 1px solid #ececec;
+      padding: 9px 50px 10px 9px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 150ms linear;
+      outline: none;
+      border-radius: 3px;
+    }
+  }
+  .header-action {
+    padding: 0 15px;
+    margin-left: 42px;
+    .account {
+      padding: 0 30px;
+      border-left: 1px solid #ececec;
+      cursor: pointer;
+    }
+    .carts {
+      padding: 0 30px;
+      border-left: 1px solid #ececec;
+      cursor: pointer;
+    }
+  }
+}
