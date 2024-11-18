@@ -4,8 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { Outlet } from "react-router-dom";
-import ManagerUser from "../Admin/Manager/ManagerUser";
+import { Outlet } from "react-router-dom";
 
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -20,8 +19,7 @@ const Admin = () => {
           <FaBars onClick={() => setCollapsed(!collapsed)} />
         </div>
         <div className="admin-main">
-          {/* <Outlet /> */}
-          <ManagerUser />
+          <Outlet />
         </div>
       </div>
       <ToastContainer

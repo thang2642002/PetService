@@ -60,28 +60,56 @@ const SideBar = (props) => {
                 Manager Users
               </MenuItem>
               <MenuItem>
-                <Link to="/admin/managerGenres" />
-                Manager Genres
+                <Link to="/admin/managerCategory" />
+                Manager Category
               </MenuItem>
               <MenuItem>
-                <Link to="/admin/managerBooks" />
-                Manager Books
+                <Link to="/admin/managerPetType" />
+                Manager Pet Type
               </MenuItem>
               <MenuItem>
-                <Link to="/admin/managerAuthors" />
-                Manager Author
+                <Link to="/admin/managerPets" />
+                Manager Pets
               </MenuItem>
               <MenuItem>
-                <Link to="/admin/managerPubliers" />
-                Manager Publiers
+                <Link to="/admin/managerProduct" />
+                Manager Product
               </MenuItem>
               <MenuItem>
-                <Link to="/admin/managerReviews" />
-                Manager Review
+                <Link to="/admin/managerService" />
+                Manager Service
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerAppointment" />
+                Manager Appointment
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerOrder" />
                 Manager Order
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerOrderItem" />
+                Manager Order Item
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerPetScores" />
+                Manager Pet Scores
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerUserPet" />
+                Manager User Pet
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerProductReview" />
+                Manager Product Review
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerServiceReview" />
+                Manager Service Review
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerPost" />
+                Manager Post
               </MenuItem>
             </SubMenu>
           </Menu>
