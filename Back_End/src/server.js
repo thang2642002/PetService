@@ -2,12 +2,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import apiInitWebRouter from "./routers/api.js";
+import cors from "cors";
 
 const app = express();
 const PORT = 8080;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 apiInitWebRouter(app);
 
