@@ -1,5 +1,5 @@
 const TablePetType = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal } = props;
+  const { handleShowUpdateModal, handleShowDeleteModal, listPetType } = props;
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -13,27 +13,31 @@ const TablePetType = (props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Quần áo</td>
-            <td>blablabla</td>
+          {listPetType &&
+            Array.isArray(listPetType) &&
+            listPetType.map((item, index) => (
+              <tr key={index}>
+                <td>{item.pet_type_id}</td>
+                <td>{item.type_name}</td>
+                <td>{item.description}</td>
 
-            <td>
-              <button className="btn btn-secondary">View</button>
-              <button
-                className="btn btn-warning mx-3"
-                onClick={() => handleShowUpdateModal()}
-              >
-                Update
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleShowDeleteModal()}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+                <td>
+                  <button className="btn btn-secondary">View</button>
+                  <button
+                    className="btn btn-warning mx-3"
+                    onClick={() => handleShowUpdateModal()}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleShowDeleteModal(item)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

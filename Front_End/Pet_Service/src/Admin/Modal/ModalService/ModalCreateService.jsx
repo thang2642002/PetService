@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createService } from "../../../services/serviceServices";
 
 const ModalCreateService = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllService } = props;
   const handleClose = () => {
     setShow(false);
     setName("");
@@ -16,6 +16,18 @@ const ModalCreateService = (props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleSubmitCreateService = async () => {
+    const data = await createService(name, price, description);
+    if (data && data.errCode === 0) {
+      toast(data.message);
+      await fetchAllService();
+      handleClose();
+    } else {
+      toast(data.message);
+      handleClose;
+    }
+  };
 
   return (
     <>
@@ -67,10 +79,7 @@ const ModalCreateService = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitCreateService()}>
             Save
           </Button>
         </Modal.Footer>

@@ -2,12 +2,12 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createUser } from "../../../services/userServices";
 import "./ModalCreateUser.scss";
 
 const ModalCreateUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, getListUser } = props;
   const handleClose = () => {
     setShow(false);
     setEmail("");
@@ -16,69 +16,70 @@ const ModalCreateUser = (props) => {
     setUserName("");
     setPhone("");
     setRole("customer");
-    // setImage("");
-    // setPreviewImage("");
+    setAvatar("");
+    setPreviewImage("");
   };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUserName] = useState("");
+  const [user_name, setUserName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("customer");
-  //   const [image, setImage] = useState("");
-  //   const [previewImage, setPreviewImage] = useState("");
-  //   const handleUploadImage = (e) => {
-  //     if (e.target && e.target.files && e.target.files[0]) {
-  //       setPreviewImage(URL.createObjectURL(e.target.files[0]));
-  //       setImage(e.target.files[0]);
-  //     }
-  //   };
+  const [avatar, setAvatar] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
-  //   const validateEmail = (email) => {
-  //     return String(email)
-  //       .toLowerCase()
-  //       .match(
-  //         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  //       );
-  //   };
+  const handleUploadImage = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      setPreviewImage(URL.createObjectURL(e.target.files[0]));
+      setAvatar(e.target.files[0]);
+    }
+  };
 
-  //   const handleSubmitCreateUsers = async () => {
-  //     if (!validateEmail(email)) {
-  //       toast.error("Ivalid email");
-  //       return;
-  //     }
-  //     if (!password) {
-  //       toast.error("Invalid Password");
-  //     }
-  //     if (!username) {
-  //       toast.error("Invalid username");
-  //     }
-  //     if (!address) {
-  //       toast.error("Invalid address");
-  //     }
-  //     if (!phone) {
-  //       toast.error("Invalid phone");
-  //     }
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
-  //     let data = await createUser(
-  //       email,
-  //       password,
-  //       username,
-  //       address,
-  //       phone,
-  //       role,
-  //       image
-  //     );
+  const handleSubmitCreateUsers = async () => {
+    if (!validateEmail(email)) {
+      toast.error("Ivalid email");
+      return;
+    }
+    if (!password) {
+      toast.error("Invalid Password");
+    }
+    if (!user_name) {
+      toast.error("Invalid username");
+    }
+    if (!address) {
+      toast.error("Invalid address");
+    }
+    if (!phone) {
+      toast.error("Invalid phone");
+    }
 
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       handleClose();
-  //       await fetchListUser();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //     }
-  //   };
+    let data = await createUser(
+      email,
+      password,
+      user_name,
+      phone,
+      address,
+      role,
+      avatar
+    );
+
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await getListUser();
+    }
+    if (data && data.errCode !== 0) {
+      toast.error(data.message);
+    }
+  };
 
   return (
     <>
@@ -120,7 +121,7 @@ const ModalCreateUser = (props) => {
                 type="text"
                 className="form-control"
                 placeholder="User Name"
-                value={username}
+                value={user_name}
                 onChange={(e) => setUserName(e.target.value)}
               />
             </div>
@@ -164,16 +165,16 @@ const ModalCreateUser = (props) => {
                 type="file"
                 hidden
                 id="labelUpload"
-                // onChange={(e) => handleUploadImage(e)}
+                onChange={(e) => handleUploadImage(e)}
               />
             </div>
             <div className="col-md-12 img-preview">
-              {/* {previewImage ? (
+              {previewImage ? (
                 // <img src={previewImage} alt="img" />
                 <img src={previewImage} alt="img" />
               ) : (
                 <span>Preview Image</span>
-              )} */}
+              )}
             </div>
           </form>
         </Modal.Body>
@@ -181,10 +182,7 @@ const ModalCreateUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitCreateUsers()}>
             Save
           </Button>
         </Modal.Footer>

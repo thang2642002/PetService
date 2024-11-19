@@ -13,6 +13,7 @@ const createPost = async (title, content) => {
     const createPost = await db.Post.create({
       title,
       content,
+      
     });
     return createPost;
   } catch (error) {

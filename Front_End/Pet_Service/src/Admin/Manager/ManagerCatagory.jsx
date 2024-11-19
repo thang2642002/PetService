@@ -5,8 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateCategory from "../Modal/ModalCategory/ModalCreateCategory";
 import ModalUpdateCategory from "../Modal/ModalCategory/ModalUpdateCategory";
 import ModalDeleteCategory from "../Modal/ModalCategory/ModalDeleteCategory";
-import { useState } from "react";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { useState, useEffect } from "react";
+import { fetchAllCategory } from "../../services/categoryServices";
 import TableCategory from "../Modal/ModalCategory/TableCategory";
 import { FcPlus } from "react-icons/fc";
 
@@ -14,10 +14,23 @@ const ManagerCategory = () => {
   const [showModalCreateCategory, setShowModalCreateCategory] = useState(false);
   const [showModalUpdateCategory, setShowModalUpdateCategory] = useState(false);
   const [showModalDeleteCategory, setShowModalDeleteCategory] = useState(false);
+  const [listCategory, setListCategory] = useState([]);
+  const [categoryDelete, setCategoryDelete] = useState({});
+
+  const getListCategory = async () => {
+    const data = await fetchAllCategory();
+    setListCategory(data.data);
+  };
+
+  useEffect(() => {
+    getListCategory();
+  }, []);
+
   const handleShowUpdateModal = () => {
     setShowModalUpdateCategory(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (category) => {
+    setCategoryDelete(category);
     setShowModalDeleteCategory(true);
   };
   return (
@@ -58,6 +71,7 @@ const ManagerCategory = () => {
         <ModalCreateCategory
           show={showModalCreateCategory}
           setShow={setShowModalCreateCategory}
+          getListCategory={getListCategory}
         />
         <ModalUpdateCategory
           show={showModalUpdateCategory}
@@ -66,10 +80,13 @@ const ManagerCategory = () => {
         <ModalDeleteCategory
           show={showModalDeleteCategory}
           setShow={setShowModalDeleteCategory}
+          categoryDelete={categoryDelete}
+          getListCategory={getListCategory}
         />
 
         <div className="btn-table-container"></div>
         <TableCategory
+          listCategory={listCategory}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
         />

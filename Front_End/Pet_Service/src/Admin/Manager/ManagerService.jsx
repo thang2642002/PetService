@@ -5,8 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateService from "../Modal/ModalService/ModalCreateService";
 import ModalUpdateService from "../Modal/ModalService/ModalUpdateService";
 import ModalDeleteService from "../Modal/ModalService/ModalDeleteService";
-import { useState } from "react";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { useEffect, useState } from "react";
+import { getAllServices } from "../../services/serviceServices";
 import TableService from "../Modal/ModalService/TableService";
 import { FcPlus } from "react-icons/fc";
 
@@ -14,12 +14,25 @@ const ManagerService = () => {
   const [showModalCreateService, setShowModalCreateService] = useState(false);
   const [showModalUpdateService, setShowModalUpdateService] = useState(false);
   const [showModalDeleteService, setShowModalDeleteService] = useState(false);
+  const [serviceDelete, setServiceDelete] = useState({});
+  const [listService, setListService] = useState([]);
   const handleShowUpdateModal = () => {
     setShowModalUpdateService(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (service) => {
+    setServiceDelete(service);
     setShowModalDeleteService(true);
   };
+
+  const fetchAllService = async () => {
+    const data = await getAllServices();
+    console.log(data);
+    setListService(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllService();
+  }, []);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Service</div>
@@ -56,6 +69,7 @@ const ManagerService = () => {
         <ModalCreateService
           show={showModalCreateService}
           setShow={setShowModalCreateService}
+          fetchAllService={fetchAllService}
         />
         <ModalUpdateService
           show={showModalUpdateService}
@@ -64,12 +78,15 @@ const ManagerService = () => {
         <ModalDeleteService
           show={showModalDeleteService}
           setShow={setShowModalDeleteService}
+          serviceDelete={serviceDelete}
+          fetchAllService={fetchAllService}
         />
 
         <div className="btn-table-container"></div>
         <TableService
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listService={listService}
         />
         <div
           className="custom-pagination"

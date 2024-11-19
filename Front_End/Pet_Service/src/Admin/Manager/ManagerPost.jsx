@@ -6,20 +6,32 @@ import ModalCreatePost from "../Modal/ModalPost/ModalCreatePost";
 import ModalUpdatePost from "../Modal/ModalPost/ModalUpdatePost";
 import ModalDeletePost from "../Modal/ModalPost/ModalDeletePost";
 import TablePost from "../Modal/ModalPost/TablePost";
-import { useState } from "react";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { useEffect, useState } from "react";
+import { getAllPost } from "../../services/postServices";
 import { FcPlus } from "react-icons/fc";
 
 const ManagerPost = () => {
   const [showModalCreatePost, setShowModalCreatePost] = useState(false);
   const [showModalUpdatePost, setShowModalUpdatePost] = useState(false);
   const [showModalDeletePost, setShowModalDeletePost] = useState(false);
+  const [listPost, setListPost] = useState([]);
+  const [postDelete, setPostDelete] = useState({});
   const handleShowUpdateModal = () => {
     setShowModalUpdatePost(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (post) => {
+    setPostDelete(post);
     setShowModalDeletePost(true);
   };
+  const fetchAllPost = async () => {
+    const data = await getAllPost();
+    console.log(data);
+    setListPost(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllPost();
+  }, []);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Post</div>
@@ -56,6 +68,7 @@ const ManagerPost = () => {
         <ModalCreatePost
           show={showModalCreatePost}
           setShow={setShowModalCreatePost}
+          fetchAllPost={fetchAllPost}
         />
         <ModalUpdatePost
           show={showModalUpdatePost}
@@ -64,12 +77,15 @@ const ManagerPost = () => {
         <ModalDeletePost
           show={showModalDeletePost}
           setShow={setShowModalDeletePost}
+          postDelete={postDelete}
+          fetchAllPost={fetchAllPost}
         />
 
         <div className="btn-table-container"></div>
         <TablePost
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listPost={listPost}
         />
         <div
           className="custom-pagination"

@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteService } from "../../../services/serviceServices";
 
 const ModalDeleteService = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, serviceDelete, fetchAllService } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteService = async () => {
+    const data = await deleteService(serviceDelete.service_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllService();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -27,8 +26,8 @@ const ModalDeleteService = (props) => {
           <Modal.Title>Modal Delete Service</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure to delete this service ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          Are you sure to delete this service =
+          <b>{serviceDelete && serviceDelete.name ? serviceDelete.name : ""}</b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +35,9 @@ const ModalDeleteService = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteService();
+            }}
           >
             Confirm
           </Button>

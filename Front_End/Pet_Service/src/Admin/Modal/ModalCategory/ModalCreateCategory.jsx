@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createCategory } from "../../../services/categoryServices";
 
 const ModalCreateCategory = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, getListCategory } = props;
   const handleClose = () => {
     setShow(false);
     setName("");
@@ -14,6 +14,17 @@ const ModalCreateCategory = (props) => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleSubmitCreateCategory = async () => {
+    const data = await createCategory(name, description);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await getListCategory();
+    } else {
+      toast.success(data.message);
+    }
+  };
 
   return (
     <>
@@ -25,7 +36,7 @@ const ModalCreateCategory = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Craete New Category</Modal.Title>
+          <Modal.Title>Create New Category</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -57,7 +68,7 @@ const ModalCreateCategory = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreateCategory()}
           >
             Save
           </Button>

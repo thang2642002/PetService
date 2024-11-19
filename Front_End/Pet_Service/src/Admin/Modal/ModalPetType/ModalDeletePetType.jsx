@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deletePetType } from "../../../services/petTypeServices";
 
 const ModalDeletePetType = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, petTypeDelete, fetchAllPetType } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeletePetType = async () => {
+    const data = await deletePetType(petTypeDelete.pet_type_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllPetType();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -28,7 +27,11 @@ const ModalDeletePetType = (props) => {
         </Modal.Header>
         <Modal.Body>
           Are you sure to delete this prt type ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          <b>
+            {petTypeDelete && petTypeDelete.type_name
+              ? petTypeDelete.type_name
+              : ""}
+          </b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +39,9 @@ const ModalDeletePetType = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeletePetType();
+            }}
           >
             Confirm
           </Button>

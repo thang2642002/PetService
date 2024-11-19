@@ -1,24 +1,24 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteUser } from "../../../services/userServices";
 
 const ModalDeleteUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, userDelete, getListUser } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteUser = async () => {
+    const data = await deleteUser(userDelete.user_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await getListUser();
+      handleClose();
+    }
+    if (data && data.errCode !== 0) {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -27,8 +27,8 @@ const ModalDeleteUser = (props) => {
           <Modal.Title>Modal Delete User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure to delete this user.email ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          Are you sure to delete this user.email =
+          <b>{userDelete && userDelete.email ? userDelete.email : ""}</b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +36,9 @@ const ModalDeleteUser = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteUser();
+            }}
           >
             Confirm
           </Button>

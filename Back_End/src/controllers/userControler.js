@@ -6,7 +6,7 @@ const getAllUser = async (req, res) => {
       return res.status(200).json({
         message: "Show All user Success !",
         errCode: 0,
-        dataUser: getAllUser,
+        data: getAllUser,
       });
     } else {
       return res.status(400).json({

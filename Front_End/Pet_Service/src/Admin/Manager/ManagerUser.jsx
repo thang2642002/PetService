@@ -2,24 +2,37 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FcPlus } from "react-icons/fc";
 import ModalCreateUser from "../Modal/ModalUser/ModalCreateUser";
 import ModalUpdateUser from "../Modal/ModalUser/ModalUpdateUser";
 import ModalDeleteUser from "../Modal/ModalUser/ModalDeleteUser";
 import TableUser from "../Modal/ModalUser/TableUser";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { getAllUser } from "../../services/userServices";
 
 const ManagerUser = () => {
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
   const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
+  const [listUser, setListUser] = useState([]);
+  const [userDelete, setUserDelete] = useState({});
   const handleShowUpdateModal = () => {
     setShowModalUpdateUser(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (user) => {
     setShowModalDeleteUser(true);
+    setUserDelete(user);
   };
+
+  const getListUser = async () => {
+    const data = await getAllUser();
+    setListUser(data.data);
+  };
+
+  useEffect(() => {
+    getListUser();
+  }, []);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager User</div>
@@ -56,6 +69,7 @@ const ManagerUser = () => {
         <ModalCreateUser
           show={showModalCreateUser}
           setShow={setShowModalCreateUser}
+          getListUser={getListUser}
         />
         <ModalUpdateUser
           show={showModalUpdateUser}
@@ -64,12 +78,15 @@ const ManagerUser = () => {
         <ModalDeleteUser
           show={showModalDeleteUser}
           setShow={setShowModalDeleteUser}
+          userDelete={userDelete}
+          getListUser={getListUser}
         />
 
         <div className="btn-table-container"></div>
         <TableUser
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listUser={listUser}
         />
         <div
           className="custom-pagination"
