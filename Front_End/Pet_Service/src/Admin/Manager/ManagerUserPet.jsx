@@ -2,24 +2,37 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FcPlus } from "react-icons/fc";
 import ModalCreateUserPet from "../Modal/ModalUserPet/ModalCreateUserPet";
 import ModalUpdateUserPet from "../Modal/ModalUserPet/ModalUpdateUserPet";
 import ModalDeleteUserPet from "../Modal/ModalUserPet/ModalDeleteUserPet";
 import TableUserPet from "../Modal/ModalUserPet/TableUserPet";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { getAllUserPet } from "../../services/userPetServices";
 
 const ManagerUserPet = () => {
   const [showModalCreateUserPet, setShowModalCreateUserPet] = useState(false);
   const [showModalUpdateUserPet, setShowModalUpdateUserPet] = useState(false);
   const [showModalDeleteUserPet, setShowModalDeleteUserPet] = useState(false);
+  const [listUserPet, setListUserPet] = useState([]);
+  const [userPetDelete, setUserPetDelete] = useState({});
   const handleShowUpdateModal = () => {
     setShowModalUpdateUserPet(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (userPet) => {
+    setUserPetDelete(userPet);
     setShowModalDeleteUserPet(true);
   };
+
+  const fetchAllUserPet = async () => {
+    const data = await getAllUserPet();
+    console.log(data);
+    setListUserPet(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllUserPet();
+  }, []);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
@@ -58,6 +71,7 @@ const ManagerUserPet = () => {
         <ModalCreateUserPet
           show={showModalCreateUserPet}
           setShow={setShowModalCreateUserPet}
+          fetchAllUserPet={fetchAllUserPet}
         />
         <ModalUpdateUserPet
           show={showModalUpdateUserPet}
@@ -66,12 +80,15 @@ const ManagerUserPet = () => {
         <ModalDeleteUserPet
           show={showModalDeleteUserPet}
           setShow={setShowModalDeleteUserPet}
+          userPetDelete={userPetDelete}
+          fetchAllUserPet={fetchAllUserPet}
         />
 
         <div className="btn-table-container"></div>
         <TableUserPet
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listUserPet={listUserPet}
         />
         <div
           className="custom-pagination"

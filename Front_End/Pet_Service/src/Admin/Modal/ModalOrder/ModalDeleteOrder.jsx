@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteOrder } from "../../../services/orderServices";
 
 const ModalDeleteOrder = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, orderDelete, fetchAllOrder } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteOrder = async () => {
+    const data = await deleteOrder(orderDelete.order_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllOrder();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -28,7 +27,9 @@ const ModalDeleteOrder = (props) => {
         </Modal.Header>
         <Modal.Body>
           Are you sure to delete this order ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          <b>
+            {orderDelete && orderDelete.order_id ? orderDelete.order_id : ""}
+          </b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +37,9 @@ const ModalDeleteOrder = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteOrder();
+            }}
           >
             Confirm
           </Button>

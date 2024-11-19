@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createUserPet } from "../../../services/userPetServices";
 
 const ModalCreateUserPet = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllUserPet } = props;
   const handleClose = () => {
     setShow(false);
     setNamePet("");
@@ -25,6 +25,27 @@ const ModalCreateUserPet = (props) => {
   const [breed, setBreed] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
+
+  const handleSubmitCreateUserPet = async () => {
+    const data = await createUserPet(
+      name,
+      age,
+      height,
+      weight,
+      coatColor,
+      breed,
+      description,
+      userId
+    );
+    if (data && data.errCode === 0) {
+      toast(data.message);
+      await fetchAllUserPet();
+      handleClose();
+    } else {
+      toast(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -126,10 +147,7 @@ const ModalCreateUserPet = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitCreateUserPet()}>
             Save
           </Button>
         </Modal.Footer>

@@ -25,11 +25,10 @@ const getAllOrder = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    const { total_amount, status, order_date, user_id } = req.body;
+    const { total_amount, status, user_id } = req.body;
     const createOrder = await orderService.createOrder(
       total_amount,
       status,
-      order_date,
       user_id
     );
     if (createOrder) {

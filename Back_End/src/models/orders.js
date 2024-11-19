@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       order_date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: true,
       },
       user_id: {

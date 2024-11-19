@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createOrder } from "../../../services/orderServices";
 
 const ModalCreateOrder = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllOrder } = props;
   const handleClose = () => {
     setShow(false);
     setTotalAmount("");
@@ -18,6 +18,18 @@ const ModalCreateOrder = (props) => {
   const [status, setStatus] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [userId, setUserId] = useState("");
+
+  const handleSubmitCreateOrder = async () => {
+    const data = await createOrder(totalAmount, status, userId);
+    if (data && data.errCode === 0) {
+      toast(data.message);
+      await fetchAllOrder();
+      handleClose();
+    } else {
+      toast(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -79,10 +91,7 @@ const ModalCreateOrder = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitCreateOrder()}>
             Save
           </Button>
         </Modal.Footer>

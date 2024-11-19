@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteUserPet } from "../../../services/userPetServices";
 
 const ModalDeleteUserPet = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, userPetDelete, fetchAllUserPet } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteUserPet = async () => {
+    const data = await deleteUserPet(userPetDelete.user_pet_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllUserPet();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -27,8 +26,12 @@ const ModalDeleteUserPet = (props) => {
           <Modal.Title>Modal Delete User Pet</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure to delete this user pet ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          Are you sure to delete this user pet name =
+          <b>
+            {userPetDelete && userPetDelete.name_pet
+              ? userPetDelete.name_pet
+              : ""}
+          </b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +39,9 @@ const ModalDeleteUserPet = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteUserPet();
+            }}
           >
             Confirm
           </Button>

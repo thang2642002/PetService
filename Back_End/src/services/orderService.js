@@ -10,12 +10,11 @@ const getAllOrder = async () => {
   }
 };
 
-const createOrder = async (total_amount, status, order_date, user_id) => {
+const createOrder = async (total_amount, status, user_id) => {
   try {
     const createOrder = await db.Order.create({
       total_amount,
       status,
-      order_date,
       user_id,
     });
     return createOrder;
