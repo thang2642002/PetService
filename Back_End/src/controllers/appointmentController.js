@@ -26,9 +26,14 @@ const getAllAppointment = async (req, res) => {
 
 const createAppointment = async (req, res) => {
   try {
-    const { appointment_date, status, service_id, user_pet_id } = req.body;
+    const {
+      // appointment_date,
+      status,
+      service_id,
+      user_pet_id,
+    } = req.body;
     const createAppointment = await appointmentService.createAppointment(
-      appointment_date,
+      // appointment_date,
       status,
       service_id,
       user_pet_id

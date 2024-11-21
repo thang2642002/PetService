@@ -1,5 +1,5 @@
 const TablePet = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal } = props;
+  const { handleShowUpdateModal, handleShowDeleteModal, listPets } = props;
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -21,34 +21,38 @@ const TablePet = (props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Coggi</td>
-            <td>Chó</td>
-            <td>2</td>
-            <td>15</td>
-            <td>20</td>
-            <td>vàng</td>
-            <td>có</td>
-            <td>200000</td>
-            <td>true</td>
-            <td>bla bla</td>
-            <td>
-              <button className="btn btn-secondary">View</button>
-              <button
-                className="btn btn-warning mx-3"
-                onClick={() => handleShowUpdateModal()}
-              >
-                Update
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleShowDeleteModal()}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+          {listPets &&
+            Array.isArray(listPets) &&
+            listPets.map((item, index) => (
+              <tr key={index}>
+                <td>{item.pet_id}</td>
+                <td>{item.name}</td>
+                <td>{item.pet_type_id}</td>
+                <td>{item.age}</td>
+                <td>{item.height}</td>
+                <td>{item.weight}</td>
+                <td>{item.coat_color}</td>
+                <td>{item.breed}</td>
+                <td>{item.price}</td>
+                <td>{item.available ? "Available" : "Not Available"}</td>
+                <td>{item.description}</td>
+                <td>
+                  <button className="btn btn-secondary">View</button>
+                  <button
+                    className="btn btn-warning mx-3"
+                    onClick={() => handleShowUpdateModal()}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleShowDeleteModal(item)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

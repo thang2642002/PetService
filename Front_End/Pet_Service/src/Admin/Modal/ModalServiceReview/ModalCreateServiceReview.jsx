@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createServiceReview } from "../../../services/serviceReviewServices";
 
 const ModalCreateServiceReview = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllServiceReview } = props;
   const handleClose = () => {
     setShow(false);
     setComment("");
@@ -18,6 +18,18 @@ const ModalCreateServiceReview = (props) => {
   const [rating, setRating] = useState("");
   const [userId, setUserId] = useState("");
   const [serviceId, setServiceId] = useState("");
+
+  const handleSubmitCreateServiceReview = async () => {
+    const data = await createServiceReview(serviceId, userId, rating, comment);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllServiceReview();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -81,7 +93,7 @@ const ModalCreateServiceReview = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreateServiceReview()}
           >
             Save
           </Button>

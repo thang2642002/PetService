@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createAppointment } from "../../../services/appointmentServices";
 
 const ModalCreateAppointment = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllAppointment } = props;
   const handleClose = () => {
     setShow(false);
     setAppointmentDate("");
@@ -18,6 +18,18 @@ const ModalCreateAppointment = (props) => {
   const [status, setStatus] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [userPetId, setUserPetId] = useState("");
+
+  const handleSubmitCreateAppointment = async () => {
+    const data = await createAppointment(status, serviceId, userPetId);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllAppointment();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -81,7 +93,7 @@ const ModalCreateAppointment = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreateAppointment()}
           >
             Save
           </Button>

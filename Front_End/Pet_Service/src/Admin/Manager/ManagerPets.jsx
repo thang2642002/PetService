@@ -7,19 +7,32 @@ import ModalCreatePet from "../Modal/ModalPets/ModalCreatePet";
 import ModalUpdatePet from "../Modal/ModalPets/ModalUpdatePet";
 import ModalDeletePet from "../Modal/ModalPets/ModalDeletePet";
 import TablePet from "../Modal/ModalPets/TablePet";
-import { useState } from "react";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { useEffect, useState } from "react";
+import { getAllPets } from "../../services/petServices";
 
 const ManagerPets = () => {
   const [showModalCreatePet, setShowModalCreatePet] = useState(false);
   const [showModalUpdatePet, setShowModalUpdatePet] = useState(false);
   const [showModalDeletePet, setShowModalDeletePet] = useState(false);
+  const [listPets, setListPets] = useState([]);
+  const [petDelete, setPetDelete] = useState({});
   const handleShowUpdateModal = () => {
     setShowModalUpdatePet(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (pet) => {
+    setPetDelete(pet);
     setShowModalDeletePet(true);
   };
+
+  const fetchAllPet = async () => {
+    const data = await getAllPets();
+    console.log(data);
+    setListPets(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllPet();
+  }, []);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Pets</div>
@@ -56,6 +69,7 @@ const ManagerPets = () => {
         <ModalCreatePet
           show={showModalCreatePet}
           setShow={setShowModalCreatePet}
+          fetchAllPet={fetchAllPet}
         />
         <ModalUpdatePet
           show={showModalUpdatePet}
@@ -64,12 +78,15 @@ const ManagerPets = () => {
         <ModalDeletePet
           show={showModalDeletePet}
           setShow={setShowModalDeletePet}
+          petDelete={petDelete}
+          fetchAllPet={fetchAllPet}
         />
 
         <div className="btn-table-container"></div>
         <TablePet
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listPets={listPets}
         />
         <div
           className="custom-pagination"

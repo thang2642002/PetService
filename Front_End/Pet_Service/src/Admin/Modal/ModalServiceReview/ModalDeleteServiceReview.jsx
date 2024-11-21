@@ -1,24 +1,25 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteServiceReview } from "../../../services/serviceReviewServices";
 
 const ModalDeleteServiceReview = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, serviceReviewDelete, fetchAllServiceReview } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteServiceReview = async () => {
+    const data = await deleteServiceReview(
+      serviceReviewDelete.service_review_id
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllServiceReview();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -28,7 +29,11 @@ const ModalDeleteServiceReview = (props) => {
         </Modal.Header>
         <Modal.Body>
           Are you sure to delete this service review ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          <b>
+            {serviceReviewDelete && serviceReviewDelete.comment
+              ? serviceReviewDelete.comment
+              : ""}
+          </b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +41,9 @@ const ModalDeleteServiceReview = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteServiceReview();
+            }}
           >
             Confirm
           </Button>

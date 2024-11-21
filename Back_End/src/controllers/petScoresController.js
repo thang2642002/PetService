@@ -27,7 +27,7 @@ const getAllPetScores = async (req, res) => {
 const createPetScores = async (req, res) => {
   try {
     const {
-      score_date,
+      // score_date,
       health_score,
       diet,
       height,
@@ -36,7 +36,7 @@ const createPetScores = async (req, res) => {
       user_pet_id,
     } = req.body;
     const createPetScores = await petScoresService.createPetScores(
-      score_date,
+      // score_date,
       health_score,
       diet,
       height,

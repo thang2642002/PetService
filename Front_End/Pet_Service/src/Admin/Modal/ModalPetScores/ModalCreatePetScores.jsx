@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createPetScores } from "../../../services/petScoresServices";
 
 const ModalCreatePetScores = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllPetScores } = props;
   const handleClose = () => {
     setShow(false);
     setScoresDate("");
@@ -23,6 +23,25 @@ const ModalCreatePetScores = (props) => {
   const [weight, setWeight] = useState("");
   const [note, setNote] = useState("");
   const [userPetId, setUserPetId] = useState("");
+
+  const handleSubmitCreatePetScores = async () => {
+    const data = await createPetScores(
+      healthScores,
+      diet,
+      height,
+      weight,
+      note,
+      userPetId
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllPetScores();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -116,7 +135,7 @@ const ModalCreatePetScores = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreatePetScores()}
           >
             Save
           </Button>

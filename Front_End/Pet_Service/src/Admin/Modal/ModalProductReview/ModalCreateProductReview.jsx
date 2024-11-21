@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createProductReview } from "../../../services/productReviewServices";
 
 const ModalCreateProductReview = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllProductReview } = props;
   const handleClose = () => {
     setShow(false);
     setComment("");
@@ -18,6 +18,18 @@ const ModalCreateProductReview = (props) => {
   const [rating, setRating] = useState("");
   const [userId, setUserId] = useState("");
   const [productId, setProductId] = useState("");
+
+  const handleSubmitCreateProductReview = async () => {
+    const data = await createProductReview(rating, comment, userId, productId);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllProductReview();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -81,7 +93,7 @@ const ModalCreateProductReview = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreateProductReview()}
           >
             Save
           </Button>

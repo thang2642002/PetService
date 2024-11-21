@@ -1,13 +1,13 @@
 // import ReactPaginate from "react-paginate";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateProductReview from "../Modal/ModalProductReview/ModalCreateProductReview";
 import ModalUpdateProductReview from "../Modal/ModalProductReview/ModalUpdateProductReview";
 import ModalDeleteProductReview from "../Modal/ModalProductReview/ModalDeleteProductReview";
 import TableProductReview from "../Modal/ModalProductReview/TableProductReview";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { getAllProductReview } from "../../services/productReviewServices";
 
 import { FcPlus } from "react-icons/fc";
 
@@ -18,12 +18,27 @@ const ManagerProductReview = () => {
     useState(false);
   const [showModalDeleteProductReview, setShowModalDeleteProductReview] =
     useState(false);
+  const [listProductReview, setListProductReview] = useState([]);
+  const [productReviewDelete, setProductReviewDelete] = useState({});
+
   const handleShowUpdateModal = () => {
     setShowModalUpdateProductReview(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (productReview) => {
+    setProductReviewDelete(productReview);
     setShowModalDeleteProductReview(true);
   };
+
+  const fetchAllProductReview = async () => {
+    const data = await getAllProductReview();
+    console.log(data);
+    setListProductReview(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllProductReview();
+  }, []);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
@@ -62,6 +77,7 @@ const ManagerProductReview = () => {
         <ModalCreateProductReview
           show={showModalCreateProductReview}
           setShow={setShowModalCreateProductReview}
+          fetchAllProductReview={fetchAllProductReview}
         />
         <ModalUpdateProductReview
           show={showModalUpdateProductReview}
@@ -70,12 +86,15 @@ const ManagerProductReview = () => {
         <ModalDeleteProductReview
           show={showModalDeleteProductReview}
           setShow={setShowModalDeleteProductReview}
+          productReviewDelete={productReviewDelete}
+          fetchAllProductReview={fetchAllProductReview}
         />
 
         <div className="btn-table-container"></div>
         <TableProductReview
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listProductReview={listProductReview}
         />
         <div
           className="custom-pagination"

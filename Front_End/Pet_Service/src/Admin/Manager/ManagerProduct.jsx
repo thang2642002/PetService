@@ -5,8 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateProduct from "../Modal/ModalProduct/ModalCreateProduct";
 import ModalUpdateProduct from "../Modal/ModalProduct/ModalUpdateProduct";
 import ModalDeleteProduct from "../Modal/ModalProduct/ModalDeleteProduct";
-import { useState } from "react";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { useEffect, useState } from "react";
+import { getAllProduct } from "../../services/productServices";
 import TableProduct from "../Modal/ModalProduct/TableProduct";
 import { FcPlus } from "react-icons/fc";
 
@@ -14,12 +14,26 @@ const ManagerProduct = () => {
   const [showModalCreateProduct, setShowModalCreateProduct] = useState(false);
   const [showModalUpdateProduct, setShowModalUpdateProduct] = useState(false);
   const [showModalDeleteProduct, setShowModalDeleteProduct] = useState(false);
+  const [listProduct, setListProduct] = useState([]);
+  const [productDelete, setProductDelete] = useState({});
+
   const handleShowUpdateModal = () => {
     setShowModalUpdateProduct(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (product) => {
+    setProductDelete(product);
     setShowModalDeleteProduct(true);
   };
+
+  const fetchAllProduct = async () => {
+    const data = await getAllProduct();
+    console.log(data);
+    setListProduct(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllProduct();
+  }, []);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Product</div>
@@ -56,6 +70,7 @@ const ManagerProduct = () => {
         <ModalCreateProduct
           show={showModalCreateProduct}
           setShow={setShowModalCreateProduct}
+          fetchAllProduct={fetchAllProduct}
         />
         <ModalUpdateProduct
           show={showModalUpdateProduct}
@@ -64,12 +79,15 @@ const ManagerProduct = () => {
         <ModalDeleteProduct
           show={showModalDeleteProduct}
           setShow={setShowModalDeleteProduct}
+          productDelete={productDelete}
+          fetchAllProduct={fetchAllProduct}
         />
 
         <div className="btn-table-container"></div>
         <TableProduct
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listProduct={listProduct}
         />
         <div
           className="custom-pagination"

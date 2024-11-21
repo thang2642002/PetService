@@ -14,14 +14,14 @@ const getAllAppointment = async () => {
 };
 
 const createAppointment = async (
-  appointment_date,
+  // appointment_date,
   status,
   service_id,
   user_pet_id
 ) => {
   try {
     const createAppointment = await db.Appointments.create({
-      appointment_date,
+      // appointment_date,
       status,
       service_id,
       user_pet_id,

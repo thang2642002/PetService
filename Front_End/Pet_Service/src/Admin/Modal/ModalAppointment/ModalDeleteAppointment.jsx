@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deleteAppointment } from "../../../services/appointmentServices";
 
 const ModalDeleteAppointment = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, appointmentDelete, fetchAllAppointment } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeleteAppointment = async () => {
+    const data = await deleteAppointment(appointmentDelete.appointment_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllAppointment();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -28,7 +27,11 @@ const ModalDeleteAppointment = (props) => {
         </Modal.Header>
         <Modal.Body>
           Are you sure to delete this appointment ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          <b>
+            {appointmentDelete && appointmentDelete.appointment_id
+              ? appointmentDelete.appointment_id
+              : ""}
+          </b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +39,9 @@ const ModalDeleteAppointment = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeleteAppointment();
+            }}
           >
             Confirm
           </Button>

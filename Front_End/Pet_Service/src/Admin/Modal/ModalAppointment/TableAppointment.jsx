@@ -1,5 +1,6 @@
 const TableAppointment = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal } = props;
+  const { handleShowUpdateModal, handleShowDeleteModal, listAppointment } =
+    props;
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -15,28 +16,32 @@ const TableAppointment = (props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>10/11/2024</td>
-            <td>pending</td>
-            <td>1</td>
-            <td>1</td>
-            <td>
-              <button className="btn btn-secondary">View</button>
-              <button
-                className="btn btn-warning mx-3"
-                onClick={() => handleShowUpdateModal()}
-              >
-                Update
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleShowDeleteModal()}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+          {listAppointment &&
+            Array.isArray(listAppointment) &&
+            listAppointment.map((item, index) => (
+              <tr key={index}>
+                <td>{item.appointment_id}</td>
+                <td>{item.appointment_date}</td>
+                <td>{item.status}</td>
+                <td>{item.service_id}</td>
+                <td>{item.user_pet_id}</td>
+                <td>
+                  <button className="btn btn-secondary">View</button>
+                  <button
+                    className="btn btn-warning mx-3"
+                    onClick={() => handleShowUpdateModal()}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleShowDeleteModal(item)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

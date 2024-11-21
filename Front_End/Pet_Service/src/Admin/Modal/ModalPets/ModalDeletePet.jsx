@@ -1,24 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { deleteUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { deletePet } from "../../../services/petServices";
 
 const ModalDeletePet = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, petDelete, fetchAllPet } = props;
   const handleClose = () => setShow(false);
 
-  //   const handleSubmitDeleteUser = async () => {
-  //     const data = await deleteUser(dataDelete.id, dataDelete.role);
-  //     if (data && data.errcode === 0) {
-  //       toast.success(data.message);
-  //       await fetchListUser();
-  //       handleClose();
-  //     }
-  //     if (data && data.errcode !== 0) {
-  //       toast.error(data.message);
-  //       handleClose();
-  //     }
-  //   };
+  const handleSubmitDeletePet = async () => {
+    const data = await deletePet(petDelete.pet_id);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      await fetchAllPet();
+      handleClose();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -27,8 +26,8 @@ const ModalDeletePet = (props) => {
           <Modal.Title>Modal Delete Pet</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure to delete this pet ={" "}
-          {/* <b>{dataDelete && dataDelete.email ? dataDelete.email : ""}</b> */}
+          Are you sure to delete this pet =
+          <b>{petDelete && petDelete.name ? petDelete.name : ""}</b>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -36,9 +35,9 @@ const ModalDeletePet = (props) => {
           </Button>
           <Button
             variant="primary"
-            // onClick={() => {
-            //   handleSubmitDeleteUser();
-            // }}
+            onClick={() => {
+              handleSubmitDeletePet();
+            }}
           >
             Confirm
           </Button>
