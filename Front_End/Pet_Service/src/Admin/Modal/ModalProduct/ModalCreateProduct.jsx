@@ -130,6 +130,7 @@ const ModalCreateProduct = ({ show, setShow, fetchAllProduct }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+
           <div className="col-md-12">
             <label className="form-label label-upload" htmlFor="labelUpload">
               <FcPlus />
@@ -143,19 +144,40 @@ const ModalCreateProduct = ({ show, setShow, fetchAllProduct }) => {
               multiple
               accept="image/*"
             />
-            <ul>
-              {images.map((file, index) => (
-                <li key={index}>
-                  {file.name}{" "}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                  >
-                    X
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {/* Image Preview */}
+            <div className="mt-3">
+              {images.length > 0 && (
+                <div className="d-flex flex-wrap">
+                  {images.map((image, index) => (
+                    <div key={index} className="me-2 relative">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`preview-${index}`}
+                        width={100}
+                        height={100}
+                        style={{ objectFit: "cover", borderRadius: 5 }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                          background: "rgba(0, 0, 0, 0.5)",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "50%",
+                          padding: "2px 8px",
+                        }}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </form>
       </Modal.Body>
