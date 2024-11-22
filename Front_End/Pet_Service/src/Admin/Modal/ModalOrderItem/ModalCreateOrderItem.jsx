@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { createUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { createOrderItem } from "../../../services/orderItemServices";
 
 const ModalCreateOrderItem = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchAllOrderItem } = props;
   const handleClose = () => {
     setShow(false);
     setTotalPrice("");
@@ -18,6 +18,23 @@ const ModalCreateOrderItem = (props) => {
   const [quantity, setQuantity] = useState("");
   const [orderId, setOrderId] = useState("");
   const [productId, setProductId] = useState("");
+
+  const handleSubmitCreateOrderItem = async () => {
+    const data = await createOrderItem(
+      orderId,
+      productId,
+      quantity,
+      totalPrice
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await fetchAllOrderItem();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -81,7 +98,7 @@ const ModalCreateOrderItem = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitCreateUsers()}
+            onClick={() => handleSubmitCreateOrderItem()}
           >
             Save
           </Button>

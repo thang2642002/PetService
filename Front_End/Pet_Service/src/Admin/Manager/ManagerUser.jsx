@@ -16,7 +16,10 @@ const ManagerUser = () => {
   const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [userDelete, setUserDelete] = useState({});
-  const handleShowUpdateModal = () => {
+  const [userUpdate, setUserUpdate] = useState({});
+
+  const handleShowUpdateModal = (user) => {
+    setUserUpdate(user);
     setShowModalUpdateUser(true);
   };
   const handleShowDeleteModal = (user) => {
@@ -74,6 +77,8 @@ const ManagerUser = () => {
         <ModalUpdateUser
           show={showModalUpdateUser}
           setShow={setShowModalUpdateUser}
+          userUpdate={userUpdate}
+          getListUser={getListUser}
         />
         <ModalDeleteUser
           show={showModalDeleteUser}

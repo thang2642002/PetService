@@ -1,13 +1,13 @@
 // import ReactPaginate from "react-paginate";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateOrderItem from "../Modal/ModalOrderItem/ModalCreateOrderItem";
 import ModalUpdateOrderItem from "../Modal/ModalOrderItem/ModalUpdateOrderItem";
 import ModalDeleteOrderItem from "../Modal/ModalOrderItem/ModalDeleteOrderItem";
 import TableOrderItem from "../Modal/ModalOrderItem/TableOrderItem";
-// import { getListUser, getPage, getByName } from "../../../services/userService";
+import { getAllOrderItem } from "../../services/orderItemServices";
 
 import { FcPlus } from "react-icons/fc";
 
@@ -18,12 +18,28 @@ const ManagerOrderItem = () => {
     useState(false);
   const [showModalDeleteOrderItem, setShowModalDeleteOrderItem] =
     useState(false);
-  const handleShowUpdateModal = () => {
+  const [listOrderItem, setListOrderItem] = useState([]);
+  const [orderItemUpdate, setOrderItemUpdate] = useState({});
+  const [orderItemDelete, setOrderItemDelete] = useState({});
+
+  const handleShowUpdateModal = (orderItem) => {
+    setOrderItemUpdate(orderItem);
     setShowModalUpdateOrderItem(true);
   };
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (orderItem) => {
+    setOrderItemDelete(orderItem);
     setShowModalDeleteOrderItem(true);
   };
+
+  const fetchAllOrderItem = async () => {
+    const data = await getAllOrderItem();
+    setListOrderItem(data.data);
+  };
+
+  useEffect(() => {
+    fetchAllOrderItem();
+  }, []);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
@@ -62,20 +78,26 @@ const ManagerOrderItem = () => {
         <ModalCreateOrderItem
           show={showModalCreateOrderItem}
           setShow={setShowModalCreateOrderItem}
+          fetchAllOrderItem={fetchAllOrderItem}
         />
         <ModalUpdateOrderItem
           show={showModalUpdateOrderItem}
           setShow={setShowModalUpdateOrderItem}
+          orderItemUpdate={orderItemUpdate}
+          fetchAllOrderItem={fetchAllOrderItem}
         />
         <ModalDeleteOrderItem
           show={showModalDeleteOrderItem}
           setShow={setShowModalDeleteOrderItem}
+          orderItemDelete={orderItemDelete}
+          fetchAllOrderItem={fetchAllOrderItem}
         />
 
         <div className="btn-table-container"></div>
         <TableOrderItem
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
+          listOrderItem={listOrderItem}
         />
         <div
           className="custom-pagination"

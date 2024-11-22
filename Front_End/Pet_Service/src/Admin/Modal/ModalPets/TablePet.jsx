@@ -40,7 +40,7 @@ const TablePet = (props) => {
                   <button className="btn btn-secondary">View</button>
                   <button
                     className="btn btn-warning mx-3"
-                    onClick={() => handleShowUpdateModal()}
+                    onClick={() => handleShowUpdateModal(item)}
                   >
                     Update
                   </button>

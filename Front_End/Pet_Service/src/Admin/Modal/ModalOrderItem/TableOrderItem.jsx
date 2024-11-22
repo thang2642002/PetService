@@ -1,5 +1,5 @@
 const TableOrderItem = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal } = props;
+  const { handleShowUpdateModal, handleShowDeleteModal, listOrderItem } = props;
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -15,28 +15,32 @@ const TableOrderItem = (props) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>100000</td>
-            <td>10</td>
-            <td>1</td>
-            <td>1</td>
-            <td>
-              <button className="btn btn-secondary">View</button>
-              <button
-                className="btn btn-warning mx-3"
-                onClick={() => handleShowUpdateModal()}
-              >
-                Update
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleShowDeleteModal()}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+          {listOrderItem &&
+            Array.isArray(listOrderItem) &&
+            listOrderItem.map((item, index) => (
+              <tr key={index}>
+                <td>{item.order_item_id}</td>
+                <td>{item.total_price}</td>
+                <td>{item.quantity}</td>
+                <td>{item.order_id}</td>
+                <td>{item.product_id}</td>
+                <td>
+                  <button className="btn btn-secondary">View</button>
+                  <button
+                    className="btn btn-warning mx-3"
+                    onClick={() => handleShowUpdateModal(item)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleShowDeleteModal(item)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

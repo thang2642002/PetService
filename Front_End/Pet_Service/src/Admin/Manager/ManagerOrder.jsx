@@ -30,7 +30,6 @@ const ManagerOrder = () => {
 
   const fetchAllOrder = async () => {
     const data = await getAllOrder();
-    console.log(data);
     setListOrder(data.data);
   };
 

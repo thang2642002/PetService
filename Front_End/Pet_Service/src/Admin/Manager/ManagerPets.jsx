@@ -16,7 +16,10 @@ const ManagerPets = () => {
   const [showModalDeletePet, setShowModalDeletePet] = useState(false);
   const [listPets, setListPets] = useState([]);
   const [petDelete, setPetDelete] = useState({});
-  const handleShowUpdateModal = () => {
+  const [petUpdate, setPetUpdate] = useState({});
+
+  const handleShowUpdateModal = (pet) => {
+    setPetUpdate(pet);
     setShowModalUpdatePet(true);
   };
   const handleShowDeleteModal = (pet) => {
@@ -74,6 +77,8 @@ const ManagerPets = () => {
         <ModalUpdatePet
           show={showModalUpdatePet}
           setShow={setShowModalUpdatePet}
+          petUpdate={petUpdate}
+          fetchAllPet={fetchAllPet}
         />
         <ModalDeletePet
           show={showModalDeletePet}

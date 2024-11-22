@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateOrderItem } from "../../../services/orderItemServices";
 // import _ from "lodash";
 
 const ModalUpdateOrderItem = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, orderItemUpdate, fetchAllOrderItem } = props;
   const handleClose = () => {
     setShow(false);
     setTotalPrice("");
@@ -15,10 +15,35 @@ const ModalUpdateOrderItem = (props) => {
     setProductId("");
   };
 
+  useEffect(() => {
+    setTotalPrice(orderItemUpdate.total_price);
+    setQuantity(orderItemUpdate.quantity);
+    setOrderId(orderItemUpdate.order_id);
+    setProductId(orderItemUpdate.product_id);
+  }, [orderItemUpdate]);
+
   const [totalPrice, setTotalPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [orderId, setOrderId] = useState("");
   const [productId, setProductId] = useState("");
+
+  const handleSubmitUpdateUsers = async () => {
+    const data = await updateOrderItem(
+      orderItemUpdate.order_item_id,
+      orderId,
+      productId,
+      quantity,
+      totalPrice
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllOrderItem();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -80,10 +105,7 @@ const ModalUpdateOrderItem = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitUpdateUsers()}>
             Save
           </Button>
         </Modal.Footer>
