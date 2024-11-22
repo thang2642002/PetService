@@ -27,7 +27,7 @@ const updateOrder = async (
   order_id,
   total_amount,
   status,
-  order_date,
+  // order_date,
   user_id
 ) => {
   try {
@@ -38,7 +38,7 @@ const updateOrder = async (
     await updateOrder.update({
       total_amount,
       status,
-      order_date,
+      // order_date,
       user_id,
     });
     return updateOrder;

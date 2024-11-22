@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updatePetScores } from "../../../services/petScoresServices";
 // import _ from "lodash";
 
 const ModalUpdatePetScores = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, petScoresUpdate, fetchAllPetScores } = props;
   const handleClose = () => {
     setShow(false);
     setScoresDate("");
@@ -17,6 +17,17 @@ const ModalUpdatePetScores = (props) => {
     setNote("");
     setUserPetId("");
   };
+
+  useEffect(() => {
+    setScoresDate("");
+    setHealthScores(petScoresUpdate.health_score);
+    setDiet(petScoresUpdate.diet);
+    setHeight(petScoresUpdate.height);
+    setWeight(petScoresUpdate.weight);
+    setNote(petScoresUpdate.note);
+    setUserPetId(petScoresUpdate.user_pet_id);
+  }, [petScoresUpdate]);
+
   const [scoresDate, setScoresDate] = useState("");
   const [healthScores, setHealthScores] = useState("");
   const [diet, setDiet] = useState("");
@@ -24,6 +35,26 @@ const ModalUpdatePetScores = (props) => {
   const [weight, setWeight] = useState("");
   const [note, setNote] = useState("");
   const [userPetId, setUserPetId] = useState("");
+
+  const handleSubmitUpdatePetScores = async () => {
+    const data = await updatePetScores(
+      petScoresUpdate.score_id,
+      healthScores,
+      diet,
+      height,
+      weight,
+      note,
+      userPetId
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllPetScores();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -117,7 +148,7 @@ const ModalUpdatePetScores = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
+            onClick={() => handleSubmitUpdatePetScores()}
           >
             Save
           </Button>

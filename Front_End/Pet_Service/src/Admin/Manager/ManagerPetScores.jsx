@@ -19,8 +19,10 @@ const ManagerPetScores = () => {
     useState(false);
   const [listPetScores, setListPetScores] = useState([]);
   const [petScoresDelete, setPetScoresDelete] = useState({});
+  const [petScoresUpdate, setPetScoresUpdate] = useState({});
 
-  const handleShowUpdateModal = () => {
+  const handleShowUpdateModal = (petScores) => {
+    setPetScoresUpdate(petScores);
     setShowModalUpdatePetScores(true);
   };
   const handleShowDeleteModal = (petScores) => {
@@ -79,6 +81,8 @@ const ManagerPetScores = () => {
         <ModalUpdatePetScores
           show={showModalUpdatePetScores}
           setShow={setShowModalUpdatePetScores}
+          petScoresUpdate={petScoresUpdate}
+          fetchAllPetScores={fetchAllPetScores}
         />
         <ModalDeletePetScores
           show={showModalDeletePetScores}

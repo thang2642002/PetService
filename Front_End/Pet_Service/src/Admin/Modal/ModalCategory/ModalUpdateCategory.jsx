@@ -1,20 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateCategory } from "../../../services/categoryServices";
 // import _ from "lodash";
 
 const ModalUpdateCategory = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, categoryUpdate, getListCategory } = props;
+
   const handleClose = () => {
     setShow(false);
     setName("");
     setDescription("");
   };
 
+  useEffect(() => {
+    setName(categoryUpdate.name);
+    setDescription(categoryUpdate.description);
+  }, [categoryUpdate]);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleSubmitUpdateCategory = async () => {
+    const data = await updateCategory(
+      categoryUpdate.category_id,
+      name,
+      description
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await getListCategory();
+    } else {
+      toast.success(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -58,7 +80,7 @@ const ModalUpdateCategory = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
+            onClick={() => handleSubmitUpdateCategory()}
           >
             Save
           </Button>

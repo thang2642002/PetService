@@ -1,4 +1,3 @@
-import { QueryTypes } from "sequelize";
 import appointmentService from "../services/appointmentServices";
 const getAllAppointment = async (req, res) => {
   try {
@@ -61,10 +60,15 @@ const createAppointment = async (req, res) => {
 const updateAppointment = async (req, res) => {
   try {
     const appointment_id = req.params.id;
-    const { appointment_date, status, service_id, user_pet_id } = req.body;
+    const {
+      //  appointment_date
+      status,
+      service_id,
+      user_pet_id,
+    } = req.body;
     const updateAppointment = await appointmentService.updateAppointment(
       appointment_id,
-      appointment_date,
+      // appointment_date,
       status,
       service_id,
       user_pet_id

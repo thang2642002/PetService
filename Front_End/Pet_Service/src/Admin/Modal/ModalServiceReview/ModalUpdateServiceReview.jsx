@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateServiceReview } from "../../../services/serviceReviewServices";
 // import _ from "lodash";
 
 const ModalUpdateServiceReview = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, serviceReviewUpdate, fetchAllServiceReview } = props;
   const handleClose = () => {
     setShow(false);
     setComment("");
@@ -15,10 +15,35 @@ const ModalUpdateServiceReview = (props) => {
     setServiceId("");
   };
 
+  useEffect(() => {
+    setComment(serviceReviewUpdate.comment);
+    setRating(serviceReviewUpdate.rating);
+    setUserId(serviceReviewUpdate.user_id);
+    setServiceId(serviceReviewUpdate.service_id);
+  }, [serviceReviewUpdate]);
+
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
   const [userId, setUserId] = useState("");
   const [serviceId, setServiceId] = useState("");
+
+  const handleSubmitUpdateServiceReview = async () => {
+    const data = await updateServiceReview(
+      serviceReviewUpdate.service_review_id,
+      serviceId,
+      userId,
+      rating,
+      comment
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllServiceReview();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -82,7 +107,7 @@ const ModalUpdateServiceReview = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
+            onClick={() => handleSubmitUpdateServiceReview()}
           >
             Save
           </Button>

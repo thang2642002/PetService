@@ -17,7 +17,10 @@ const ManagerOrder = () => {
   const [showModalDeleteOrder, setShowModalDeleteOrder] = useState(false);
   const [listOrder, setListOrder] = useState([]);
   const [orderDelete, setOrderDelete] = useState({});
-  const handleShowUpdateModal = () => {
+  const [orderUpdate, setOrderUpdate] = useState({});
+
+  const handleShowUpdateModal = (order) => {
+    setOrderUpdate(order);
     setShowModalUpdateOrder(true);
   };
   const handleShowDeleteModal = (order) => {
@@ -75,6 +78,8 @@ const ManagerOrder = () => {
         <ModalUpdateOrder
           show={showModalUpdateOrder}
           setShow={setShowModalUpdateOrder}
+          orderUpdate={orderUpdate}
+          fetchAllOrder={fetchAllOrder}
         />
         <ModalDeleteOrder
           show={showModalDeleteOrder}

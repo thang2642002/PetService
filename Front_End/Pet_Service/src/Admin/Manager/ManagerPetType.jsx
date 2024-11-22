@@ -16,7 +16,10 @@ const ManagerPetType = () => {
   const [showModalDeletePetType, setShowModalDeletePetType] = useState(false);
   const [listPetType, setListPetType] = useState([]);
   const [petTypeDelete, setPetTypeDelete] = useState({});
-  const handleShowUpdateModal = () => {
+  const [petTypeUpdate, setPetTypeUpdate] = useState({});
+
+  const handleShowUpdateModal = (petType) => {
+    setPetTypeUpdate(petType);
     setShowModalUpdatePetType(true);
   };
   const handleShowDeleteModal = (petType) => {
@@ -32,7 +35,7 @@ const ManagerPetType = () => {
 
   useEffect(() => {
     fetchAllPetType();
-  }, []);
+  }, [listPetType]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
@@ -76,6 +79,8 @@ const ManagerPetType = () => {
         <ModalUpdatePetType
           show={showModalUpdatePetType}
           setShow={setShowModalUpdatePetType}
+          petTypeUpdate={petTypeUpdate}
+          fetchAllPetType={fetchAllPetType}
         />
         <ModalDeletePetType
           show={showModalDeletePetType}

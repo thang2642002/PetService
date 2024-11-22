@@ -16,17 +16,21 @@ const ManagerCategory = () => {
   const [showModalDeleteCategory, setShowModalDeleteCategory] = useState(false);
   const [listCategory, setListCategory] = useState([]);
   const [categoryDelete, setCategoryDelete] = useState({});
+  const [categoryUpdate, setCategoryUpdate] = useState({});
 
   const getListCategory = async () => {
     const data = await fetchAllCategory();
-    setListCategory(data.data);
+    if (data && data.errCode === 0) {
+      setListCategory(data.data);
+    }
   };
 
   useEffect(() => {
     getListCategory();
-  }, []);
+  }, [listCategory]);
 
-  const handleShowUpdateModal = () => {
+  const handleShowUpdateModal = (category) => {
+    setCategoryUpdate(category);
     setShowModalUpdateCategory(true);
   };
   const handleShowDeleteModal = (category) => {
@@ -76,6 +80,8 @@ const ManagerCategory = () => {
         <ModalUpdateCategory
           show={showModalUpdateCategory}
           setShow={setShowModalUpdateCategory}
+          categoryUpdate={categoryUpdate}
+          getListCategory={getListCategory}
         />
         <ModalDeleteCategory
           show={showModalDeleteCategory}

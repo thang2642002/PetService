@@ -27,10 +27,34 @@ const createUserPet = (
   return axios.post("/user-pet/create-user-pet", data);
 };
 
+const updateUserPet = (
+  user_pet_id,
+  name_pet,
+  age,
+  height,
+  weight,
+  coat_color,
+  breed,
+  description,
+  user_id
+) => {
+  const data = {
+    name_pet,
+    age,
+    height,
+    weight,
+    coat_color,
+    breed,
+    description,
+    user_id,
+  };
+  return axios.put(`/user-pet/update-user-pet/${user_pet_id}`, data);
+};
+
 const deleteUserPet = (user_pet_id) => {
   return axios.delete(`/user-pet/delete-user-pet/${user_pet_id}`, {
     data: { user_pet_id },
   });
 };
 
-export { getAllUserPet, createUserPet, deleteUserPet };
+export { getAllUserPet, createUserPet, updateUserPet, deleteUserPet };

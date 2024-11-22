@@ -20,8 +20,10 @@ const ManagerServiceReview = () => {
     useState(false);
   const [listServiceReview, setListServiceReview] = useState([]);
   const [serviceReviewDelete, setServiceReviewDelete] = useState({});
+  const [serviceReviewUpdate, setServiceReviewUpdate] = useState({});
 
-  const handleShowUpdateModal = () => {
+  const handleShowUpdateModal = (serviceReview) => {
+    setServiceReviewUpdate(serviceReview);
     setShowModalUpdateServiceReview(true);
   };
   const handleShowDeleteModal = (serviceReview) => {
@@ -81,6 +83,8 @@ const ManagerServiceReview = () => {
         <ModalUpdateServiceReview
           show={showModalUpdateServiceReview}
           setShow={setShowModalUpdateServiceReview}
+          serviceReviewUpdate={serviceReviewUpdate}
+          fetchAllServiceReview={fetchAllServiceReview}
         />
         <ModalDeleteServiceReview
           show={showModalDeleteServiceReview}

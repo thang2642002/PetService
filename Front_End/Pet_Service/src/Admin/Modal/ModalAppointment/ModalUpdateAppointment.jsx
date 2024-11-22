@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateAppointment } from "../../../services/appointmentServices";
 // import _ from "lodash";
 
 const ModalUpdateAppointment = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, appointmentUpdate, fetchAllAppointment } = props;
   const handleClose = () => {
     setShow(false);
     setAppointmentDate("");
@@ -15,10 +15,35 @@ const ModalUpdateAppointment = (props) => {
     setUserPetId("");
   };
 
+  useEffect(() => {
+    // setAppointmentDate("");
+    setStatus(appointmentUpdate.status);
+    setServiceId(appointmentUpdate.service_id);
+    setUserPetId(appointmentUpdate.user_pet_id);
+  }, [appointmentUpdate]);
+
   const [appointmentDate, setAppointmentDate] = useState("");
   const [status, setStatus] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [userPetId, setUserPetId] = useState("");
+
+  const handleSubmitUpdateAppointment = async () => {
+    const data = await updateAppointment(
+      appointmentUpdate.appointment_id,
+      status,
+      serviceId,
+      userPetId
+    );
+    console.log(data);
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllAppointment();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -82,7 +107,7 @@ const ModalUpdateAppointment = (props) => {
           </Button>
           <Button
             variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
+            onClick={() => handleSubmitUpdateAppointment()}
           >
             Save
           </Button>

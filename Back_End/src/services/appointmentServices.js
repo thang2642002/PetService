@@ -34,7 +34,7 @@ const createAppointment = async (
 
 const updateAppointment = async (
   appointment_id,
-  appointment_date,
+  // appointment_date,
   status,
   service_id,
   user_pet_id
@@ -45,7 +45,7 @@ const updateAppointment = async (
       return null;
     }
     await updateAppointment.update({
-      appointment_date,
+      // appointment_date,
       status,
       service_id,
       user_pet_id,

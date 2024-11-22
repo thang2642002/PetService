@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateService } from "../../../services/serviceServices";
 // import _ from "lodash";
 
 const ModalUpdateService = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, serviceUpdate, fetchAllService } = props;
   const handleClose = () => {
     setShow(false);
     setName("");
@@ -14,9 +14,32 @@ const ModalUpdateService = (props) => {
     setDescription("");
   };
 
+  useEffect(() => {
+    setName(serviceUpdate.name);
+    setPrice(serviceUpdate.price);
+    setDescription(serviceUpdate.description);
+  }, [serviceUpdate]);
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleSubmitUpdateService = async () => {
+    const data = await updateService(
+      serviceUpdate.service_id,
+      name,
+      price,
+      description
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await fetchAllService();
+    } else {
+      toast.success(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -68,10 +91,7 @@ const ModalUpdateService = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitUpdateService()}>
             Save
           </Button>
         </Modal.Footer>

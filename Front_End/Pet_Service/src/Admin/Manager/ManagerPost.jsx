@@ -16,7 +16,9 @@ const ManagerPost = () => {
   const [showModalDeletePost, setShowModalDeletePost] = useState(false);
   const [listPost, setListPost] = useState([]);
   const [postDelete, setPostDelete] = useState({});
-  const handleShowUpdateModal = () => {
+  const [postUpdate, setPostUpdate] = useState({});
+  const handleShowUpdateModal = (post) => {
+    setPostUpdate(post);
     setShowModalUpdatePost(true);
   };
   const handleShowDeleteModal = (post) => {
@@ -31,7 +33,7 @@ const ManagerPost = () => {
 
   useEffect(() => {
     fetchAllPost();
-  }, []);
+  }, [listPost]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Post</div>
@@ -73,6 +75,8 @@ const ManagerPost = () => {
         <ModalUpdatePost
           show={showModalUpdatePost}
           setShow={setShowModalUpdatePost}
+          postUpdate={postUpdate}
+          fetchAllPost={fetchAllPost}
         />
         <ModalDeletePost
           show={showModalDeletePost}

@@ -20,8 +20,10 @@ const ManagerProductReview = () => {
     useState(false);
   const [listProductReview, setListProductReview] = useState([]);
   const [productReviewDelete, setProductReviewDelete] = useState({});
+  const [productReviewUpdate, setProductReviewUpdate] = useState({});
 
-  const handleShowUpdateModal = () => {
+  const handleShowUpdateModal = (productReview) => {
+    setProductReviewUpdate(productReview);
     setShowModalUpdateProductReview(true);
   };
   const handleShowDeleteModal = (productReview) => {
@@ -82,6 +84,8 @@ const ManagerProductReview = () => {
         <ModalUpdateProductReview
           show={showModalUpdateProductReview}
           setShow={setShowModalUpdateProductReview}
+          productReviewUpdate={productReviewUpdate}
+          fetchAllProductReview={fetchAllProductReview}
         />
         <ModalDeleteProductReview
           show={showModalDeleteProductReview}

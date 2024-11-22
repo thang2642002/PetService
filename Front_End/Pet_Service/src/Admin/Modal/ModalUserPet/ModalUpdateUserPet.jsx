@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateUserPet } from "../../../services/userPetServices";
 // import _ from "lodash";
 
 const ModalUpdateUserPet = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, userPetUpdate, fetchAllUserPet } = props;
   const handleClose = () => {
     setShow(false);
     setNamePet("");
@@ -18,6 +18,18 @@ const ModalUpdateUserPet = (props) => {
     setDescription("");
     setUserId("");
   };
+
+  useEffect(() => {
+    setNamePet(userPetUpdate.name_pet);
+    setAge(userPetUpdate.age);
+    setHeight(userPetUpdate.height);
+    setWeight(userPetUpdate.weight);
+    setCoatColor(userPetUpdate.coat_color);
+    setBreed(userPetUpdate.breed);
+    setDescription(userPetUpdate.description);
+    setUserId(userPetUpdate.user_id);
+  }, [userPetUpdate]);
+
   const [name, setNamePet] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
@@ -26,6 +38,28 @@ const ModalUpdateUserPet = (props) => {
   const [breed, setBreed] = useState("");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
+
+  const handleSubmitUpdateUserPet = async () => {
+    const data = await updateUserPet(
+      userPetUpdate.user_pet_id,
+      name,
+      age,
+      height,
+      weight,
+      coatColor,
+      breed,
+      description,
+      userId
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllUserPet();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -127,10 +161,7 @@ const ModalUpdateUserPet = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitUpdateUserPet()}>
             Save
           </Button>
         </Modal.Footer>

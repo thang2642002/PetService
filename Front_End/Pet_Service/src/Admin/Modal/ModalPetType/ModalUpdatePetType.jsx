@@ -1,20 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updatePetType } from "../../../services/petTypeServices";
 // import _ from "lodash";
 
 const ModalUpdatePetType = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, petTypeUpdate, fetchAllPetType } = props;
   const handleClose = () => {
     setShow(false);
     setTypeName("");
     setDescription("");
   };
 
+  useEffect(() => {
+    setTypeName(petTypeUpdate.type_name);
+    setDescription(petTypeUpdate.description);
+  }, [petTypeUpdate]);
+
   const [typename, setTypeName] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleSubmitUpdatePetType = async () => {
+    const data = await updatePetType(
+      petTypeUpdate.pet_type_id,
+      typename,
+      description
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      await fetchAllPetType();
+    } else {
+      toast.success(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -56,10 +77,7 @@ const ModalUpdatePetType = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitUpdatePetType()}>
             Save
           </Button>
         </Modal.Footer>

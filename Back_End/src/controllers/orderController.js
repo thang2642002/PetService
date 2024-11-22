@@ -54,12 +54,17 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const order_id = req.params.id;
-    const { total_amount, status, order_date, user_id } = req.body;
+    const {
+      total_amount,
+      status,
+      // order_date,
+      user_id,
+    } = req.body;
     const updateOrder = await orderService.updateOrder(
       order_id,
       total_amount,
       status,
-      order_date,
+      // order_date,
       user_id
     );
     if (updateOrder) {

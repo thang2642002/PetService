@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import { toast } from "react-toastify";
-// import { updateUser } from "../../../../services/userService";
+import { toast } from "react-toastify";
+import { updateOrder } from "../../../services/orderServices";
 // import _ from "lodash";
 
 const ModalUpdateOrder = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, orderUpdate, fetchAllOrder } = props;
   const handleClose = () => {
     setShow(false);
     setTotalAmount("");
@@ -15,10 +15,34 @@ const ModalUpdateOrder = (props) => {
     setUserId("");
   };
 
+  useEffect(() => {
+    setTotalAmount(orderUpdate.total_amount);
+    setStatus(orderUpdate.status);
+    // setOrderDate("");
+    setUserId(orderUpdate.user_id);
+  }, [orderUpdate]);
+
   const [totalAmount, setTotalAmount] = useState("");
   const [status, setStatus] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [userId, setUserId] = useState("");
+
+  const handleSubmitUpdateOrder = async () => {
+    const data = await updateOrder(
+      orderUpdate.order_id,
+      totalAmount,
+      status,
+      userId
+    );
+    if (data && data.errCode === 0) {
+      toast.success(data.message);
+      handleClose();
+      fetchAllOrder();
+    } else {
+      toast.error(data.message);
+      handleClose();
+    }
+  };
 
   return (
     <>
@@ -80,10 +104,7 @@ const ModalUpdateOrder = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            //   onClick={() => handleSubmitUpdateUsers()}
-          >
+          <Button variant="primary" onClick={() => handleSubmitUpdateOrder()}>
             Save
           </Button>
         </Modal.Footer>

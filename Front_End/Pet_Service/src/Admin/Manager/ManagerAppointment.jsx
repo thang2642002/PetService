@@ -20,8 +20,10 @@ const ManagerAppointment = () => {
     useState(false);
   const [listAppointment, setListAppointment] = useState([]);
   const [appointmentDelete, setAppointmentDelete] = useState({});
+  const [appointmentUpdate, setAppointmentUpdate] = useState({});
 
-  const handleShowUpdateModal = () => {
+  const handleShowUpdateModal = (appointment) => {
+    setAppointmentUpdate(appointment);
     setShowModalUpdateAppointment(true);
   };
   const handleShowDeleteModal = (appointment) => {
@@ -81,6 +83,8 @@ const ManagerAppointment = () => {
         <ModalUpdateAppointment
           show={showModalUpdateAppointment}
           setShow={setShowModalUpdateAppointment}
+          appointmentUpdate={appointmentUpdate}
+          fetchAllAppointment={fetchAllAppointment}
         />
         <ModalDeleteAppointment
           show={showModalDeleteAppointment}

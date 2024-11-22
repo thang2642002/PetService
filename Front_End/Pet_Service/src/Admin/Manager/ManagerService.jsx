@@ -16,7 +16,10 @@ const ManagerService = () => {
   const [showModalDeleteService, setShowModalDeleteService] = useState(false);
   const [serviceDelete, setServiceDelete] = useState({});
   const [listService, setListService] = useState([]);
-  const handleShowUpdateModal = () => {
+  const [serviceUpdate, setServiceUpdate] = useState({});
+
+  const handleShowUpdateModal = (service) => {
+    setServiceUpdate(service);
     setShowModalUpdateService(true);
   };
   const handleShowDeleteModal = (service) => {
@@ -32,7 +35,7 @@ const ManagerService = () => {
 
   useEffect(() => {
     fetchAllService();
-  }, []);
+  }, [listService]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Service</div>
@@ -74,6 +77,8 @@ const ManagerService = () => {
         <ModalUpdateService
           show={showModalUpdateService}
           setShow={setShowModalUpdateService}
+          serviceUpdate={serviceUpdate}
+          fetchAllService={fetchAllService}
         />
         <ModalDeleteService
           show={showModalDeleteService}
