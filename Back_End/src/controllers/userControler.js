@@ -272,7 +272,7 @@ const handleLogin = async (req, res) => {
   }
 };
 
-const handleLogout = () => {
+const handleLogout = (req, res) => {
   try {
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
