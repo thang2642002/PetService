@@ -1,6 +1,6 @@
 import "./Register.scss";
 import { Row, Col } from "react-bootstrap";
-import background from "../../assets/img/background.png";
+import background from "../../../assets/img/background.png";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 const Register = () => {

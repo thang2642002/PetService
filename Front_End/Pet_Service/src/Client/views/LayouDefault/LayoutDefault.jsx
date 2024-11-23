@@ -1,21 +1,19 @@
-import Header from "../components/Header";
-import Footer from "../components/footer";
-import PropTypes from "prop-types";
+import Header from "../../components/Header";
+import Footer from "../../components/footer";
+import Small_Slice from "../../components/Small_Slice";
+import { Outlet } from "react-router-dom";
 
-const LayoutDefault = ({ children }) => {
+const LayoutDefault = () => {
   return (
     <>
       <div className="container">
+        <Small_Slice />
         <Header />
-        {children}
+        <Outlet />
         <Footer />
       </div>
     </>
   );
-};
-
-LayoutDefault.propTypes = {
-  children: PropTypes.node,
 };
 
 export default LayoutDefault;

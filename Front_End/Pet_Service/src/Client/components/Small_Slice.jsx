@@ -16,10 +16,10 @@ const Small_Slice = () => {
       <div>
         <Slider {...settings}>
           <div className="small-slice">
-            <p>Miễn phí đơn hàng vận chuyển 399K</p>
+            <span>Miễn phí đơn hàng vận chuyển 399K</span>
           </div>
           <div className="small-slice">
-            <p>Giao hàng hỏa tốc 24h trong HCM</p>
+            <span>Giao hàng hỏa tốc 24h trong HCM</span>
           </div>
         </Slider>
       </div>

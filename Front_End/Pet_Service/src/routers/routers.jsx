@@ -14,6 +14,16 @@ import ManagerOrder from "../Admin/Manager/ManagerOrder";
 import ManagerCategory from "../Admin/Manager/ManagerCatagory";
 import ManagerAppointment from "../Admin/Manager/ManagerAppointment";
 
+import LayoutDefault from "../Client/views/LayouDefault/LayoutDefault";
+import Home from "../Client/views/Home/Home";
+import ProductDetails from "../Client/views/Product_Details/Product_Details";
+import ShoppingCart from "../Client/views/Shopping_Cart/Shopping_Cart";
+import Payment from "../Client/views/Payment/Payment";
+import OrderDetails from "../Client/views/Order_Details/OrderDetails";
+
+import Register from "../Client/views/Register/Register";
+import Login from "../Client/views/Login/Login";
+
 export const routers = [
   {
     path: "/admin",
@@ -35,4 +45,31 @@ export const routers = [
       { path: "managerAppointment", element: <ManagerAppointment /> },
     ],
   },
+
+  {
+    path: "/",
+    element: <LayoutDefault />,
+    children: [
+      { path: "", element: <Home /> },
+      {
+        path: "product-detail",
+        element: <ProductDetails />,
+      },
+      {
+        path: "shop-carts",
+        element: <ShoppingCart />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "order-details",
+        element: <OrderDetails />,
+      },
+    ],
+  },
+  // { path: "*", element: <NotFoundPage /> },
+  { path: "/register", element: <Register /> },
+  { path: "/login", element: <Login /> },
 ];

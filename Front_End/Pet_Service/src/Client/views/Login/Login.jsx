@@ -1,5 +1,5 @@
 import "./Login.scss";
-import background from "../../assets/img/background.png";
+import background from "../../../assets/img/background.png";
 import { Row, Col } from "react-bootstrap";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
