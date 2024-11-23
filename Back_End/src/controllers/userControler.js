@@ -161,6 +161,129 @@ const findById = async (req, res) => {
   }
 };
 
+const handleRegister = async (req, res) => {
+  const { email, user_name, phone, address, password } = req.body;
+  var emailRegex =
+    /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+  let checkEmail = emailRegex.test(email);
+  try {
+    if (!email || !user_name || !phone || !address || !password) {
+      return res.status(200).json({
+        message: "All input fields are required",
+        errCode: 1,
+      });
+    } else if (!checkEmail) {
+      return res
+        .status(200)
+        .json({ message: "The input is email required", errCode: 1 });
+    }
+    const register = await UserService.handleRegister(
+      email,
+      user_name,
+      phone,
+      address,
+      password
+    );
+    if (register.message === "User already exists") {
+      return res.status(400).json({
+        message: "Email already exists",
+        errCode: 1,
+      });
+    }
+
+    if (register.user) {
+      return res.status(200).json({
+        message: "Registration successful",
+        errCode: 0,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Registration failed",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.error("Error during registration:", error);
+    return res.status(500).json({
+      message: "Registration error",
+      errCode: -1,
+    });
+  }
+};
+
+const handleLogin = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "The input is required",
+        errCode: 1,
+      });
+    }
+
+    const result = await UserService.handleLogin(email, password);
+
+    if (result.errCode === 1) {
+      return res.status(404).json({
+        message: result.message,
+        errCode: result.errCode,
+      });
+    }
+
+    if (result.errCode === 2) {
+      return res.status(401).json({
+        message: result.message,
+        errCode: result.errCode,
+      });
+    }
+
+    if (result.errCode === 0) {
+      res.cookie("accessToken", result.accessToken, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 3600000,
+      });
+
+      res.cookie("refreshToken", result.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 604800000,
+      });
+
+      return res.status(200).json({
+        message: "Login The Success",
+        errCode: 0,
+        data: result.login,
+        access_tokens: result.accessToken,
+        refresh_tokens: result.refreshToken,
+      });
+    }
+
+    return res.status(400).json({
+      message: "Login The fails",
+      errCode: 3,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({
+      message: "An error occurred during login",
+      errCode: -1,
+    });
+  }
+};
+
+const handleLogout = () => {
+  try {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Logout failed" });
+  }
+};
+
 module.exports = {
   getAllUser,
   createUser,
@@ -168,4 +291,7 @@ module.exports = {
   deleteUser,
   findByName,
   findById,
+  handleRegister,
+  handleLogin,
+  handleLogout,
 };

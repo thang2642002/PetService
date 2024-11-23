@@ -1,6 +1,13 @@
 import db from "../models/index";
 const { Op } = require("sequelize");
 import { cloudinary } from "../config/cloudinaryConfig";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+require("dotenv").config();
+
+const accessTokenSecret = process.env.ACCESS_TOKENS;
+const refreshTokenSecret = process.env.REFRESH_TOKENS;
+
 const getAllUser = async () => {
   try {
     const dataUser = await db.User.findAll();
@@ -20,9 +27,11 @@ const createUser = async (
   avatar
 ) => {
   try {
+    var salt = bcrypt.genSaltSync(10);
+    var hashPass = bcrypt.hashSync(password, salt);
     const dataUser = await db.User.create({
       email,
-      password,
+      password: hashPass,
       user_name,
       phone,
       address,
@@ -85,7 +94,7 @@ const deleteUser = async (id) => {
       where: { user_id: id },
     });
 
-    return result; // Trả về kết quả
+    return result;
   } catch (error) {
     console.log(error);
   }
@@ -117,6 +126,77 @@ const findById = async (user_id) => {
   }
 };
 
+const handleRegister = async (email, user_name, phone, address, password) => {
+  const existingUser = await db.User.findOne({ where: { email: email } });
+  if (existingUser) {
+    return { message: "User already exists" };
+  }
+  var salt = bcrypt.genSaltSync(10);
+  var hashPass = bcrypt.hashSync(password, salt);
+  const newUser = await db.User.create({
+    email: email,
+    user_name: user_name,
+    phone: phone,
+    address: address,
+    password: hashPass,
+    role: "customer",
+  });
+  return {
+    message: "User registered successfully",
+    user: newUser,
+  };
+};
+
+const handleLogin = async (email, password) => {
+  try {
+    const login = await db.User.findOne({
+      where: { email: email },
+    });
+
+    if (!login) {
+      return {
+        message: "User not found",
+        errCode: 1,
+      };
+    }
+
+    const isPasswordValid = bcrypt.compareSync(password, login.password);
+    console.log(isPasswordValid);
+
+    if (!isPasswordValid) {
+      return {
+        message: "Invalid email or password",
+        errCode: 2,
+      };
+    }
+
+    const accessToken = jwt.sign(
+      { id: login.id, role: login.role },
+      accessTokenSecret,
+      { expiresIn: "1h" }
+    );
+
+    const refreshToken = jwt.sign(
+      { id: login.id, role: login.role },
+      refreshTokenSecret,
+      { expiresIn: "7d" }
+    );
+
+    return {
+      login,
+      accessToken,
+      refreshToken,
+      errCode: 0,
+    };
+  } catch (error) {
+    console.error("Error during login:", error);
+    return {
+      message: "An error occurred during login",
+      errCode: -1,
+    };
+  }
+};
+
 module.exports = {
   getAllUser,
   createUser,
@@ -124,4 +204,6 @@ module.exports = {
   deleteUser,
   findName,
   findById,
+  handleRegister,
+  handleLogin,
 };

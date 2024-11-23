@@ -8,7 +8,6 @@ const TableUser = (props) => {
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Email</th>
-            <th scope="col">Password</th>
             <th scope="col">User Name</th>
             <th scope="col">Phone</th>
             <th scope="col">Address</th>
@@ -23,7 +22,6 @@ const TableUser = (props) => {
               <tr key={index}>
                 <td>{item.user_id}</td>
                 <td>{item.email}</td>
-                <td>{item.password}</td>
                 <td>{item.user_name}</td>
                 <td>{item.phone}</td>
                 <td>{item.address}</td>
