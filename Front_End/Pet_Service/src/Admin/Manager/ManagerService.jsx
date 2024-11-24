@@ -29,7 +29,6 @@ const ManagerService = () => {
 
   const fetchAllService = async () => {
     const data = await getAllServices();
-    console.log(data);
     setListService(data.data);
   };
 

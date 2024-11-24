@@ -80,7 +80,6 @@ const ModalCreatePet = (props) => {
       }
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu:", error);
-      alert("Đã xảy ra lỗi, vui lòng thử lại sau!");
     }
   };
 

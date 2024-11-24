@@ -27,7 +27,6 @@ const ManagerPost = () => {
   };
   const fetchAllPost = async () => {
     const data = await getAllPost();
-    console.log(data);
     setListPost(data.data);
   };
 

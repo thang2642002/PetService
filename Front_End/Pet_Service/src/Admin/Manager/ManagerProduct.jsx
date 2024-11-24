@@ -29,7 +29,6 @@ const ManagerProduct = () => {
 
   const fetchAllProduct = async () => {
     const data = await getAllProduct();
-    console.log(data);
     setListProduct(data.data);
   };
 

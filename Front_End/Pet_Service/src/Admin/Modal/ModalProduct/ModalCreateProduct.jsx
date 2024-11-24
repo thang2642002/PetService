@@ -52,7 +52,6 @@ const ModalCreateProduct = ({ show, setShow, fetchAllProduct }) => {
         stock,
         images
       );
-      console.log(response);
 
       if (response && response.errCode === 0) {
         toast.success(response.message);

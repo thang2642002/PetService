@@ -33,7 +33,6 @@ const ManagerAppointment = () => {
 
   const fetchAllAppointment = async () => {
     const data = await getAllAppointment();
-    console.log(data);
     setListAppointment(data.data);
   };
 

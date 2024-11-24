@@ -29,7 +29,6 @@ const ManagerPetType = () => {
 
   const fetchAllPetType = async () => {
     const data = await getAllPetType();
-    console.log(data);
     setListPetType(data.data);
   };
 

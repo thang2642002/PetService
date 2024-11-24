@@ -2,7 +2,10 @@ import "./Register.scss";
 import { Row, Col } from "react-bootstrap";
 import background from "../../../assets/img/background.png";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../../services/userServices";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -10,8 +13,82 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const [confỉrmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+  const [defaultvalid, setDefauValid] = useState({
+    isValidEmail: true,
+    isValidConfirmPassword: true,
+  });
+  const [objCheckValid, setObjCheckValid] = useState(defaultvalid);
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
+
+  const checkInputRegister = () => {
+    var emailRegex =
+      /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    var valid = emailRegex.test(email);
+    setObjCheckValid(defaultvalid);
+
+    if (
+      !email ||
+      !userName ||
+      !phone ||
+      !address ||
+      !password ||
+      !confirmPassword
+    ) {
+      toast.error("Chưa nhập đầy đủ thông tin");
+      return false;
+    } else if (!valid) {
+      toast.error("Định dạng email chưa chính xác");
+      setObjCheckValid((prevState) => ({
+        ...prevState,
+        isValidEmail: false,
+      }));
+      return false;
+    } else if (confirmPassword !== password) {
+      toast.error("Xác nhận mật khẩu và mật khẩu không trùng nhau");
+      setObjCheckValid((prevState) => ({
+        ...prevState,
+        isValidConfirmPassword: false,
+      }));
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handRegister = async () => {
+    if (checkInputRegister()) {
+      let dataUser = await registerUser(
+        email,
+        userName,
+        phone,
+        address,
+        password
+      );
+      console.log(dataUser);
+      if (dataUser.errCode === 0) {
+        toast.success("Tạo tài khoản thành công");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } else {
+        toast.error("Tạo tài khoản không thành công");
+        setTimeout(() => {
+          toast.warning("Vui lòng tạo lại tài khoản");
+        }, 2000);
+      }
+    }
+  };
+
+  const handleLoginAccount = () => {
+    navigate("/login");
+  };
+
   return (
     <>
       <div className="signup-container">
@@ -21,15 +98,19 @@ const Register = () => {
               <div className="sign-control">
                 <div className="title-signup">Xin Chào</div>
                 <span className="description-signup">
-                  Đăng ký tài khoản BookStore
+                  Đăng ký tài khoản Mozzi
                 </span>
-                <form>
+                <form onClick={(e) => handleClick(e)}>
                   <div className="form-group mt-2">
                     <label htmlFor="exampleInputEmail1">Email</label>
                     <input
                       type="email"
-                      id="exampleInputEmail1" // Unique id
-                      className="form-control mt-2"
+                      id="exampleInputEmail1"
+                      className={
+                        objCheckValid.isValidEmail
+                          ? "form-control mt-2"
+                          : "form-control mt-2 is-invalid"
+                      }
                       aria-describedby="emailHelp"
                       placeholder="Nhập email"
                       value={email}
@@ -42,7 +123,7 @@ const Register = () => {
                     <input
                       type="text"
                       className="form-control mt-2"
-                      id="exampleInputUserName" // Unique id
+                      id="exampleInputUserName"
                       placeholder="Nhập tên người dùng"
                       value={userName}
                       onChange={(e) => setUserName(e.target.value)}
@@ -102,9 +183,13 @@ const Register = () => {
                     <input
                       type={isShowConfirmPassword ? "text" : "password"}
                       id="exampleInputConfirmPassword"
-                      className="form-control mt-2"
+                      className={
+                        objCheckValid.isValidConfirmPassword
+                          ? "form-control mt-2"
+                          : "form-control mt-2 is-invalid"
+                      }
                       placeholder="Xác nhận mật khẩu"
-                      value={confỉrmPassword}
+                      value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <div
@@ -121,14 +206,23 @@ const Register = () => {
                     </div>
                   </div>
 
-                  <button type="submit" className="btn btn-primary col-12 mt-4">
+                  <button
+                    type="submit"
+                    className="btn btn-primary col-12 mt-4"
+                    onClick={() => handRegister()}
+                  >
                     Đăng ký
                   </button>
                 </form>
                 <div className="info-account">
                   <div>
                     Trở về
-                    <span className="create-account">Đăng nhập</span>
+                    <span
+                      className="create-account"
+                      onClick={() => handleLoginAccount()}
+                    >
+                      Đăng nhập
+                    </span>
                   </div>
                 </div>
               </div>
@@ -138,13 +232,25 @@ const Register = () => {
                 <div className="img-signup">
                   <img src={background} alt="background" />
                 </div>
-                <div className="title-introduce">Mua sắm tại Tiki</div>
+                <div className="title-introduce">Mua sắm tại Mozzi</div>
                 <span className="desc-month">Siêu ưu đãi mỗi ngày</span>
               </div>
             </Col>
           </Row>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };

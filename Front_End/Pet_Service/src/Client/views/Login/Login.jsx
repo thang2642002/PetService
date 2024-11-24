@@ -67,7 +67,6 @@ const Login = () => {
           );
           if (userLogin?.access_tokens) {
             const decoded = jwtDecode(userLogin?.access_tokens);
-            console.log(decoded);
             getUserById(decoded?.id);
           }
           setTimeout(() => {
@@ -133,7 +132,7 @@ const Login = () => {
                     />
                     <div
                       className="position-absolute top-[50%] translate-middle-y"
-                      style={{ right: "10px", cursor: "pointer", top: "42px" }}
+                      style={{ right: "10px", cursor: "pointer", top: "50px" }}
                       onClick={() => setIsShowPassword(!isShowPassword)}
                     >
                       {isShowPassword ? (

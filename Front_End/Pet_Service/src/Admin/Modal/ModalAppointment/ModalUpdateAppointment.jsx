@@ -34,7 +34,6 @@ const ModalUpdateAppointment = (props) => {
       serviceId,
       userPetId
     );
-    console.log(data);
     if (data && data.errCode === 0) {
       toast.success(data.message);
       handleClose();

@@ -33,7 +33,6 @@ const ManagerProductReview = () => {
 
   const fetchAllProductReview = async () => {
     const data = await getAllProductReview();
-    console.log(data);
     setListProductReview(data.data);
   };
 

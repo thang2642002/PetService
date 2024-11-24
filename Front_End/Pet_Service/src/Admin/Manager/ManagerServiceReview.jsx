@@ -33,7 +33,6 @@ const ManagerServiceReview = () => {
 
   const fetchAllServiceReview = async () => {
     const data = await getAllServiceReview();
-    console.log(data);
     setListServiceReview(data.data);
   };
 

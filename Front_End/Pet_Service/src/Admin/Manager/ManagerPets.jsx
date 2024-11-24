@@ -29,7 +29,6 @@ const ManagerPets = () => {
 
   const fetchAllPet = async () => {
     const data = await getAllPets();
-    console.log(data);
     setListPets(data.data);
   };
 
