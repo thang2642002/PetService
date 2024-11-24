@@ -3,11 +3,88 @@ import background from "../../../assets/img/background.png";
 import { Row, Col } from "react-bootstrap";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+import { loginUser, getUserById } from "../../../services/userServices";
 
 const Login = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [defaultvalid, setDefauValid] = useState({
+    isValidEmail: true,
+    isValidPassword: true,
+  });
+  const [objCheckValid, setObjCheckValid] = useState(defaultvalid);
+
+  const navigate = useNavigate();
+
+  const handleCreateAccount = () => {
+    navigate("/register");
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
+
+  const checkInputLogin = () => {
+    var emailRegex =
+      /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    var valid = emailRegex.test(email);
+    if (!email) {
+      setObjCheckValid((prevState) => ({
+        ...prevState,
+        isValidEmail: false,
+      }));
+      toast.error("Chưa nhập email");
+    } else if (!password) {
+      toast.error("Chưa nhập password ");
+      setObjCheckValid((prevState) => ({
+        ...prevState,
+        isValidPassword: false,
+      }));
+    } else if (!valid) {
+      toast.error("Định dạng email chưa đúng");
+      setObjCheckValid((prevState) => ({
+        ...prevState,
+        isValidEmail: false,
+      }));
+    } else {
+      return true;
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      if (checkInputLogin()) {
+        let userLogin = await loginUser(email, password);
+        if (userLogin.data) {
+          toast.success("Đăng nhập thành công");
+          localStorage.setItem(
+            "access_tokens",
+            JSON.stringify(userLogin.access_tokens)
+          );
+          if (userLogin?.access_tokens) {
+            const decoded = jwtDecode(userLogin?.access_tokens);
+            console.log(decoded);
+            getUserById(decoded?.id);
+          }
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            toast.error("Tài khoản hoặc mật khẩu không chính xác");
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast("Something went wrong, please try again.");
+    }
+  };
+
   return (
     <>
       <div className="signin-container">
@@ -17,18 +94,22 @@ const Login = () => {
               <div className="sign-control">
                 <div className="title-signin">Đăng nhập bằng email</div>
                 <span className="description-signin">
-                  Nhập emai và mật khẩu tài khoản BookStore
+                  Nhập emai và mật khẩu tài khoản Mozzi
                 </span>
-                <form>
+                <form onClick={(e) => handleClick(e)}>
                   <div className="form-label mt-2">
                     <label htmlFor="exampleInputEmail1" className="d-block">
                       Email address
                     </label>
                     <input
                       type="email"
+                      className={
+                        objCheckValid.isValidEmail
+                          ? "form-control mt-2"
+                          : "form-control mt-2 is-invalid"
+                      }
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
-                      className="form-control"
                       placeholder="Enter email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -41,7 +122,11 @@ const Login = () => {
                     <input
                       type={isShowPassword ? "text" : "password"}
                       id="exampleInputPassword1"
-                      className="form-control"
+                      className={
+                        objCheckValid.isValidPassword
+                          ? "form-control mt-2"
+                          : "form-control mt-2 is-invalid"
+                      }
                       placeholder="Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -59,15 +144,24 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <button type="submit" className="btn btn-primary col-12 mt-4">
-                    Submit
+                  <button
+                    type="submit"
+                    className="btn btn-primary col-12 mt-4"
+                    onClick={() => handleLogin()}
+                  >
+                    Đăng nhập
                   </button>
                 </form>
                 <div className="info-account">
                   <div className="forget-password">Quên mật khẩu?</div>
                   <div>
                     Chưa có tài khoản
-                    <span className="create-account">Tạo tài khoản</span>
+                    <span
+                      className="create-account"
+                      onClick={handleCreateAccount}
+                    >
+                      Tạo tài khoản
+                    </span>
                   </div>
                 </div>
               </div>
@@ -77,13 +171,25 @@ const Login = () => {
                 <div className="img-signin h-full ">
                   <img src={background} alt="background" />
                 </div>
-                <div className="title-introduce">Mua sắm tại Tiki</div>
+                <div className="title-introduce">Mua sắm tại Mozzi</div>
                 <span className="desc-month">Siêu ưu đãi mỗi ngày</span>
               </div>
             </Col>
           </Row>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };

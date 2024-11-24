@@ -6,9 +6,11 @@ import {
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  // Menu cho dropdown
+  const navigate = useNavigate();
+
   const menuItems = (
     <Menu
       items={[
@@ -20,6 +22,10 @@ const Header = () => {
       ]}
     />
   );
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
   return (
     <div className="header flex justify-center align-items-center">
@@ -46,7 +52,10 @@ const Header = () => {
         <input type="text" placeholder="Tìm kiếm sản phẩm" />
       </div>
       <div className="header-action flex">
-        <div className="account flex flex-col justify-center align-items-center">
+        <div
+          className="account flex flex-col justify-center align-items-center"
+          onClick={() => handleLogin()}
+        >
           <FontAwesomeIcon icon={faUser} className="icon" />
           <div>Tài Khoản</div>
         </div>

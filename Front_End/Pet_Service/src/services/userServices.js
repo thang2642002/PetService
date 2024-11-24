@@ -48,4 +48,13 @@ const deleteUser = (user_id) => {
   return axios.delete(`/user/delete-user/${user_id}`, { data: { user_id } });
 };
 
-export { getAllUser, createUser, updateUser, deleteUser };
+const loginUser = (email, password) => {
+  const data = { email, password };
+  return axios.post("/user/login", data);
+};
+
+const getUserById = (user_id) => {
+  return axios.get(`/user/find-by-id/${user_id}`, { data: { user_id } });
+};
+
+export { getAllUser, createUser, updateUser, deleteUser, loginUser, getUserById };

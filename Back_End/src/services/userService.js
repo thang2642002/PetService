@@ -171,13 +171,13 @@ const handleLogin = async (email, password) => {
     }
 
     const accessToken = jwt.sign(
-      { id: login.id, role: login.role },
+      { id: login.user_id, role: login.role },
       accessTokenSecret,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { id: login.id, role: login.role },
+      { id: login.user_id, role: login.role },
       refreshTokenSecret,
       { expiresIn: "7d" }
     );
