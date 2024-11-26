@@ -70,7 +70,6 @@ const Register = () => {
         address,
         password
       );
-      console.log(dataUser);
       if (dataUser.errCode === 0) {
         toast.success("Tạo tài khoản thành công");
         setTimeout(() => {

@@ -4,6 +4,12 @@ const getAllProduct = () => {
   return axios.get("/product/get-all-product");
 };
 
+const getProductById = (product_id) => {
+  return axios.get(`/product/find-by-id/${product_id}`, {
+    data: { product_id },
+  });
+};
+
 const createProduct = (name, description, price, categoryId, stock, images) => {
   const formData = new FormData();
   formData.append("name", name);
@@ -40,4 +46,10 @@ const deleteProduct = (product_id) => {
   });
 };
 
-export { getAllProduct, createProduct, updateProduct, deleteProduct };
+export {
+  getAllProduct,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

@@ -3,6 +3,7 @@ import Slice from "../../components/Slice";
 import Promotion from "../../components/Promotion";
 import Banner from "../../components/Banner";
 import List_Product from "../../components/List_Product";
+import List_Pets from "../../components/List_Pets";
 import Blog from "../../components/Blog";
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
         <Slice />
         <Promotion />
         <List_Product />
+        <List_Pets />
         <Banner />
         <Blog />
       </div>

@@ -8,7 +8,6 @@ const Category_Product = () => {
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
-  // Danh sách các giá
   const priceOptions = [
     { label: "Dưới 20.000đ", value: "under_20000" },
     { label: "20.000đ-50.000đ", value: "20000_50000" },
@@ -17,7 +16,6 @@ const Category_Product = () => {
     { label: "Trên 200.000đ", value: "above_200000" },
   ];
 
-  // Danh sách các thương hiệu
   const brandOptions = [
     { label: "Thương hiệu A", value: "brand_a" },
     { label: "Thương hiệu B", value: "brand_b" },
@@ -42,7 +40,6 @@ const Category_Product = () => {
     }
   };
 
-  // Tạo danh sách menu cho lọc giá
   const priceItems = priceOptions.map((option) => ({
     key: option.value,
     label: (
@@ -56,7 +53,6 @@ const Category_Product = () => {
     ),
   }));
 
-  // Tạo danh sách menu cho lọc thương hiệu
   const brandItems = brandOptions.map((option) => ({
     key: option.value,
     label: (
@@ -82,14 +78,14 @@ const Category_Product = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="none"
-              width="20" // Chỉnh kích thước SVG
-              height="20" // Chỉnh kích thước SVG
-              className="ml-2 mr-2" // Thêm khoảng cách
+              width="20"
+              height="20"
+              className="ml-2 mr-2"
             >
               <path
                 fill="none"
-                stroke="#522f1f" // Màu sắc của đường viền
-                strokeWidth="2" // Độ dày của đường viền
+                stroke="#522f1f"
+                strokeWidth="2"
                 strokeLinejoin="round"
                 strokeMiterlimit="10"
                 d="M12 9v8l-4-4V9L2 3h16z"
@@ -100,7 +96,6 @@ const Category_Product = () => {
           <div>
             <Space direction="vertical">
               <Space wrap>
-                {/* Dropdown lọc theo thương hiệu */}
                 <Dropdown
                   menu={{ items: brandItems }}
                   placement="bottomLeft"
@@ -110,8 +105,6 @@ const Category_Product = () => {
                     Lọc thương hiệu
                   </Button>
                 </Dropdown>
-
-                {/* Dropdown lọc theo giá */}
                 <Dropdown
                   menu={{ items: priceItems }}
                   placement="bottomLeft"

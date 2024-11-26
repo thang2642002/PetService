@@ -66,7 +66,11 @@ const updatePet = (
   return axios.put(`/pet/update-pet/${pet_id}`, dataPet);
 };
 
+const getPetById = (pet_id) => {
+  return axios.get(`/pet/find-by-id/${pet_id}`, { data: { pet_id } });
+};
+
 const deletePet = (pet_id) => {
   return axios.delete(`/pet/delete-pet/${pet_id}`, { data: { pet_id } });
 };
-export { getAllPets, createPets, updatePet, deletePet };
+export { getAllPets, createPets, updatePet, deletePet, getPetById };

@@ -4,11 +4,15 @@ import { Row, Col } from "react-bootstrap";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { loginUser, getUserById } from "../../../services/userServices";
+import { login } from "../../../redux/Slices/userSlices";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +21,6 @@ const Login = () => {
     isValidPassword: true,
   });
   const [objCheckValid, setObjCheckValid] = useState(defaultvalid);
-
-  const navigate = useNavigate();
 
   const handleCreateAccount = () => {
     navigate("/register");
@@ -59,8 +61,10 @@ const Login = () => {
     try {
       if (checkInputLogin()) {
         let userLogin = await loginUser(email, password);
+        console.log("check user login", userLogin);
         if (userLogin.data) {
           toast.success("Đăng nhập thành công");
+          dispatch(login(userLogin));
           localStorage.setItem(
             "access_tokens",
             JSON.stringify(userLogin.access_tokens)

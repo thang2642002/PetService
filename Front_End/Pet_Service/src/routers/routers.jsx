@@ -17,6 +17,7 @@ import ManagerAppointment from "../Admin/Manager/ManagerAppointment";
 import LayoutDefault from "../Client/views/LayouDefault/LayoutDefault";
 import Home from "../Client/views/Home/Home";
 import ProductDetails from "../Client/views/Product_Details/Product_Details";
+import PetDetails from "../Client/views/Pet_Details/Pet_Details";
 import ShoppingCart from "../Client/views/Shopping_Cart/Shopping_Cart";
 import Payment from "../Client/views/Payment/Payment";
 import OrderDetails from "../Client/views/Order_Details/OrderDetails";
@@ -52,8 +53,12 @@ export const routers = [
     children: [
       { path: "", element: <Home /> },
       {
-        path: "product-detail",
+        path: "product-detail/:id",
         element: <ProductDetails />,
+      },
+      {
+        path: "pet-detail/:id",
+        element: <PetDetails />,
       },
       {
         path: "shop-carts",

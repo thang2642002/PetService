@@ -1,22 +1,18 @@
-import { Col, Row } from "react-bootstrap"; // Chú ý: sửa lại dấu nháy kép quanh react-bootstrap
-import Cart_Item from "./Cart_Item";
+import { Col, Row } from "react-bootstrap";
+import Product_Cart_Item from "./Product_Cart_Item";
 
-const Product_Carts = () => {
+const Product_Carts = (props) => {
+  const { listProduct } = props;
+
   return (
     <div className="mt-6">
-      <Row>
-        <Col xs={12} sm={6} md={4} lg={3}>
-          <Cart_Item />
-        </Col>
-        <Col xs={12} sm={6} md={4} lg={3}>
-          <Cart_Item />
-        </Col>
-        <Col xs={12} sm={6} md={4} lg={3}>
-          <Cart_Item />
-        </Col>
-        <Col xs={12} sm={6} md={4} lg={3}>
-          <Cart_Item />
-        </Col>
+      <Row className="mt-4">
+        {listProduct &&
+          listProduct.map((product, index) => (
+            <Col xs={12} sm={6} md={4} lg={3} key={index}>
+              <Product_Cart_Item product={product} />
+            </Col>
+          ))}
       </Row>
     </div>
   );

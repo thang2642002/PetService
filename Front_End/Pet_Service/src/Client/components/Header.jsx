@@ -7,10 +7,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-
+  const { user } = useSelector((state) => state.user);
+  console.log("check user", user);
   const menuItems = (
     <Menu
       items={[
@@ -52,13 +54,17 @@ const Header = () => {
         <input type="text" placeholder="Tìm kiếm sản phẩm" />
       </div>
       <div className="header-action flex">
-        <div
-          className="account flex flex-col justify-center align-items-center"
-          onClick={() => handleLogin()}
-        >
-          <FontAwesomeIcon icon={faUser} className="icon" />
-          <div>Tài Khoản</div>
-        </div>
+        {user?.data ? (
+          <div>{user?.data?.user_name}</div>
+        ) : (
+          <div
+            className="account flex flex-col justify-center align-items-center"
+            onClick={() => handleLogin()}
+          >
+            <FontAwesomeIcon icon={faUser} className="icon" />
+            <div>Tài Khoản</div>
+          </div>
+        )}
         <div className="carts flex flex-col justify-center align-items-center">
           <FontAwesomeIcon icon={faCartShopping} className="icon" />
           <div>Giỏ Hàng</div>

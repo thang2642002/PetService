@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useParams } from "react-router-dom";
 import "./Product_Details.scss";
 import Suggest from "../Suggest/Suggest";
+import { getProductById } from "../../../services/productServices";
 
 const ProductDetails = () => {
   const images = [
@@ -19,6 +19,8 @@ const ProductDetails = () => {
     "https://product.hstatic.net/200000263355/product/z5625317223514_c94f473e834069458b8276b952ca4616_546454172a204e45a34c4c8f1ce843b0_master.jpg",
   ];
 
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
   const [showDesc, setShowDesc] = useState(false);
@@ -50,6 +52,15 @@ const ProductDetails = () => {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
+
+  const fetchProductById = async () => {
+    const dataProduct = await getProductById(id);
+    setProduct(dataProduct.data);
+  };
+
+  useEffect(() => {
+    fetchProductById();
+  }, [id]);
 
   const sliderRef = React.useRef();
 
@@ -92,9 +103,7 @@ const ProductDetails = () => {
 
         <Col md={6}>
           <div className=" p-4  ">
-            <h1 className="text-2xl font-bold mb-4">
-              Pate cho chó Renal Royal Canin lon 410g
-            </h1>
+            <h1 className="text-2xl font-bold mb-4">{product?.name}</h1>
             <div className="flex">
               <p className="pr-5 border-solid border-r-2 border-[#cccccc] ">
                 Mã sản phẩm: 8936204290164
@@ -102,7 +111,7 @@ const ProductDetails = () => {
               <p className="ml-5">Thương hiệu: Royal Canin</p>
             </div>
 
-            <h3 className="text-danger mb-3">1.200.000 VND</h3>
+            <h3 className="text-danger mb-3">{product?.price} VND</h3>
             <div className="d-flex justify-content-between align-items-center gap-3 mt-5">
               <div
                 className="d-flex gap-3 align-items-center"
@@ -238,7 +247,7 @@ const ProductDetails = () => {
           </div>
         </Col>
       </Row>
-      <Suggest />
+      <Suggest product={product} />
     </div>
   );
 };

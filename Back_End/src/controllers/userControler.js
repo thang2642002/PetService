@@ -222,6 +222,8 @@ const handleLogin = async (req, res) => {
     }
 
     const result = await UserService.handleLogin(email, password);
+    console.log(result.accessToken);
+    console.log(result.refreshToken);
 
     if (result.errCode === 1) {
       return res.status(404).json({
