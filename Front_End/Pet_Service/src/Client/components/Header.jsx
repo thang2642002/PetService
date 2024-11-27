@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  console.log("check user", user);
   const menuItems = (
     <Menu
       items={[

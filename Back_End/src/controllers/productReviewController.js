@@ -24,6 +24,32 @@ const getAllProductReview = async (req, res) => {
   }
 };
 
+const getByProductReviewId = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const data = await productReviewService.getProductReviewById(id);
+    if (data) {
+      return res.status(200).json({
+        message: "Get product review by id is the success",
+        errCode: 0,
+        data: data,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get product review by id is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " Server error, Get product review by id is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 const createProductReview = async (req, res) => {
   try {
     const { rating, comment, user_id, product_id } = req.body;
@@ -115,6 +141,7 @@ const deleteProductReview = async (req, res) => {
 
 module.exports = {
   getAllProductReview,
+  getByProductReviewId,
   createProductReview,
   updateProductReview,
   deleteProductReview,

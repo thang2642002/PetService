@@ -14,6 +14,22 @@ const getAllProductReview = async () => {
   }
 };
 
+const getProductReviewById = async (id) => {
+  try {
+    const data = await db.Product_Review.findAll({
+      where: { product_id: id },
+      order: [["createdAt", "DESC"]],
+      include: [
+        { model: db.User, as: "user" },
+        { model: db.Products, as: "product" },
+      ],
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const createProductReview = async (rating, comment, user_id, product_id) => {
   try {
     const createProductReview = await db.Product_Review.create({
@@ -67,6 +83,7 @@ const deleteProductReview = async (product_review_id) => {
 
 module.exports = {
   getAllProductReview,
+  getProductReviewById,
   createProductReview,
   updateProductReview,
   deleteProductReview,

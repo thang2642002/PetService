@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import "./Product_Details.scss";
 import Suggest from "../Suggest/Suggest";
 import { getProductById } from "../../../services/productServices";
+import Rating from "../Rating/Rating";
+import Comment from "../Comment/Comment";
 
 const ProductDetails = () => {
   const images = [
@@ -247,7 +249,13 @@ const ProductDetails = () => {
           </div>
         </Col>
       </Row>
-      <Suggest product={product} />
+      <div>
+        <Suggest product={product} />
+      </div>
+      <div>
+        <Rating productId={id} />
+        <Comment productId={id} />
+      </div>
     </div>
   );
 };

@@ -7,6 +7,11 @@ routes.get(
   productReviewController.getAllProductReview
 );
 
+routes.get(
+  "/get-product-review-by-id/:id",
+  productReviewController.getByProductReviewId
+);
+
 routes.post(
   "/create-product-review",
   productReviewController.createProductReview

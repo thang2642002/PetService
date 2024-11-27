@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import "./Pet_Details.jsx.scss";
 import Suggest from "../Suggest/Suggest";
 import { getPetById } from "../../../services/petServices";
+import Rating from "../Rating/Rating";
+import Comment from "../Comment/Comment";
 
 const Pet_Details = () => {
   const images = [
@@ -251,7 +253,13 @@ const Pet_Details = () => {
             </div>
           </Col>
         </Row>
-        <Suggest pet={pet} />
+        <div>
+          <Suggest pet={pet} />
+        </div>
+        <div>
+          <Rating productId={id} />
+          <Comment productId={id} />
+        </div>
       </div>
     </div>
   );
