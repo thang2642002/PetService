@@ -21,6 +21,8 @@ import PetDetails from "../Client/views/Pet_Details/Pet_Details";
 import ShoppingCart from "../Client/views/Shopping_Cart/Shopping_Cart";
 import Payment from "../Client/views/Payment/Payment";
 import OrderDetails from "../Client/views/Order_Details/OrderDetails";
+import PetInfoForm from "../Client/components/PetInfoForm";
+import AppointmentForm from "../Client/components/ApointmentForm";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
@@ -71,6 +73,14 @@ export const routers = [
       {
         path: "order-details",
         element: <OrderDetails />,
+      },
+      {
+        path: "appointment",
+        element: <AppointmentForm />,
+      },
+      {
+        path: "info-pet",
+        element: <PetInfoForm />,
       },
     ],
   },

@@ -49,6 +49,7 @@ const createUserPet = async (req, res) => {
       return res.status(200).json({
         message: "Create user pet is the success",
         errCode: 0,
+        data: createUserPet,
       });
     } else {
       return res.status(400).json({
