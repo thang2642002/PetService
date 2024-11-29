@@ -6,9 +6,9 @@ module.exports = (sequelize) => {
   Pets.init(
     {
       pet_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID, // Chuyển thành UUID
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: DataTypes.UUIDV4, // Tự động sinh UUID
       },
       name: {
         type: DataTypes.STRING,
@@ -76,6 +76,15 @@ module.exports = (sequelize) => {
     Pets.hasMany(models.Pet_Image, {
       foreignKey: "pet_id",
       as: "pet_images",
+    });
+
+    Pets.hasMany(models.CartItem, {
+      foreignKey: "item_id", // Trỏ tới `item_id` trong `CartItem`
+      constraints: false,
+      scope: {
+        item_type: "pet", // Điều kiện liên kết chỉ khi `item_type === 'pet'`
+      },
+      as: "pet",
     });
   };
 

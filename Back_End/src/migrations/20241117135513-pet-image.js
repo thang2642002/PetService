@@ -10,7 +10,8 @@ module.exports = {
         allowNull: false,
       },
       pet_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, 
+        allowNull: false,
         references: {
           model: "Pets",
           key: "pet_id",

@@ -69,6 +69,14 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
+
+    User.hasOne(models.Carts, {
+      foreignKey: "user_id",
+      as: "cart",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    
     // Mối quan hệ giữa User và Order
     User.hasMany(models.Order, {
       foreignKey: "user_id",

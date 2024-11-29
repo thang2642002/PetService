@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      status: {
-        type: DataTypes.STRING(50),
-        allowNull: true,
+      cart_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       order_date: {
         type: DataTypes.DATE,
@@ -50,8 +50,12 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "CASCADE",
     });
 
+    Order.belongsTo(models.Carts, {
+      foreignKey: "cart_id",
+      as: "cart",
+    });
+
     Order.hasMany(models.OrderItem, {
-      // Đảm bảo tên model là 'OrderItem'
       foreignKey: "order_id",
       as: "orderItems",
     });

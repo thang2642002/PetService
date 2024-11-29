@@ -3,3 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.customTd {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50px;
+}

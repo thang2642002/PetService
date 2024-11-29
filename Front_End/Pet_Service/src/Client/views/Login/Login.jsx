@@ -74,7 +74,7 @@ const Login = () => {
             getUserById(decoded?.id);
           }
           setTimeout(() => {
-            navigate("/info-pet");
+            navigate("/");
           }, 2000);
         } else {
           setTimeout(() => {

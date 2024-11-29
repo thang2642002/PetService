@@ -1,3 +1,4 @@
+import "../../../App.css";
 const TableProduct = (props) => {
   const { handleShowUpdateModal, handleShowDeleteModal, listProduct } = props;
 
@@ -5,8 +6,10 @@ const TableProduct = (props) => {
     <div className="table-user-container px-4 mt-4">
       <table className="table table-striped table-hover table-bordered">
         <thead>
-          <tr>
-            <th scope="col">ID</th>
+          <tr className="customTd">
+            <th scope="col" style={{ overflow: "hidden", maxWidth: "50px" }}>
+              ID
+            </th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Category ID</th>
@@ -20,7 +23,11 @@ const TableProduct = (props) => {
             Array.isArray(listProduct) &&
             listProduct.map((item, index) => (
               <tr key={index}>
-                <td>{item.product_id}</td>
+                <td
+                // className="customTd"
+                >
+                  {item.product_id}
+                </td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
                 <td>{item.category_id}</td>

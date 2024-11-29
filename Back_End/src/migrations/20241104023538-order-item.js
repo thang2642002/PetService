@@ -28,11 +28,11 @@ module.exports = {
         onDelete: "CASCADE",
       },
       product_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, // Sửa từ INTEGER thành UUID
         allowNull: false,
         references: {
-          model: "Products", // Tên bảng mà khóa ngoại tham chiếu
-          key: "product_id", // Khóa chính của bảng tham chiếu
+          model: "Products", // Tên bảng tham chiếu
+          key: "product_id", // Khóa chính của bảng Products
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",

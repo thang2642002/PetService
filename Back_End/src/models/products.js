@@ -1,13 +1,15 @@
 "use strict";
+const { v4: uuidv4 } = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   const Products = sequelize.define(
     "Products",
     {
       product_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID, // Chuyển thành UUID
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
+        defaultValue: DataTypes.UUIDV4, // Tự động sinh UUID
       },
       name: {
         type: DataTypes.STRING,
@@ -45,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Products", // Tên bảng trong DB (chữ hoa)
+      tableName: "Products", // Tên bảng trong DB
       timestamps: true,
     }
   );
@@ -68,6 +70,15 @@ module.exports = (sequelize, DataTypes) => {
     Products.hasMany(models.OrderItem, {
       foreignKey: "product_id",
       as: "orderItems",
+    });
+
+    Products.hasMany(models.CartItem, {
+      foreignKey: "item_id", // Trỏ tới `item_id` trong `CartItem`
+      constraints: false,
+      scope: {
+        item_type: "product", // Điều kiện liên kết chỉ khi `item_type === 'product'`
+      },
+      as: "product",
     });
 
     Products.hasMany(models.Product_Image, {

@@ -13,9 +13,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
-      status: {
-        type: Sequelize.STRING(50),
-        allowNull: true,
+      cart_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       order_date: {
         type: Sequelize.DATE,
