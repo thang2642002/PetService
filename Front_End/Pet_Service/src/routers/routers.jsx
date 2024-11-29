@@ -13,6 +13,7 @@ import ManagerOrderItem from "../Admin/Manager/ManagerOrderItem";
 import ManagerOrder from "../Admin/Manager/ManagerOrder";
 import ManagerCategory from "../Admin/Manager/ManagerCatagory";
 import ManagerAppointment from "../Admin/Manager/ManagerAppointment";
+import ManagerCarts from "../Admin/Manager/ManagerCarts";
 
 import LayoutDefault from "../Client/views/LayouDefault/LayoutDefault";
 import Home from "../Client/views/Home/Home";
@@ -46,6 +47,7 @@ export const routers = [
       { path: "managerOrder", element: <ManagerOrder /> },
       { path: "managerCategory", element: <ManagerCategory /> },
       { path: "managerAppointment", element: <ManagerAppointment /> },
+      { path: "managerCarts", element: <ManagerCarts /> },
     ],
   },
 

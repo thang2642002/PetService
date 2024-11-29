@@ -111,6 +111,10 @@ const SideBar = (props) => {
                 <Link to="/admin/managerPost" />
                 Manager Post
               </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerCarts" />
+                Manager Cart
+              </MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>
