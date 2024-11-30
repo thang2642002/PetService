@@ -11,18 +11,14 @@ module.exports = {
       cart_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Carts", // Tên bảng Carts
-          key: "cart_id", // Khóa chính trong bảng Carts
+          model: "Carts",
+          key: "cart_id",
         },
-        onDelete: "CASCADE", // Xóa mục trong giỏ hàng khi giỏ hàng bị xóa
+        onDelete: "CASCADE",
       },
       item_id: {
         type: Sequelize.UUID,
         allowNull: false,
-      },
-      item_type: {
-        type: Sequelize.ENUM("product", "pet"), // Chỉ cho phép hai giá trị: product hoặc pet
-        allowNull: false, // Không được để null vì chúng ta cần phân biệt sản phẩm và thú cưng
       },
       quantity: {
         type: Sequelize.INTEGER,
@@ -30,7 +26,7 @@ module.exports = {
       },
       total_price: {
         type: Sequelize.FLOAT,
-        allowNull: false, // Giá trị không thể null
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,

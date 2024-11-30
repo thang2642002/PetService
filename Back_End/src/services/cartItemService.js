@@ -3,29 +3,11 @@ import db from "../models/index";
 import { validate as validateUUID } from "uuid";
 
 const isValidUUID = (id) => {
-  return validateUUID(id); // Kiểm tra UUID hợp lệ
+  return validateUUID(id);
 };
 
-const createCartItem = async ({
-  cart_id,
-  item_id,
-  item_type,
-  quantity,
-  total_price,
-}) => {
+const createCartItem = async ({ cart_id, item_id, quantity, total_price }) => {
   try {
-    // Kiểm tra item_type hợp lệ
-    if (!["product", "pet"].includes(item_type)) {
-      return {
-        status: 400,
-        data: {
-          errCode: 1,
-          message: "Invalid item_type. Accepted values are 'product' or 'pet'.",
-        },
-      };
-    }
-
-    // Kiểm tra item_id có hợp lệ
     if (!item_id || !isValidUUID(item_id)) {
       return {
         status: 400,
@@ -36,7 +18,6 @@ const createCartItem = async ({
       };
     }
 
-    // Kiểm tra cart_id có hợp lệ
     const existingCart = await db.Carts.findByPk(cart_id);
     if (!existingCart) {
       return {
@@ -48,41 +29,32 @@ const createCartItem = async ({
       };
     }
 
-    // Kiểm tra item_id có tồn tại trong bảng Products hoặc Pets
-    let existingItem;
-    if (item_type === "product") {
-      existingItem = await db.Products.findByPk(item_id);
-    } else if (item_type === "pet") {
-      existingItem = await db.Pets.findByPk(item_id);
-    }
+    const existingCartItem = await db.CartItem.findOne({
+      where: { cart_id, item_id },
+    });
 
-    if (!existingItem) {
+    if (existingCartItem) {
+      const updatedQuantity = existingCartItem.quantity + quantity;
+      const updatedTotalPrice = existingCartItem.total_price + total_price;
+
+      await existingCartItem.update({
+        quantity: updatedQuantity,
+        total_price: updatedTotalPrice,
+      });
+
       return {
-        status: 404,
+        status: 200,
         data: {
-          errCode: 4,
-          message: `${item_type} with ID ${item_id} not found.`,
+          errCode: 0,
+          message: "Cart item updated successfully.",
+          data: existingCartItem,
         },
       };
     }
 
-    // Kiểm tra số lượng và giá trị tổng giá
-    if (quantity < 1 || total_price < 0) {
-      return {
-        status: 400,
-        data: {
-          errCode: 5,
-          message:
-            "Quantity must be at least 1 and total_price must be non-negative.",
-        },
-      };
-    }
-
-    // Tạo CartItem mới
     const newCartItem = await db.CartItem.create({
       cart_id,
       item_id,
-      item_type,
       quantity,
       total_price,
     });
@@ -97,8 +69,10 @@ const createCartItem = async ({
     };
   } catch (error) {
     console.error("Error in createCartItem service:", error.message);
-    console.error(error.stack); // Log chi tiết stack trace để kiểm tra lỗi
-    throw new Error("Server error occurred while creating cart item.");
+    console.error(error.stack);
+    throw new Error(
+      "Server error occurred while creating or updating cart item."
+    );
   }
 };
 

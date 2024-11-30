@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 
 const getAllCart = async () => {
@@ -22,13 +23,20 @@ const getAllCart = async () => {
   });
   return data;
 };
+
 const createCart = async (user_id, total_amount) => {
   const user = await db.User.findByPk(user_id);
-  if (!user) {
-    return null;
+  const cartUser = await db.Carts.findOne({
+    where: { user_id: user_id },
+  });
+  if (cartUser) {
+    return cartUser;
   }
-  const data = await db.Carts.create({ user_id, total_amount });
-  return data;
+  if (user && !cartUser) {
+    const data = await db.Carts.create({ user_id, total_amount });
+    return data;
+  }
+  return null;
 };
 
 const updateCart = async (cart_id, user_id, total_amount) => {

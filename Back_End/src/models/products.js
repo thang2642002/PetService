@@ -77,11 +77,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Products.hasMany(models.CartItem, {
-      foreignKey: "item_id", // Trỏ tới `item_id` trong `CartItem`
+      foreignKey: "item_id",
       constraints: false,
-      scope: {
-        item_type: "product", // Điều kiện liên kết chỉ khi `item_type === 'product'`
-      },
       as: "product",
     });
 

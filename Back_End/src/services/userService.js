@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 import { cloudinary } from "../config/cloudinaryConfig";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { jwtDecode } from "jwt-decode";
 require("dotenv").config();
 
 const accessTokenSecret = process.env.ACCESS_TOKENS;

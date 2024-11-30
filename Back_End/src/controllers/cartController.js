@@ -31,6 +31,7 @@ const createCart = async (req, res) => {
       return res.status(200).json({
         errCode: 0,
         message: "Create cart is the success",
+        data: data,
       });
     } else {
       return res.status(400).json({

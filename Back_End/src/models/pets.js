@@ -81,9 +81,6 @@ module.exports = (sequelize) => {
     Pets.hasMany(models.CartItem, {
       foreignKey: "item_id",
       constraints: false,
-      scope: {
-        item_type: "pet",
-      },
       as: "pet",
     });
 

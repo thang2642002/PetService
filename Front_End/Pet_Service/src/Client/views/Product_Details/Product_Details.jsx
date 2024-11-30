@@ -6,9 +6,12 @@ import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./Product_Details.scss";
 import Suggest from "../Suggest/Suggest";
 import { getProductById } from "../../../services/productServices";
+import { createCart } from "../../../services/cartService";
+import { createCartItem } from "../../../services/cartItemServices";
 import Rating from "../Rating/Rating";
 import Comment from "../Comment/Comment";
 
@@ -27,6 +30,8 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [showDesc, setShowDesc] = useState(false);
   const [showService, setShowService] = useState(false);
+  const { user } = useSelector((state) => state.user);
+  console.log("check user", user);
 
   const sliderSettings = {
     dots: false,
@@ -58,6 +63,41 @@ const ProductDetails = () => {
   const fetchProductById = async () => {
     const dataProduct = await getProductById(id);
     setProduct(dataProduct.data);
+  };
+
+  const handleAddCart = async () => {
+    try {
+      if (!user) {
+        alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
+        return;
+      }
+
+      const addCartResponse = await createCart(
+        user?.data?.user_id,
+        product?.price
+      );
+      if (addCartResponse?.errCode !== 0) {
+        alert("Không thể tạo giỏ hàng. Vui lòng thử lại!");
+        return;
+      }
+      const cartId = addCartResponse?.data?.cart_id;
+      console.log("addCartResponse", addCartResponse);
+      const addCartItemResponse = await createCartItem(
+        cartId,
+        id,
+        quantity,
+        product?.price * quantity
+      );
+
+      if (addCartItemResponse?.errCode === 0) {
+        alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
+      } else {
+        alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+      alert("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+    }
   };
 
   useEffect(() => {
@@ -146,7 +186,9 @@ const ProductDetails = () => {
                 </Button>
               </div>
               <button style={{ flex: 2 }} className="custom-btn">
-                <span className="title-btn">Thêm vào giỏ hàng</span>
+                <span className="title-btn" onClick={handleAddCart}>
+                  Thêm vào giỏ hàng
+                </span>
               </button>
             </div>
             <div className="mt-5 pb-4">

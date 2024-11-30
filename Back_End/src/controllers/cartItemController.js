@@ -1,13 +1,12 @@
 import cartItemService from "../services/cartItemService";
 
 const createCartItem = async (req, res) => {
-  const { cart_id, item_id, item_type, quantity, total_price } = req.body;
+  const { cart_id, item_id, quantity, total_price } = req.body;
 
   try {
     const result = await cartItemService.createCartItem({
       cart_id,
       item_id,
-      item_type,
       quantity,
       total_price,
     });
