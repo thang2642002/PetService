@@ -79,12 +79,21 @@ module.exports = (sequelize) => {
     });
 
     Pets.hasMany(models.CartItem, {
-      foreignKey: "item_id", // Trỏ tới `item_id` trong `CartItem`
+      foreignKey: "item_id",
       constraints: false,
       scope: {
-        item_type: "pet", // Điều kiện liên kết chỉ khi `item_type === 'pet'`
+        item_type: "pet",
       },
       as: "pet",
+    });
+
+    Pets.hasMany(models.OrderItem, {
+      foreignKey: "item_id",
+      constraints: false,
+      scope: {
+        item_type: "pet",
+      },
+      as: "orderItems",
     });
   };
 

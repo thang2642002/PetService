@@ -12,8 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      product_id: {
-        type: DataTypes.INTEGER,
+      item_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      item_type: {
+        type: DataTypes.ENUM("pet", "product"),
         allowNull: false,
       },
       quantity: {
@@ -27,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "order_item",
-      timestamps: false,
+      timestamps: true,
     }
   );
 

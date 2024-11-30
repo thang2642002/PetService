@@ -31,6 +31,11 @@ module.exports = {
         onDelete: "SET NULL",
         allowNull: true,
       },
+      status: {
+        type: DataTypes.ENUM("pending", "completed", "cancelled"),
+        allowNull: false,
+        defaultValue: "pending",
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
