@@ -1,6 +1,11 @@
 import axios from "../configs/axiosCustommize";
+
 const getAllUser = () => {
   return axios.get("/user/get-all-user");
+};
+
+const getUserById = (user_id) => {
+  return axios.get(`/user/find-by-id/${user_id}`, { data: { user_id } });
 };
 
 const createUser = (
@@ -47,19 +52,18 @@ const updateUser = (
 const deleteUser = (user_id) => {
   return axios.delete(`/user/delete-user/${user_id}`, { data: { user_id } });
 };
+const registerUser = (email, user_name, phone, address, password) => {
+  const data = { email, user_name, phone, address, password };
+  return axios.post("/user/register", data);
+};
 
 const loginUser = (email, password) => {
   const data = { email, password };
   return axios.post("/user/login", data);
 };
 
-const registerUser = (email, user_name, phone, address, password) => {
-  const data = { email, user_name, phone, address, password };
-  return axios.post("/user/register", data);
-};
-
-const getUserById = (user_id) => {
-  return axios.get(`/user/find-by-id/${user_id}`, { data: { user_id } });
+const logoutUser = () => {
+  return axios.post("/user/logout");
 };
 
 export {
@@ -70,4 +74,5 @@ export {
   loginUser,
   registerUser,
   getUserById,
+  logoutUser
 };

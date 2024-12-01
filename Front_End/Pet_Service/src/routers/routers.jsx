@@ -24,6 +24,7 @@ import Payment from "../Client/views/Payment/Payment";
 import OrderDetails from "../Client/views/Order_Details/OrderDetails";
 import PetInfoForm from "../Client/components/PetInfoForm";
 import AppointmentForm from "../Client/components/ApointmentForm";
+import ProfileUser from "../Client/views/ProfileUser/ProfileUser";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
@@ -84,6 +85,7 @@ export const routers = [
         path: "info-pet",
         element: <PetInfoForm />,
       },
+      { path: "profile-user", element: <ProfileUser /> },
     ],
   },
   // { path: "*", element: <NotFoundPage /> },

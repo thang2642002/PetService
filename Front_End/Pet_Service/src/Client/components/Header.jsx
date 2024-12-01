@@ -7,11 +7,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/Slices/userSlices";
+import { logoutUser } from "../../services/userServices";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const menuItems = (
     <Menu
@@ -25,8 +28,14 @@ const Header = () => {
     />
   );
 
+  const handleLogOut = async () => {
+    await logoutUser();
+    localStorage.removeItem("access_tokens");
+    dispatch(logout());
+  };
+
   const userMenuItems = [
-    { label: <a href="/profile">Thông tin tài khoản</a>, key: "1" },
+    { label: <a href="/profile-user">Thông tin tài khoản</a>, key: "1" },
     { label: <a href="/orders">Xem đơn hàng</a>, key: "2" },
   ];
 
@@ -39,7 +48,7 @@ const Header = () => {
   }
 
   userMenuItems.push({
-    label: <a href="/logout">Đăng xuất</a>,
+    label: <div onClick={handleLogOut}>Đăng xuất</div>,
     key: "4",
   });
 
@@ -64,11 +73,13 @@ const Header = () => {
         </Dropdown>
       </div>
       <div className="logo cursor-pointer">
-        <img
-          src="https://theme.hstatic.net/200000263355/1001161916/14/logo.png?v=134"
-          alt="logo"
-          className="w-[55px] h-[55px]"
-        />
+        <a href="/">
+          <img
+            src="https://theme.hstatic.net/200000263355/1001161916/14/logo.png?v=134"
+            alt="logo"
+            className="w-[55px] h-[55px]"
+          />
+        </a>
       </div>
       <div className="search flex-grow mx-4">
         <input
