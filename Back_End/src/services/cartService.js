@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import db from "../models/index";
 
 const getAllCart = async () => {
@@ -56,4 +55,33 @@ const deleteCart = async (cart_id) => {
   return data;
 };
 
-module.exports = { getAllCart, createCart, updateCart, deleteCart };
+const getByCartId = async (cart_id) => {
+  const data = await db.Carts.findByPk(cart_id, {
+    include: [
+      { model: db.User, as: "user" },
+      {
+        model: db.CartItem,
+        as: "cartItems",
+        include: [
+          {
+            model: db.Products,
+            as: "product_item",
+          },
+          {
+            model: db.Pets,
+            as: "pet_item",
+          },
+        ],
+      },
+    ],
+  });
+  return data;
+};
+
+module.exports = {
+  getAllCart,
+  createCart,
+  updateCart,
+  deleteCart,
+  getByCartId,
+};

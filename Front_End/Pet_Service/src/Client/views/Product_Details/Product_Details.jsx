@@ -10,7 +10,11 @@ import { useSelector } from "react-redux";
 import "./Product_Details.scss";
 import Suggest from "../Suggest/Suggest";
 import { getProductById } from "../../../services/productServices";
-import { createCart } from "../../../services/cartService";
+import {
+  createCart,
+  getByCartId,
+  updateCart,
+} from "../../../services/cartService";
 import { createCartItem } from "../../../services/cartItemServices";
 import Rating from "../Rating/Rating";
 import Comment from "../Comment/Comment";
@@ -31,7 +35,7 @@ const ProductDetails = () => {
   const [showDesc, setShowDesc] = useState(false);
   const [showService, setShowService] = useState(false);
   const { user } = useSelector((state) => state.user);
-  console.log("check user", user);
+
 
   const sliderSettings = {
     dots: false,
@@ -71,26 +75,44 @@ const ProductDetails = () => {
         alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
         return;
       }
-
-      const addCartResponse = await createCart(
-        user?.data?.user_id,
-        product?.price
-      );
+      const addCartResponse = await createCart(user?.data?.user_id, 0);
       if (addCartResponse?.errCode !== 0) {
         alert("Không thể tạo giỏ hàng. Vui lòng thử lại!");
         return;
       }
       const cartId = addCartResponse?.data?.cart_id;
-      console.log("addCartResponse", addCartResponse);
       const addCartItemResponse = await createCartItem(
         cartId,
         id,
         quantity,
         product?.price * quantity
       );
-
       if (addCartItemResponse?.errCode === 0) {
-        alert("Sản phẩm đã được thêm vào giỏ hàng thành công!");
+        const cartDetails = await getByCartId(cartId);
+        if (cartDetails?.errCode === 0) {
+          const totalAmount = cartDetails.data.cartItems.reduce(
+            (total, item) => {
+              return total + item.total_price;
+            },
+            0
+          );
+
+          const updateCartResponse = await updateCart(
+            cartId,
+            cartDetails.data.user_id,
+            totalAmount
+          );
+          console.log("updateCartResponse", updateCartResponse);
+          if (updateCartResponse?.errCode === 0) {
+            alert(
+              "Sản phẩm đã được thêm vào giỏ hàng thành công và tổng số tiền đã được cập nhật!"
+            );
+          } else {
+            alert(
+              "Sản phẩm đã thêm vào giỏ hàng nhưng không thể cập nhật tổng số tiền!"
+            );
+          }
+        }
       } else {
         alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
       }
@@ -103,6 +125,8 @@ const ProductDetails = () => {
   useEffect(() => {
     fetchProductById();
   }, [id]);
+
+
 
   const sliderRef = React.useRef();
 

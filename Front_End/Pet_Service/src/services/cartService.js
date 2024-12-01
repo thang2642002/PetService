@@ -20,4 +20,10 @@ const deleteCart = (cart_id) => {
   });
 };
 
-export { createCart, updateCart, deleteCart, getAllCart };
+const getByCartId = (cart_id) => {
+  return axios.get(`/cart/get-by-cart-id/${cart_id}`, {
+    data: { cart_id: cart_id },
+  });
+};
+
+export { createCart, updateCart, deleteCart, getAllCart, getByCartId };

@@ -98,4 +98,35 @@ const deleteCart = async (req, res) => {
   }
 };
 
-module.exports = { getAllCart, createCart, updateCart, deleteCart };
+const getByCartId = async (req, res) => {
+  const cart_id = req.params.id;
+  try {
+    const data = await CartService.getByCartId(cart_id);
+    if (data) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Get cart is the success",
+        data: data,
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Get cart is the fails",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({
+      errCode: -1,
+      message: "Server error, Get cart is the fails",
+    });
+  }
+};
+
+module.exports = {
+  getAllCart,
+  createCart,
+  updateCart,
+  deleteCart,
+  getByCartId,
+};
