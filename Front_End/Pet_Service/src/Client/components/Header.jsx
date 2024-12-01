@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/Slices/userSlices";
 import { logoutUser } from "../../services/userServices";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const userCart = user?.data?.user_id;
   const menuItems = (
     <Menu
       items={[
@@ -110,13 +111,15 @@ const Header = () => {
             <div>Tài Khoản</div>
           </div>
         )}
-        <div className="carts flex flex-col justify-center items-center cursor-pointer">
-          <FontAwesomeIcon
-            icon={faCartShopping}
-            className="icon text-gray-700"
-          />
-          <div>Giỏ Hàng</div>
-        </div>
+        <Link to={`shop-carts/${user?.data?.user_id}`}>
+          <div className="carts flex flex-col justify-center items-center cursor-pointer">
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className="icon text-gray-700"
+            />
+            <div>Giỏ Hàng</div>
+          </div>
+        </Link>
       </div>
     </div>
   );

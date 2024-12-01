@@ -99,9 +99,10 @@ const deleteCart = async (req, res) => {
 };
 
 const getByCartId = async (req, res) => {
-  const cart_id = req.params.id;
+  const user_id = req.params.id;
+  console.log("pẩm", req.params);
   try {
-    const data = await CartService.getByCartId(cart_id);
+    const data = await CartService.getByCartId(user_id);
     if (data) {
       return res.status(200).json({
         errCode: 0,
@@ -115,7 +116,6 @@ const getByCartId = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(200).json({
       errCode: -1,
       message: "Server error, Get cart is the fails",

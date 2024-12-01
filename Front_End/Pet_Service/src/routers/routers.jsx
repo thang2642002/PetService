@@ -66,7 +66,7 @@ export const routers = [
         element: <PetDetails />,
       },
       {
-        path: "shop-carts",
+        path: "shop-carts/:id",
         element: <ShoppingCart />,
       },
       {

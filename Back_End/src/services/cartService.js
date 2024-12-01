@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 
 const getAllCart = async () => {
@@ -55,27 +56,35 @@ const deleteCart = async (cart_id) => {
   return data;
 };
 
-const getByCartId = async (cart_id) => {
-  const data = await db.Carts.findByPk(cart_id, {
-    include: [
-      { model: db.User, as: "user" },
-      {
-        model: db.CartItem,
-        as: "cartItems",
-        include: [
-          {
-            model: db.Products,
-            as: "product_item",
-          },
-          {
-            model: db.Pets,
-            as: "pet_item",
-          },
-        ],
-      },
-    ],
-  });
-  return data;
+const getByCartId = async (user_id) => {
+  console.log("user_id", user_id);
+  try {
+    const data = await db.Carts.findOne({
+      where: { user_id: user_id },
+      include: [
+        { model: db.User, as: "user" }, // Include bảng User
+        {
+          model: db.CartItem,
+          as: "cartItems",
+          include: [
+            {
+              model: db.Products,
+              as: "product_item", // Include bảng Products
+            },
+            {
+              model: db.Pets,
+              as: "pet_item", // Include bảng Pets
+            },
+          ],
+        },
+      ],
+    });
+    console.log("data", data);
+    return data;
+  } catch (error) {
+    console.error("Error in getByCartId:", error);
+    throw error;
+  }
 };
 
 module.exports = {

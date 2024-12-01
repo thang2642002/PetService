@@ -20,10 +20,9 @@ const deleteCart = (cart_id) => {
   });
 };
 
-const getByCartId = (cart_id) => {
-  return axios.get(`/cart/get-by-cart-id/${cart_id}`, {
-    data: { cart_id: cart_id },
-  });
+const getByCartId = (user_id) => {
+  console.log("chek....", user_id);
+  return axios.get(`/cart/get-by-cart-id/${user_id}`);
 };
 
 export { createCart, updateCart, deleteCart, getAllCart, getByCartId };

@@ -14,6 +14,7 @@ import apiProductReview from "./apiProductReview";
 import apiServiceReview from "./apiServiceReview";
 import apiCart from "./apiCart";
 import apiCartItem from "./apiCartItem";
+import apiPaginate from "./apiPaginate";
 
 const apiInitWebRouter = (app) => {
   app.use("/v1/api/user", apiUser);
@@ -32,6 +33,7 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/service-review", apiServiceReview);
   app.use("/v1/api/cart", apiCart);
   app.use("/v1/api/cart-item", apiCartItem);
+  // app.use("/v1/api/paginate", apiPaginate);
 };
 
 export default apiInitWebRouter;
