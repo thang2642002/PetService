@@ -6,11 +6,17 @@ import ModalCreateCart from "../Modal/ModalCarts/ModalCreateCart";
 import ModalUpdateCart from "../Modal/ModalCarts/ModalUpdateCart";
 import ModalDeleteCart from "../Modal/ModalCarts/ModalDeleteCart";
 import { useState, useEffect } from "react";
-import { getAllCart } from "../../services/cartService";
+// import { getAllCart } from "../../services/cartService";
+import { getPaginate } from "../../services/paginateServices";
 import TableCart from "../Modal/ModalCarts/TableCategory";
 import { FcPlus } from "react-icons/fc";
 
 const ManagerCarts = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Carts";
   const [showModalCreateCart, setShowModalCreateCart] = useState(false);
   const [showModalUpdateCart, setShowModalUpdateCart] = useState(false);
   const [showModalDeleteCart, setShowModalDeleteCart] = useState(false);
@@ -28,9 +34,11 @@ const ManagerCarts = () => {
   };
 
   const fetchAllCart = async () => {
-    const data = await getAllCart();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     if (data && data.errCode === 0) {
       setListCart(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
     } else {
       setListCart({});
     }
@@ -93,6 +101,9 @@ const ManagerCarts = () => {
 
         <div className="btn-table-container"></div>
         <TableCart
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           listCart={listCart}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}

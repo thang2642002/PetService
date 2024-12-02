@@ -8,9 +8,15 @@ import ModalUpdatePet from "../Modal/ModalPets/ModalUpdatePet";
 import ModalDeletePet from "../Modal/ModalPets/ModalDeletePet";
 import TablePet from "../Modal/ModalPets/TablePet";
 import { useEffect, useState } from "react";
-import { getAllPets } from "../../services/petServices";
+// import { getAllPets } from "../../services/petServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerPets = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Pets";
   const [showModalCreatePet, setShowModalCreatePet] = useState(false);
   const [showModalUpdatePet, setShowModalUpdatePet] = useState(false);
   const [showModalDeletePet, setShowModalDeletePet] = useState(false);
@@ -28,8 +34,10 @@ const ManagerPets = () => {
   };
 
   const fetchAllPet = async () => {
-    const data = await getAllPets();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListPets(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -88,6 +96,9 @@ const ManagerPets = () => {
 
         <div className="btn-table-container"></div>
         <TablePet
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listPets={listPets}

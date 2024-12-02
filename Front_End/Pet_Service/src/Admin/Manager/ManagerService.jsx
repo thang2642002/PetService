@@ -2,15 +2,21 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { FcPlus } from "react-icons/fc";
+import { useEffect, useState } from "react";
 import ModalCreateService from "../Modal/ModalService/ModalCreateService";
 import ModalUpdateService from "../Modal/ModalService/ModalUpdateService";
 import ModalDeleteService from "../Modal/ModalService/ModalDeleteService";
-import { useEffect, useState } from "react";
-import { getAllServices } from "../../services/serviceServices";
 import TableService from "../Modal/ModalService/TableService";
-import { FcPlus } from "react-icons/fc";
+// import { getAllServices } from "../../services/serviceServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerService = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Services";
   const [showModalCreateService, setShowModalCreateService] = useState(false);
   const [showModalUpdateService, setShowModalUpdateService] = useState(false);
   const [showModalDeleteService, setShowModalDeleteService] = useState(false);
@@ -28,8 +34,10 @@ const ManagerService = () => {
   };
 
   const fetchAllService = async () => {
-    const data = await getAllServices();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListService(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -88,6 +96,9 @@ const ManagerService = () => {
 
         <div className="btn-table-container"></div>
         <TableService
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listService={listService}

@@ -1,17 +1,22 @@
 // import ReactPaginate from "react-paginate";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { FcPlus } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateServiceReview from "../Modal/ModalServiceReview/ModalCreateServiceReview";
 import ModalUpdateServiceReview from "../Modal/ModalServiceReview/ModalUpdateServiceReview";
 import ModalDeleteServiceReview from "../Modal/ModalServiceReview/ModalDeleteServiceReview";
 import TableServiceReview from "../Modal/ModalServiceReview/TableServiceReview";
-import { getAllServiceReview } from "../../services/serviceReviewServices";
-
-import { FcPlus } from "react-icons/fc";
+// import { getAllServiceReview } from "../../services/serviceReviewServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerServiceReview = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Service_Review";
   const [showModalCreateServiceReview, setShowModalCreateServiceReview] =
     useState(false);
   const [showModalUpdateServiceReview, setShowModalUpdateServiceReview] =
@@ -32,8 +37,10 @@ const ManagerServiceReview = () => {
   };
 
   const fetchAllServiceReview = async () => {
-    const data = await getAllServiceReview();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListServiceReview(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -94,6 +101,9 @@ const ManagerServiceReview = () => {
 
         <div className="btn-table-container"></div>
         <TableServiceReview
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listServiceReview={listServiceReview}

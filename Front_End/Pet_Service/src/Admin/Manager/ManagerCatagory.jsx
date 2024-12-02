@@ -2,15 +2,21 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { useState, useEffect } from "react";
+import { FcPlus } from "react-icons/fc";
 import ModalCreateCategory from "../Modal/ModalCategory/ModalCreateCategory";
 import ModalUpdateCategory from "../Modal/ModalCategory/ModalUpdateCategory";
 import ModalDeleteCategory from "../Modal/ModalCategory/ModalDeleteCategory";
-import { useState, useEffect } from "react";
-import { fetchAllCategory } from "../../services/categoryServices";
 import TableCategory from "../Modal/ModalCategory/TableCategory";
-import { FcPlus } from "react-icons/fc";
+// import { fetchAllCategory } from "../../services/categoryServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerCategory = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Category";
   const [showModalCreateCategory, setShowModalCreateCategory] = useState(false);
   const [showModalUpdateCategory, setShowModalUpdateCategory] = useState(false);
   const [showModalDeleteCategory, setShowModalDeleteCategory] = useState(false);
@@ -19,9 +25,11 @@ const ManagerCategory = () => {
   const [categoryUpdate, setCategoryUpdate] = useState({});
 
   const getListCategory = async () => {
-    const data = await fetchAllCategory();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     if (data && data.errCode === 0) {
       setListCategory(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
     }
   };
 
@@ -59,7 +67,7 @@ const ManagerCategory = () => {
               Add new category
             </button>
           </div>
-          <div className="search" style={{ marginRight: "28px" }}>
+          {/* <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
                 placeholder="Enter your input"
@@ -70,7 +78,7 @@ const ManagerCategory = () => {
                 Search
               </Button>
             </InputGroup>
-          </div>
+          </div> */}
         </div>
         <ModalCreateCategory
           show={showModalCreateCategory}
@@ -92,6 +100,9 @@ const ManagerCategory = () => {
 
         <div className="btn-table-container"></div>
         <TableCategory
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           listCategory={listCategory}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}

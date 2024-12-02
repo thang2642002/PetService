@@ -1,17 +1,22 @@
 // import ReactPaginate from "react-paginate";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { FcPlus } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import ModalCreateProductReview from "../Modal/ModalProductReview/ModalCreateProductReview";
 import ModalUpdateProductReview from "../Modal/ModalProductReview/ModalUpdateProductReview";
 import ModalDeleteProductReview from "../Modal/ModalProductReview/ModalDeleteProductReview";
 import TableProductReview from "../Modal/ModalProductReview/TableProductReview";
-import { getAllProductReview } from "../../services/productReviewServices";
-
-import { FcPlus } from "react-icons/fc";
+// import { getAllProductReview } from "../../services/productReviewServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerProductReview = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Product_Review";
   const [showModalCreateProductReview, setShowModalCreateProductReview] =
     useState(false);
   const [showModalUpdateProductReview, setShowModalUpdateProductReview] =
@@ -32,8 +37,10 @@ const ManagerProductReview = () => {
   };
 
   const fetchAllProductReview = async () => {
-    const data = await getAllProductReview();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListProductReview(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -95,6 +102,9 @@ const ManagerProductReview = () => {
 
         <div className="btn-table-container"></div>
         <TableProductReview
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listProductReview={listProductReview}

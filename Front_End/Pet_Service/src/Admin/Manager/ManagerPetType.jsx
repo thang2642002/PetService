@@ -2,15 +2,21 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { FcPlus } from "react-icons/fc";
+import { useState, useEffect } from "react";
 import ModalCreatePetType from "../Modal/ModalPetType/ModalCreatePetType";
 import ModalUpdatePetType from "../Modal/ModalPetType/ModalUpdatePetType";
 import ModalDeletePetType from "../Modal/ModalPetType/ModalDeletePetType";
-import { useState, useEffect } from "react";
-import { getAllPetType } from "../../services/petTypeServices";
 import TablePetType from "../Modal/ModalPetType/TablePetType";
-import { FcPlus } from "react-icons/fc";
+// import { getAllPetType } from "../../services/petTypeServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerPetType = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Pet_Type";
   const [showModalCreatePetType, setShowModalCreatePetType] = useState(false);
   const [showModalUpdatePetType, setShowModalUpdatePetType] = useState(false);
   const [showModalDeletePetType, setShowModalDeletePetType] = useState(false);
@@ -28,8 +34,10 @@ const ManagerPetType = () => {
   };
 
   const fetchAllPetType = async () => {
-    const data = await getAllPetType();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListPetType(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -90,6 +98,9 @@ const ManagerPetType = () => {
 
         <div className="btn-table-container"></div>
         <TablePetType
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listPetType={listPetType}

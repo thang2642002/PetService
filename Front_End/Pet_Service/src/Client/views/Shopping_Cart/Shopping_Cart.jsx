@@ -3,27 +3,29 @@ import "./Shopping_Cart.scss";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { MdDelete } from "react-icons/md";
-import { getByCartId } from "../../../services/cartService";
+import { getByCartId, updateCart } from "../../../services/cartService";
 import { updateCartItem } from "../../../services/cartItemServices";
 import { useParams } from "react-router-dom";
 
 const Shopping_Cart = () => {
-  const [price, setPrice] = useState(12000);
-  const [totalAmount, setTotalAmount] = useState(0);
   const [listCartItem, setListCartItem] = useState([]);
-  const [quantity, setQuantity] = useState([]);
   const [check, setCheck] = useState([]);
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [cartId, setCartId] = useState(0);
   const { id } = useParams();
-  let sumTotal = 0;
 
   const fetchListCartItem = async () => {
     const data = await getByCartId(id);
     if (data && data.errCode === 0) {
-      setTotalAmount(data.data.total_amount);
-      console.log("total_amount", data);
+      setCartId(data.data.cart_id);
+
       setListCartItem(data.data.cartItems);
-      console.log(data.data.cartItems);
+      setCheck(new Array(data.data.cartItems.length).fill(false));
     }
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN").format(price);
   };
 
   const handleUpdateQuantity = async (
@@ -33,40 +35,68 @@ const Shopping_Cart = () => {
     type
   ) => {
     if (type === "minus") {
-      const data = await updateCartItem(
+      await updateCartItem(
         id,
         changeQuantity - 1,
         total_price * (changeQuantity - 1)
       );
-      fetchListCartItem();
     } else {
-      const data = await updateCartItem(
+      await updateCartItem(
         id,
         changeQuantity + 1,
         total_price * (changeQuantity + 1)
       );
-      fetchListCartItem();
     }
+    fetchListCartItem();
   };
 
-  const TotalSum = (price, check) => {
-    if (check === true) {
-      sumTotal += price;
-    } else {
-      sumTotal -= price;
+  const calculateTotal = () => {
+    let sumTotal = 0;
+    listCartItem.forEach((item, index) => {
+      if (check[index]) {
+        sumTotal +=
+          item?.product_item?.price * item.quantity ||
+          item?.pet_item?.price * item.quantity;
+      }
+    });
+    return sumTotal;
+  };
+
+  const handleCheckAll = async () => {
+    const newCheckState = !isAllChecked;
+    const updatedCheck = new Array(listCartItem.length).fill(newCheckState);
+    setCheck(updatedCheck);
+    setIsAllChecked(newCheckState);
+
+    let newTotalAmount = 0;
+    if (newCheckState) {
+      newTotalAmount = listCartItem.reduce((sum, item) => {
+        const price = item?.product_item?.price || item?.pet_item?.price;
+        return sum + price * item.quantity;
+      }, 0);
     }
+    await updateCart(cartId, id, newTotalAmount);
+  };
+
+  const handleCheck = async (index) => {
+    const updatedCheck = [...check];
+    updatedCheck[index] = !updatedCheck[index];
+    setCheck(updatedCheck);
+    setIsAllChecked(updatedCheck.every((item) => item === true));
+    let newTotalAmount = 0;
+    updatedCheck.forEach((isChecked, idx) => {
+      if (isChecked) {
+        const item = listCartItem[idx];
+        const price = item?.product_item?.price || item?.pet_item?.price;
+        newTotalAmount += price * item.quantity;
+      }
+    });
+    await updateCart(cartId, id, newTotalAmount);
   };
 
   useEffect(() => {
     fetchListCartItem();
   }, []);
-
-  useEffect(() => {
-    if (listCartItem) {
-      const quantities = listCartItem.map((item) => item.quantity);
-      setQuantity(quantities);
-    }
-  }, [listCartItem]);
 
   return (
     <div className="contents-carts-container container">
@@ -81,7 +111,8 @@ const Shopping_Cart = () => {
                     inline
                     label="Tất cả"
                     className="check-box"
-                    value="check"
+                    checked={isAllChecked}
+                    onChange={handleCheckAll}
                   />
                   <div className="title-price">Đơn giá</div>
                   <div className="title-quantity">Số lượng</div>
@@ -95,95 +126,84 @@ const Shopping_Cart = () => {
 
                   {listCartItem &&
                     Array.isArray(listCartItem) &&
-                    listCartItem.map((item, index) => {
-                      TotalSum(
-                        item?.product_item?.price || item?.pet_item?.price,
-                        check[index]
-                      );
-                      return (
-                        <Row className="info-product" key={index}>
-                          <Col md={1}>
-                            <Form.Check inline value={check[index]} />
-                          </Col>
+                    listCartItem.map((item, index) => (
+                      <Row className="info-product" key={index}>
+                        <Col md={1}>
+                          <Form.Check
+                            inline
+                            checked={check[index]}
+                            onChange={() => handleCheck(index)}
+                          />
+                        </Col>
 
-                          <Col md={4}>
-                            <div className="title-product">
-                              <img
-                                src="https://product.hstatic.net/200000263355/product/z5625317232002_a6d5cca3bb39d486d8870c927d894c21_839973b078544de8bc1a13c2a6aef528_medium.jpg"
-                                alt="product"
-                              />
-                              <div className="ml-5">
-                                {item?.product_item?.name ||
-                                  item?.pet_item?.name}
-                              </div>
+                        <Col md={4}>
+                          <div className="title-product">
+                            <img
+                              src="https://product.hstatic.net/200000263355/product/z5625317232002_a6d5cca3bb39d486d8870c927d894c21_839973b078544de8bc1a13c2a6aef528_medium.jpg"
+                              alt="product"
+                            />
+                            <div className="ml-5">
+                              {item?.product_item?.name || item?.pet_item?.name}
                             </div>
-                          </Col>
-                          <Col md={2}>
-                            <div className="price-product ml-10">
-                              {item?.product_item?.price ||
-                                item?.pet_item?.price}
-                              đ
-                            </div>
-                          </Col>
-                          <Col md={2}>
-                            <div className="count-product">
-                              <span
-                                className="minus"
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item.cart_item_id,
-                                    quantity[index],
-                                    item?.product_item?.price ||
-                                      item?.pet_item?.price,
-                                    "minus"
-                                  )
-                                }
-                              >
-                                <MinusOutlined />
-                              </span>
-                              <input
-                                value={quantity[index]}
-                                style={{
-                                  width: "40px",
-                                  height: "34px",
-                                  border: "1px solid #ccc",
-                                  paddingLeft: "15px",
-                                }}
-                              />
-                              <span
-                                className="plus"
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item.cart_item_id,
-                                    quantity[index],
-                                    item?.product_item?.price ||
-                                      item?.pet_item?.price,
-                                    "plus"
-                                  )
-                                }
-                              >
-                                <PlusOutlined />
-                              </span>
-                            </div>
-                          </Col>
-                          <Col md={2}>
-                            <div className="total-price-product">
-                              {item.total_price} đ
-                            </div>
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                </div>
-              </div>
-              <div className="mt-5">
-                <div className="text-lg font-semibold">Ghi chú đơn hàng</div>
-                <div className="mt-3">
-                  <textarea
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    rows="4"
-                    placeholder="Nhập ghi chú tại đây..."
-                  ></textarea>
+                          </div>
+                        </Col>
+                        <Col md={2}>
+                          <div className="price-product ml-10">
+                            {formatPrice(
+                              item?.product_item?.price || item?.pet_item?.price
+                            )}
+                            đ
+                          </div>
+                        </Col>
+                        <Col md={2}>
+                          <div className="count-product">
+                            <span
+                              className="minus"
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item.cart_item_id,
+                                  item.quantity,
+                                  item?.product_item?.price ||
+                                    item?.pet_item?.price,
+                                  "minus"
+                                )
+                              }
+                            >
+                              <MinusOutlined />
+                            </span>
+                            <input
+                              value={item.quantity}
+                              readOnly
+                              style={{
+                                width: "40px",
+                                height: "34px",
+                                border: "1px solid #ccc",
+                                paddingLeft: "15px",
+                              }}
+                            />
+                            <span
+                              className="plus"
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item.cart_item_id,
+                                  item.quantity,
+                                  item?.product_item?.price ||
+                                    item?.pet_item?.price,
+                                  "plus"
+                                )
+                              }
+                            >
+                              <PlusOutlined />
+                            </span>
+                          </div>
+                        </Col>
+                        <Col md={2}>
+                          <div className="total-price-product">
+                            {formatPrice(item.total_price)} đ
+                          </div>
+                        </Col>
+                      </Row>
+                    ))}
                 </div>
               </div>
             </Col>
@@ -191,25 +211,19 @@ const Shopping_Cart = () => {
               <div className="total-payment">
                 <div className="total-price">
                   <div className="provisional">
-                    <div className="title">Tạm tính</div>
-                    <div className="price">100000 đ</div>
+                    <div className="title">Tổng tiền</div>
+                    <div className="price">
+                      {formatPrice(calculateTotal())} đ
+                    </div>
                   </div>
                   <div className="sum-price">
                     <div className="title">Tổng tiền</div>
-                    <div className="price">100000 đ</div>
+                    <div className="price">
+                      {formatPrice(calculateTotal())} đ
+                    </div>
                   </div>
                 </div>
                 <button className="btn">Thanh Toán</button>
-              </div>
-              <div className="mt-5">
-                <div className="text-sm text-[#252a2b] before:content-['•'] before:mr-2">
-                  Miễn phí vận chuyển cho đơn hàng từ 399.000đ (Dưới 10km từ
-                  Mozzi Phú Nhuận)
-                </div>
-                <div className="text-sm mt-3 text-[#252a2b] before:content-['•'] before:mr-2">
-                  Giao hàng hỏa tốc trong vòng 4 giờ, áp dụng tại khu vực nội
-                  thành Hồ Chí Minh
-                </div>
               </div>
             </Col>
           </Row>
@@ -218,4 +232,5 @@ const Shopping_Cart = () => {
     </div>
   );
 };
+
 export default Shopping_Cart;

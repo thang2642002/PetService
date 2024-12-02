@@ -33,7 +33,7 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/service-review", apiServiceReview);
   app.use("/v1/api/cart", apiCart);
   app.use("/v1/api/cart-item", apiCartItem);
-  // app.use("/v1/api/paginate", apiPaginate);
+  app.use("/v1/api/paginate", apiPaginate);
 };
 
 export default apiInitWebRouter;

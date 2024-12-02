@@ -2,15 +2,21 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { FcPlus } from "react-icons/fc";
+import { useEffect, useState } from "react";
 import ModalCreateProduct from "../Modal/ModalProduct/ModalCreateProduct";
 import ModalUpdateProduct from "../Modal/ModalProduct/ModalUpdateProduct";
 import ModalDeleteProduct from "../Modal/ModalProduct/ModalDeleteProduct";
-import { useEffect, useState } from "react";
-import { getAllProduct } from "../../services/productServices";
 import TableProduct from "../Modal/ModalProduct/TableProduct";
-import { FcPlus } from "react-icons/fc";
+// import { getAllProduct } from "../../services/productServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerProduct = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Products";
   const [showModalCreateProduct, setShowModalCreateProduct] = useState(false);
   const [showModalUpdateProduct, setShowModalUpdateProduct] = useState(false);
   const [showModalDeleteProduct, setShowModalDeleteProduct] = useState(false);
@@ -28,8 +34,10 @@ const ManagerProduct = () => {
   };
 
   const fetchAllProduct = async () => {
-    const data = await getAllProduct();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListProduct(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -88,6 +96,9 @@ const ManagerProduct = () => {
 
         <div className="btn-table-container"></div>
         <TableProduct
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listProduct={listProduct}

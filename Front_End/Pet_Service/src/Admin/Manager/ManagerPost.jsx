@@ -2,15 +2,21 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { FcPlus } from "react-icons/fc";
+import { useEffect, useState } from "react";
 import ModalCreatePost from "../Modal/ModalPost/ModalCreatePost";
 import ModalUpdatePost from "../Modal/ModalPost/ModalUpdatePost";
 import ModalDeletePost from "../Modal/ModalPost/ModalDeletePost";
 import TablePost from "../Modal/ModalPost/TablePost";
-import { useEffect, useState } from "react";
-import { getAllPost } from "../../services/postServices";
-import { FcPlus } from "react-icons/fc";
+// import { getAllPost } from "../../services/postServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerPost = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Post";
   const [showModalCreatePost, setShowModalCreatePost] = useState(false);
   const [showModalUpdatePost, setShowModalUpdatePost] = useState(false);
   const [showModalDeletePost, setShowModalDeletePost] = useState(false);
@@ -26,8 +32,10 @@ const ManagerPost = () => {
     setShowModalDeletePost(true);
   };
   const fetchAllPost = async () => {
-    const data = await getAllPost();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListPost(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -86,6 +94,9 @@ const ManagerPost = () => {
 
         <div className="btn-table-container"></div>
         <TablePost
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listPost={listPost}

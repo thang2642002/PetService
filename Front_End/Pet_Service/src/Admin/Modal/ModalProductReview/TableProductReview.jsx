@@ -1,6 +1,18 @@
+import ReactPaginate from "react-paginate";
+
 const TableProductReview = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal, listProductReview } =
-    props;
+  const {
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    handleShowUpdateModal,
+    handleShowDeleteModal,
+    listProductReview,
+  } = props;
+
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1);
+  };
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -45,6 +57,25 @@ const TableProductReview = (props) => {
             ))}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          breakLabel={"..."}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+      </div>
     </div>
   );
 };

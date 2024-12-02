@@ -7,11 +7,16 @@ import ModalCreateAppointment from "../Modal/ModalAppointment/ModalCreateAppoint
 import ModalUpdateAppointment from "../Modal/ModalAppointment/ModalUpdateAppointment";
 import ModalDeleteAppointment from "../Modal/ModalAppointment/ModalDeleteAppointment";
 import TableAppointment from "../Modal/ModalAppointment/TableAppointment";
-import { getAllAppointment } from "../../services/appointmentServices";
+import { getPaginate } from "../../services/paginateServices";
 
 import { FcPlus } from "react-icons/fc";
 
 const ManagerAppointment = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Appointments";
   const [showModalCreateAppointment, setShowModalCreateAppointment] =
     useState(false);
   const [showModalUpdateAppointment, setShowModalUpdateAppointment] =
@@ -32,8 +37,10 @@ const ManagerAppointment = () => {
   };
 
   const fetchAllAppointment = async () => {
-    const data = await getAllAppointment();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListAppointment(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -94,6 +101,9 @@ const ManagerAppointment = () => {
 
         <div className="btn-table-container"></div>
         <TableAppointment
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listAppointment={listAppointment}

@@ -1,6 +1,19 @@
+import ReactPaginate from "react-paginate";
 import "../../../App.css";
+
 const TableProduct = (props) => {
-  const { handleShowUpdateModal, handleShowDeleteModal, listProduct } = props;
+  const {
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    handleShowUpdateModal,
+    handleShowDeleteModal,
+    listProduct,
+  } = props;
+
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1);
+  };
 
   return (
     <div className="table-user-container px-4 mt-4">
@@ -23,11 +36,7 @@ const TableProduct = (props) => {
             Array.isArray(listProduct) &&
             listProduct.map((item, index) => (
               <tr key={index}>
-                <td
-                // className="customTd"
-                >
-                  {item.product_id}
-                </td>
+                <td className="customTd">{item.product_id}</td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
                 <td>{item.category_id}</td>
@@ -52,6 +61,25 @@ const TableProduct = (props) => {
             ))}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          breakLabel={"..."}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+      </div>
     </div>
   );
 };

@@ -8,9 +8,15 @@ import ModalCreateUser from "../Modal/ModalUser/ModalCreateUser";
 import ModalUpdateUser from "../Modal/ModalUser/ModalUpdateUser";
 import ModalDeleteUser from "../Modal/ModalUser/ModalDeleteUser";
 import TableUser from "../Modal/ModalUser/TableUser";
-import { getAllUser } from "../../services/userServices";
+// import { getAllUser } from "../../services/userServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerUser = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "User";
   const [showModalCreateUser, setShowModalCreateUser] = useState(false);
   const [showModalUpdateUser, setShowModalUpdateUser] = useState(false);
   const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
@@ -28,8 +34,10 @@ const ManagerUser = () => {
   };
 
   const getListUser = async () => {
-    const data = await getAllUser();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListUser(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -89,6 +97,9 @@ const ManagerUser = () => {
 
         <div className="btn-table-container"></div>
         <TableUser
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listUser={listUser}

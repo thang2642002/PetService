@@ -8,9 +8,15 @@ import ModalCreatePetScores from "../Modal/ModalPetScores/ModalCreatePetScores";
 import ModalUpdatePetScores from "../Modal/ModalPetScores/ModalUpdatePetScores";
 import ModalDeletePetScores from "../Modal/ModalPetScores/ModalDeletePetScores";
 import TablePetScores from "../Modal/ModalPetScores/TableUserPet";
-import { getAllPetScores } from "../../services/petScoresServices";
+// import { getAllPetScores } from "../../services/petScoresServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerPetScores = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "PetScore";
   const [showModalCreatePetScores, setShowModalCreatePetScores] =
     useState(false);
   const [showModalUpdatePetScores, setShowModalUpdatePetScores] =
@@ -31,8 +37,10 @@ const ManagerPetScores = () => {
   };
 
   const fetchAllPetScores = async () => {
-    const data = await getAllPetScores();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListPetScores(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -93,6 +101,9 @@ const ManagerPetScores = () => {
 
         <div className="btn-table-container"></div>
         <TablePetScores
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listPetScores={listPetScores}

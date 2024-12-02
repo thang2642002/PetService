@@ -8,9 +8,15 @@ import ModalCreateUserPet from "../Modal/ModalUserPet/ModalCreateUserPet";
 import ModalUpdateUserPet from "../Modal/ModalUserPet/ModalUpdateUserPet";
 import ModalDeleteUserPet from "../Modal/ModalUserPet/ModalDeleteUserPet";
 import TableUserPet from "../Modal/ModalUserPet/TableUserPet";
-import { getAllUserPet } from "../../services/userPetServices";
+// import { getAllUserPet } from "../../services/userPetServices";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerUserPet = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "UserPet";
   const [showModalCreateUserPet, setShowModalCreateUserPet] = useState(false);
   const [showModalUpdateUserPet, setShowModalUpdateUserPet] = useState(false);
   const [showModalDeleteUserPet, setShowModalDeleteUserPet] = useState(false);
@@ -28,8 +34,10 @@ const ManagerUserPet = () => {
   };
 
   const fetchAllUserPet = async () => {
-    const data = await getAllUserPet();
+    const data = await getPaginate(modelName, currentPage, pageSize);
     setListUserPet(data.data);
+    setTotalItems(data.totalItems);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
@@ -90,6 +98,9 @@ const ManagerUserPet = () => {
 
         <div className="btn-table-container"></div>
         <TableUserPet
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listUserPet={listUserPet}
