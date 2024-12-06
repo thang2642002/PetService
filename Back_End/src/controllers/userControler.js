@@ -114,7 +114,6 @@ const deleteUser = async (req, res) => {
 const findByName = async (req, res) => {
   try {
     const { user_name } = req.query;
-    console.log(req.body);
     const findName = await UserService.findName(user_name);
     if (findName) {
       return res.status(200).json({
@@ -222,8 +221,6 @@ const handleLogin = async (req, res) => {
     }
 
     const result = await UserService.handleLogin(email, password);
-    console.log(result.accessToken);
-    console.log(result.refreshToken);
 
     if (result.errCode === 1) {
       return res.status(404).json({

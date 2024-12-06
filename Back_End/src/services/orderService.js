@@ -1,8 +1,20 @@
+import { where } from "sequelize";
 import db from "../models/index";
 const getAllOrder = async () => {
   try {
     const getAllOrder = await db.Order.findAll({
-      include: [{ model: db.User, as: "user" }],
+      include: [
+        { model: db.User, as: "user" },
+        { model: db.Carts, as: "cart" },
+        {
+          model: db.OrderItem,
+          as: "orderItems",
+          include: [
+            { model: db.Products, as: "product_item" },
+            { model: db.Pets, as: "pet_item" },
+          ],
+        },
+      ],
     });
     return getAllOrder;
   } catch (error) {
@@ -10,12 +22,14 @@ const getAllOrder = async () => {
   }
 };
 
-const createOrder = async (total_amount, status, user_id) => {
+const createOrder = async (total_amount, user_id, cart_id) => {
   try {
     const createOrder = await db.Order.create({
       total_amount,
-      status,
+      status: "pending",
       user_id,
+      cart_id,
+      order_date: new Date(),
     });
     return createOrder;
   } catch (error) {
@@ -28,7 +42,8 @@ const updateOrder = async (
   total_amount,
   status,
   // order_date,
-  user_id
+  user_id,
+  cart_id
 ) => {
   try {
     const updateOrder = await db.Order.findByPk(order_id);
@@ -40,6 +55,7 @@ const updateOrder = async (
       status,
       // order_date,
       user_id,
+      cart_id,
     });
     return updateOrder;
   } catch (error) {
@@ -57,4 +73,57 @@ const deleteOrder = async (order_id) => {
     console.log(error);
   }
 };
-module.exports = { getAllOrder, createOrder, updateOrder, deleteOrder };
+
+const getOrderById = async (user_id) => {
+  try {
+    const data = await db.Order.findOne({
+      where: { user_id: user_id },
+      include: [
+        { model: db.User, as: "user" },
+        { model: db.Carts, as: "cart" },
+        {
+          model: db.OrderItem,
+          as: "orderItems",
+          include: [
+            { model: db.Products, as: "product_item" },
+            { model: db.Pets, as: "pet_item" },
+          ],
+        },
+      ],
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getOrderByOrder = async (order_id) => {
+  try {
+    const data = await db.Order.findByPk(order_id, {
+      include: [
+        { model: db.User, as: "user" },
+        { model: db.Carts, as: "cart" },
+        {
+          model: db.OrderItem,
+          as: "orderItems",
+          include: [
+            { model: db.Products, as: "product_item" },
+            { model: db.Pets, as: "pet_item" },
+          ],
+        },
+      ],
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  getAllOrder,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+  getOrderById,
+  getOrderByOrder,
+};

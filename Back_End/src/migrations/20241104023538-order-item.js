@@ -27,15 +27,9 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      product_id: {
+      item_id: {
         type: Sequelize.UUID, // Sửa từ INTEGER thành UUID
         allowNull: false,
-        references: {
-          model: "Products", // Tên bảng tham chiếu
-          key: "product_id", // Khóa chính của bảng Products
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       createdAt: {
         type: Sequelize.DATE,

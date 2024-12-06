@@ -25,12 +25,10 @@ const getAllOrderItem = async (req, res) => {
 
 const createOrderItem = async (req, res) => {
   try {
-    const { order_id, product_id, quantity, total_price } = req.body;
+    const { order_id, items } = req.body;
     const createOrderItem = await orderItemService.createOrderItem(
       order_id,
-      product_id,
-      quantity,
-      total_price
+      items
     );
     if (createOrderItem) {
       return res.status(200).json({
@@ -45,7 +43,7 @@ const createOrderItem = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(200).json({
+    return res.status(500).json({
       message: "Server error, Create order item is the fails",
       errCode: -1,
     });
@@ -55,11 +53,11 @@ const createOrderItem = async (req, res) => {
 const updateOrderItem = async (req, res) => {
   try {
     const order_item_id = req.params.id;
-    const { order_id, product_id, quantity, total_price } = req.body;
+    const { order_id, item_id, quantity, total_price } = req.body;
     const updateOrderItem = await orderItemService.updateOrderItem(
       order_item_id,
       order_id,
-      product_id,
+      item_id,
       quantity,
       total_price
     );

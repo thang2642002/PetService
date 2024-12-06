@@ -57,7 +57,6 @@ const deleteCart = async (cart_id) => {
 };
 
 const getByCartId = async (user_id) => {
-  console.log("user_id", user_id);
   try {
     const data = await db.Carts.findOne({
       where: { user_id: user_id },

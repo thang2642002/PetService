@@ -7,7 +7,6 @@ const ProfileUser = () => {
   const dataUser = user.user.data;
   const [show, setShow] = useState(false);
   const userUpdate = dataUser;
-  console.log(userUpdate);
 
   return (
     <div>

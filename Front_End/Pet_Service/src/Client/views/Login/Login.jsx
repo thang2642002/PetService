@@ -61,7 +61,6 @@ const Login = () => {
     try {
       if (checkInputLogin()) {
         let userLogin = await loginUser(email, password);
-        console.log("check user login", userLogin);
         if (userLogin.data) {
           toast.success("Đăng nhập thành công");
           dispatch(login(userLogin));

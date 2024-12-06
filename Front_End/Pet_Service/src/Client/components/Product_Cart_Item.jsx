@@ -4,11 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 const Product_Cart_Item = (props) => {
   const { product } = props;
-
   return (
     <>
       <Link
-        to={`/product-detail/${product.product_id}`}
+        to={
+          product.product_id === undefined
+            ? `/pet-detail/${product.pet_id}`
+            : `/product-detail/${product.product_id}`
+        }
         style={{ textDecoration: "none" }}
       >
         <div
@@ -22,7 +25,9 @@ const Product_Cart_Item = (props) => {
               className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
             />
           </div>
-          <div className="p-2 text-[#252a2b] text-sm">{product.name}</div>
+          <div className="p-2 text-[#252a2b] text-sm">
+            {product?.name || product.name}
+          </div>
           <div className="pl-2 text-sm text-black font-medium">
             {product.price} đ
           </div>

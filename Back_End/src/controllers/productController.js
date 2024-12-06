@@ -27,6 +27,7 @@ const createProduct = async (req, res) => {
   try {
     const { name, description, price, category_id, stock } = req.body;
     const images = req.files;
+   
     const createProduct = await productService.createProduct(
       name,
       description,
@@ -163,6 +164,31 @@ const findById = async (req, res) => {
   }
 };
 
+const findByCategory = async (req, res) => {
+  const category_id = req.params.id;
+  try {
+    const data = await productService.findByCategory(category_id);
+    if (data) {
+      return res.status(200).json({
+        message: "Find product is the success",
+        errCode: 0,
+        data: data,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Find product is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Find product is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllProduct,
   createProduct,
@@ -170,4 +196,5 @@ module.exports = {
   deleteProduct,
   findByName,
   findById,
+  findByCategory,
 };

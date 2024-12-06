@@ -17,10 +17,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      order_date: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
       user_id: {
         type: Sequelize.INTEGER,
         references: {

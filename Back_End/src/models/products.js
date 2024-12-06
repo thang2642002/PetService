@@ -70,9 +70,6 @@ module.exports = (sequelize, DataTypes) => {
     Products.hasMany(models.OrderItem, {
       foreignKey: "item_id",
       constraints: false,
-      scope: {
-        item_type: "product",
-      },
       as: "orderItems",
     });
 

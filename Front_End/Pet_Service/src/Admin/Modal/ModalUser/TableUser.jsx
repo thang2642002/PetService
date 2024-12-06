@@ -21,8 +21,8 @@ const TableUser = (props) => {
             <th scope="col">ID</th>
             <th scope="col">Email</th>
             <th scope="col">User Name</th>
-            <th scope="col">Phone</th>
             <th scope="col">Address</th>
+            <th scope="col">Phone</th>
             <th scope="col">Role</th>
             <th scope="col">Action</th>
           </tr>
@@ -35,7 +35,7 @@ const TableUser = (props) => {
                 <td>{item.user_id}</td>
                 <td>{item.email}</td>
                 <td>{item.user_name}</td>
-                <td>{item.phone}</td>
+                <td className="customTdAdress">{item.phone}</td>
                 <td>{item.address}</td>
                 <td>{item.role}</td>
                 <td>

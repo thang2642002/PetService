@@ -25,16 +25,17 @@ const getAllOrder = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    const { total_amount, status, user_id } = req.body;
+    const { total_amount, user_id, cart_id } = req.body;
     const createOrder = await orderService.createOrder(
       total_amount,
-      status,
-      user_id
+      user_id,
+      cart_id
     );
     if (createOrder) {
       return res.status(200).json({
         message: "Create order is the success",
         errCode: 0,
+        data: createOrder,
       });
     } else {
       return res.status(400).json({
@@ -54,18 +55,13 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const order_id = req.params.id;
-    const {
-      total_amount,
-      status,
-      // order_date,
-      user_id,
-    } = req.body;
+    const { total_amount, status, user_id, cart_id } = req.body;
     const updateOrder = await orderService.updateOrder(
       order_id,
       total_amount,
       status,
-      // order_date,
-      user_id
+      user_id,
+      cart_id
     );
     if (updateOrder) {
       return res.status(200).json({
@@ -111,4 +107,60 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-module.exports = { getAllOrder, createOrder, updateOrder, deleteOrder };
+const getOrderById = async (req, res) => {
+  const user_id = req.params.id;
+  try {
+    const data = await orderService.getOrderById(user_id);
+    if (data) {
+      return res.status(200).json({
+        message: "Get order is the success",
+        errCode: 0,
+        data: data,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get order is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Get order is the success",
+      errCode: -1,
+    });
+  }
+};
+
+const getOrderByOrder = async (req, res) => {
+  const order_id = req.params.id;
+  try {
+    const data = await orderService.getOrderByOrder(order_id);
+    if (data) {
+      return res.status(200).json({
+        message: "Get order is the success",
+        errCode: 0,
+        data: data,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get order is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Get order is the success",
+      errCode: -1,
+    });
+  }
+};
+module.exports = {
+  getAllOrder,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+  getOrderById,
+  getOrderByOrder,
+};

@@ -102,7 +102,6 @@ const Pet_Details = () => {
             cartDetails.data.user_id,
             totalAmount
           );
-          console.log("updateCartResponse", updateCartResponse);
           if (updateCartResponse?.errCode === 0) {
             alert(
               "Sản phẩm đã được thêm vào giỏ hàng thành công và tổng số tiền đã được cập nhật!"

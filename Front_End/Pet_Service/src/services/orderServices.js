@@ -4,8 +4,11 @@ const getAllOrder = () => {
   return axios.get("/order/get-all-order");
 };
 
-const createOrder = (total_amount, status, user_id) => {
-  const data = { total_amount, status, user_id };
+const getByOrder = (order_id) => {
+  return axios.get(`/order/get-oder-by-order/${order_id}`);
+};
+const createOrder = (total_amount, user_id, cart_id) => {
+  const data = { total_amount, user_id, cart_id };
   return axios.post("/order/create-order", data);
 };
 
@@ -20,4 +23,4 @@ const deleteOrder = (order_id) => {
   });
 };
 
-export { getAllOrder, createOrder, updateOrder, deleteOrder };
+export { getAllOrder, createOrder, updateOrder, deleteOrder, getByOrder };

@@ -26,7 +26,6 @@ const getAllProductReview = async (req, res) => {
 
 const getByProductReviewId = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const data = await productReviewService.getProductReviewById(id);
     if (data) {

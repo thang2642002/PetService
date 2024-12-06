@@ -85,7 +85,6 @@ const deleteUserPet = async (user_pet_id) => {
 
 const findByName = async (name_pet) => {
   try {
-    console.log(name_pet);
     const name = await db.UserPet.findAll({
       where: {
         name_pet: {

@@ -60,8 +60,6 @@ const Comment = ({ productId }) => {
     }
   };
 
-  console.log("editingCommentId", editingCommentId);
-
   useEffect(() => {
     fetchComments();
   }, [productId]);

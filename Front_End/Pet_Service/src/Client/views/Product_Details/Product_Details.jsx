@@ -16,6 +16,8 @@ import {
   updateCart,
 } from "../../../services/cartService";
 import { createCartItem } from "../../../services/cartItemServices";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../../../redux/Slices/cartSlices";
 import Rating from "../Rating/Rating";
 import Comment from "../Comment/Comment";
 
@@ -35,7 +37,7 @@ const ProductDetails = () => {
   const [showDesc, setShowDesc] = useState(false);
   const [showService, setShowService] = useState(false);
   const { user } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
 
   const sliderSettings = {
     dots: false,
@@ -76,6 +78,7 @@ const ProductDetails = () => {
         return;
       }
       const addCartResponse = await createCart(user?.data?.user_id, 0);
+
       if (addCartResponse?.errCode !== 0) {
         alert("Không thể tạo giỏ hàng. Vui lòng thử lại!");
         return;
@@ -88,7 +91,7 @@ const ProductDetails = () => {
         product?.price * quantity
       );
       if (addCartItemResponse?.errCode === 0) {
-        const cartDetails = await getByCartId(cartId);
+        const cartDetails = await getByCartId(user.data.user_id);
         if (cartDetails?.errCode === 0) {
           const totalAmount = cartDetails.data.cartItems.reduce(
             (total, item) => {
@@ -102,8 +105,14 @@ const ProductDetails = () => {
             cartDetails.data.user_id,
             totalAmount
           );
-          console.log("updateCartResponse", updateCartResponse);
+
           if (updateCartResponse?.errCode === 0) {
+            const newItem = {
+              product_id: id,
+              quantity: quantity,
+              total_price: product?.price * quantity,
+            };
+            dispatch(addItemToCart(newItem));
             alert(
               "Sản phẩm đã được thêm vào giỏ hàng thành công và tổng số tiền đã được cập nhật!"
             );
@@ -125,8 +134,6 @@ const ProductDetails = () => {
   useEffect(() => {
     fetchProductById();
   }, [id]);
-
-
 
   const sliderRef = React.useRef();
 

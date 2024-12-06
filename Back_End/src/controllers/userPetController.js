@@ -136,7 +136,6 @@ const deleteUserPet = async (req, res) => {
 const findByName = async (req, res) => {
   try {
     const { name_pet } = req.query;
-    console.log(req.query);
     const findByName = await userPetService.findByName(name_pet);
     if (findByName) {
       return res.status(200).json({

@@ -3,24 +3,64 @@ import "./Shopping_Cart.scss";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { MdDelete } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { setCart, updateItemQuantity } from "../../../redux/Slices/cartSlices";
 import { getByCartId, updateCart } from "../../../services/cartService";
 import { updateCartItem } from "../../../services/cartItemServices";
-import { useParams } from "react-router-dom";
+import { createOrder } from "../../../services/orderServices";
+import { createOrderItem } from "../../../services/orderItemServices";
 
 const Shopping_Cart = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [listCartItem, setListCartItem] = useState([]);
   const [check, setCheck] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [cartId, setCartId] = useState(0);
+  const [dataCart, setDataCart] = useState([]);
   const { id } = useParams();
+  const { user } = useSelector((state) => state.user);
 
   const fetchListCartItem = async () => {
     const data = await getByCartId(id);
     if (data && data.errCode === 0) {
+      setDataCart(data.data);
       setCartId(data.data.cart_id);
-
       setListCartItem(data.data.cartItems);
       setCheck(new Array(data.data.cartItems.length).fill(false));
+      dispatch(
+        setCart({
+          cartId: data.data.cart_id,
+          items: data.data.cartItems,
+        })
+      );
+    }
+  };
+
+  const handlePayment = async () => {
+    try {
+      const order = await createOrder(
+        calculateTotal(),
+        user?.data?.user_id,
+        cartId
+      );
+
+      const selectedItems = listCartItem.filter((_, index) => check[index]);
+      console.log("selectedItems", selectedItems);
+      const itemsForOrder = selectedItems.map((item) => ({
+        item_id: item.item_id,
+        quantity: item.quantity,
+        total_price: item.total_price,
+      }));
+      const orderItems = await createOrderItem(
+        order.data.order_id,
+        itemsForOrder
+      );
+      navigate(`/payment`, { state: { order_id: order.data.order_id } });
+    } catch (error) {
+      console.error("Failed to process payment:", error);
     }
   };
 
@@ -46,6 +86,13 @@ const Shopping_Cart = () => {
         changeQuantity + 1,
         total_price * (changeQuantity + 1)
       );
+      dispatch(
+        updateItemQuantity({
+          id,
+          quantity: changeQuantity + 1,
+          totalPrice: total_price * (changeQuantity + 1),
+        })
+      );
     }
     fetchListCartItem();
   };
@@ -54,9 +101,8 @@ const Shopping_Cart = () => {
     let sumTotal = 0;
     listCartItem.forEach((item, index) => {
       if (check[index]) {
-        sumTotal +=
-          item?.product_item?.price * item.quantity ||
-          item?.pet_item?.price * item.quantity;
+        const price = item?.product_item?.price || item?.pet_item?.price;
+        sumTotal += price * item.quantity;
       }
     });
     return sumTotal;
@@ -91,9 +137,9 @@ const Shopping_Cart = () => {
         newTotalAmount += price * item.quantity;
       }
     });
+
     await updateCart(cartId, id, newTotalAmount);
   };
-
   useEffect(() => {
     fetchListCartItem();
   }, []);
@@ -223,7 +269,9 @@ const Shopping_Cart = () => {
                     </div>
                   </div>
                 </div>
-                <button className="btn">Thanh Toán</button>
+                <button className="btn" onClick={handlePayment}>
+                  Thanh Toán
+                </button>
               </div>
             </Col>
           </Row>

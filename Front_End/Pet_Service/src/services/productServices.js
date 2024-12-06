@@ -10,6 +10,11 @@ const getProductById = (product_id) => {
   });
 };
 
+const getProductByName = (name) => {
+  console.log("chek name", name);
+  return axios.get(`/product/find-by-name?name=${name}`);
+};
+
 const createProduct = (name, description, price, categoryId, stock, images) => {
   const formData = new FormData();
   formData.append("name", name);
@@ -46,10 +51,16 @@ const deleteProduct = (product_id) => {
   });
 };
 
+const findByCategory = (category_id) => {
+  return axios.get(`/product/find-by-category/${category_id}`);
+};
+
 export {
   getAllProduct,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  findByCategory,
+  getProductByName,
 };

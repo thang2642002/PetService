@@ -57,15 +57,20 @@ const createPet = async (
       available,
       pet_type_id,
     });
+    const imageUrls = [];
     if (images && images.length > 0) {
       for (let image of images) {
         const imageUrl = await uploadImageToCloudinary(image);
-        await db.Pet_Image.create({
+        const newImage = await db.Pet_Image.create({
           pet_id: createPet.pet_id,
           image_url: imageUrl,
         });
+        imageUrls.push(imageUrl);
       }
     }
+    await createPet.update({
+      images: imageUrls,
+    });
     return createPet;
   } catch (error) {
     console.log(error);
@@ -105,13 +110,18 @@ const updatePet = async (
     });
     if (images && images.length > 0) {
       await db.Pet_Image.destroy({ where: { pet_id: pet_id } });
+      const imageUrls = [];
       for (let image of images) {
         const imageUrl = await uploadImageToCloudinary(image);
         await db.Pet_Image.create({
           pet_id: pet_id,
           image_url: imageUrl,
         });
+        imageUrls.push(imageUrl);
       }
+      await updatePet.update({
+        images: imageUrls,
+      });
     }
     return updatePet;
   } catch (error) {

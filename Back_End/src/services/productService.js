@@ -1,5 +1,5 @@
 import db from "../models/index";
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 import { cloudinary } from "../config/cloudinaryConfig";
 
 const uploadImageToCloudinary = async (image) => {
@@ -47,15 +47,23 @@ const createProduct = async (
       category_id,
       stock,
     });
+
+    const imageUrls = [];
     if (images && images.length > 0) {
       for (let image of images) {
         const imageUrl = await uploadImageToCloudinary(image);
-        await db.Product_Image.create({
+        const newImage = await db.Product_Image.create({
           product_id: createdProduct.product_id,
           image_url: imageUrl,
         });
+
+        imageUrls.push(imageUrl);
       }
     }
+
+    await createdProduct.update({
+      images: imageUrls,
+    });
 
     return createdProduct;
   } catch (error) {
@@ -77,6 +85,7 @@ const updateProduct = async (
     if (!updateProduct) {
       return null;
     }
+
     await updateProduct.update({
       name,
       description,
@@ -84,19 +93,28 @@ const updateProduct = async (
       category_id,
       stock,
     });
+
     if (images && images.length > 0) {
       await db.Product_Image.destroy({ where: { product_id: product_id } });
+      const imageUrls = [];
       for (let image of images) {
-        const imageUrl = await uploadImageToCloudinary(image); // Upload ảnh lên Cloudinary
+        const imageUrl = await uploadImageToCloudinary(image);
         await db.Product_Image.create({
           product_id: product_id,
           image_url: imageUrl,
         });
+        imageUrls.push(imageUrl);
       }
+
+      await updateProduct.update({
+        images: imageUrls,
+      });
     }
+
     return updateProduct;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 
@@ -105,7 +123,6 @@ const deleteProduct = async (product_id) => {
     const product = await db.Products.findByPk(product_id, {
       include: [{ model: db.Product_Image, as: "product_images" }],
     });
-    console.log("product", product);
     if (!product) {
       return null;
     }
@@ -149,6 +166,19 @@ const findById = async (product_id) => {
   }
 };
 
+const findByCategory = async (category_id) => {
+  try {
+    const data = await db.Products.findAll({
+      where: {
+        category_id: category_id,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllProduct,
   createProduct,
@@ -156,4 +186,5 @@ module.exports = {
   deleteProduct,
   findByName,
   findById,
+  findByCategory,
 };

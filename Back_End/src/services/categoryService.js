@@ -11,7 +11,6 @@ const getAllCategory = async () => {
 
 const createCategory = async (name, description) => {
   try {
-    console.log(name, description);
     const createCategory = await db.Category.create({ name, description });
     return createCategory;
   } catch (error) {

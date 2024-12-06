@@ -10,3 +10,10 @@
   text-overflow: ellipsis;
   max-width: 50px;
 }
+
+.customTdAdress {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}

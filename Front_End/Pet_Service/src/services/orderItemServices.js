@@ -4,8 +4,8 @@ const getAllOrderItem = () => {
   return axios.get("/order-item/get-all-order-item");
 };
 
-const createOrderItem = (order_id, product_id, quantity, total_price) => {
-  const data = { order_id, product_id, quantity, total_price };
+const createOrderItem = (order_id, items) => {
+  const data = { order_id, items };
   return axios.post("/order-item/create-order-item", data);
 };
 

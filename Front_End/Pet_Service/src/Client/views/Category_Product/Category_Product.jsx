@@ -1,12 +1,24 @@
 import { Button, Dropdown, Space, Checkbox } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Category_Product.scss";
 import Product_Carts from "../../components/Product_Carts";
 import ButtonSeeMore from "../../components/ButtonSeeMore";
+import { getAllPets } from "../../../services/petServices";
+import {
+  getAllProduct,
+  findByCategory,
+  getProductByName,
+} from "../../../services/productServices";
 
 const Category_Product = () => {
+  const location = useLocation();
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [listProduct, setListProduct] = useState([]);
+  const inputSearch = location.state;
+  const { type } = useParams();
 
   const priceOptions = [
     { label: "Dưới 20.000đ", value: "under_20000" },
@@ -23,7 +35,6 @@ const Category_Product = () => {
     { label: "Thương hiệu D", value: "brand_d" },
   ];
 
-  // Xử lý chọn giá
   const handleCheckboxChange = (value, type) => {
     if (type === "price") {
       setSelectedPrices((prev) =>
@@ -65,6 +76,27 @@ const Category_Product = () => {
       </Checkbox>
     ),
   }));
+
+  const fetchListProduct = async () => {
+    if (type === "pets") {
+      const data = await getAllPets();
+      setListProduct(data.data);
+    } else if (type === "products") {
+      const data = await getAllProduct();
+      setListProduct(data.data);
+    } else if (type === "pettags") {
+      const data = await findByCategory(2);
+      setListProduct(data.data);
+    } else if (type === "search") {
+      console.log("chek type");
+      const data = await getProductByName(inputSearch.inputSearch);
+      setListProduct(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchListProduct();
+  }, [[type, inputSearch]]);
 
   return (
     <>
@@ -119,8 +151,7 @@ const Category_Product = () => {
           </div>
         </div>
         <div>
-          <Product_Carts />
-          <Product_Carts />
+          <Product_Carts listProduct={listProduct} />
         </div>
         <ButtonSeeMore />
       </div>

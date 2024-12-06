@@ -33,13 +33,18 @@ module.exports = (sequelize, DataTypes) => {
 
   OrderItem.associate = function (models) {
     OrderItem.belongsTo(models.Products, {
-      // Đảm bảo tên model là 'Products'
-      foreignKey: "product_id",
-      as: "product",
+      foreignKey: "item_id",
+      as: "product_item",
     });
     OrderItem.belongsTo(models.Order, {
       foreignKey: "order_id",
       as: "order",
+    });
+
+    OrderItem.belongsTo(models.Pets, {
+      foreignKey: "item_id",
+      constraints: false,
+      as: "pet_item",
     });
   };
 

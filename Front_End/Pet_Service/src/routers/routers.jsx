@@ -25,9 +25,11 @@ import OrderDetails from "../Client/views/Order_Details/OrderDetails";
 import PetInfoForm from "../Client/components/PetInfoForm";
 import AppointmentForm from "../Client/components/ApointmentForm";
 import ProfileUser from "../Client/views/ProfileUser/ProfileUser";
+import CategoryProduct from "../Client/views/Category_Product/Category_Product";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
+import Contact from "../Client/views/Contact/Contact";
 
 export const routers = [
   {
@@ -86,6 +88,8 @@ export const routers = [
         element: <PetInfoForm />,
       },
       { path: "profile-user", element: <ProfileUser /> },
+      { path: "category-product/:type", element: <CategoryProduct /> },
+      { path: "contact", element: <Contact /> },
     ],
   },
   // { path: "*", element: <NotFoundPage /> },

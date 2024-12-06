@@ -11,20 +11,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/Slices/userSlices";
 import { logoutUser } from "../../services/userServices";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  const [inputSearch, setInputSearch] = useState("");
   const dispatch = useDispatch();
-  const userCart = user?.data?.user_id;
+  const cart = useSelector((state) => state.cart);
   const menuItems = (
     <Menu
       items={[
-        { label: <a href="#home">Trang chủ</a>, key: "1" },
-        { label: <a href="#products">Sản phẩm</a>, key: "2" },
-        { label: <a href="#services">Dịch vụ</a>, key: "3" },
-        { label: <a href="#about">Giới thiệu</a>, key: "4" },
-        { label: <a href="#contact">Liên hệ</a>, key: "5" },
+        { label: <a href="/">Trang chủ</a>, key: "1" },
+        {
+          label: <div onClick={() => handleProduct("products")}>Sản phẩm</div>,
+          key: "2",
+        },
+        {
+          label: <div onClick={() => handlePet("pets")}>Thú cưng</div>,
+          key: "3",
+        },
+        { label: <a href="/info-pet">Dịch vụ</a>, key: "4" },
+        { label: <div href="#about">Giới thiệu</div>, key: "5" },
+        { label: <a href="/contact">Liên hệ</a>, key: "6" },
       ]}
     />
   );
@@ -33,6 +42,22 @@ const Header = () => {
     await logoutUser();
     localStorage.removeItem("access_tokens");
     dispatch(logout());
+  };
+
+  const handleSearch = (e, type) => {
+    if (e.key === "Enter") {
+      console.log("Check inputSearch before navigate:", inputSearch);
+      navigate(`/category-product/${type}`, { state: { inputSearch } });
+      setInputSearch("");
+    }
+  };
+
+  const handleProduct = (type) => {
+    navigate(`/category-product/${type}`);
+  };
+
+  const handlePet = (type) => {
+    navigate(`/category-product/${type}`);
   };
 
   const userMenuItems = [
@@ -87,6 +112,9 @@ const Header = () => {
           type="text"
           placeholder="Tìm kiếm sản phẩm"
           className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
+          onKeyDown={(e) => handleSearch(e, "search")}
         />
       </div>
       <div className="header-action flex items-center gap-4">
@@ -111,12 +139,20 @@ const Header = () => {
             <div>Tài Khoản</div>
           </div>
         )}
-        <Link to={`shop-carts/${user?.data?.user_id}`}>
+        <Link
+          to={`shop-carts/${user?.data?.user_id}`}
+          style={{ textDecoration: "none", color: "#252a2b" }}
+        >
           <div className="carts flex flex-col justify-center items-center cursor-pointer">
-            <FontAwesomeIcon
-              icon={faCartShopping}
-              className="icon text-gray-700"
-            />
+            <div className="relative">
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                className="icon text-gray-700"
+              />
+              <span className="absolute top-[-15px] right-[-25px] px-[7px] py-[1px] bg-red-500 text-[14px] rounded-full text-white">
+                {cart.totalItems}
+              </span>
+            </div>
             <div>Giỏ Hàng</div>
           </div>
         </Link>
