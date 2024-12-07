@@ -30,7 +30,12 @@ const Group_Menu = () => {
             <p>Pettag Mozzi</p>
           </div>
           <div className="cart-item">
-            <p>Dịch vụ spa</p>
+            <Link
+              to="/info-pet"
+              style={{ textDecoration: "none", color: "#252a2b" }}
+            >
+              Dịch vụ pet
+            </Link>
           </div>
           <div className="cart-item">
             <p>Khuyến mãi</p>

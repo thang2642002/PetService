@@ -33,6 +33,22 @@ const getPaginate = async (req, res) => {
   }
 };
 
+const getPaginateProduct = (req, res) => {
+  try {
+    const { listProduct, page = 1, limit = 8 } = req.body;
+    const result =paginateServices.paginateProducts({ listProduct, page, limit });
+    res.status(200).json({
+      data: result.paginatedProducts,
+      currentPage: result.currentPage,
+      totalItems: result.totalItems,
+      totalPages: result.totalPages,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
 module.exports = {
   getPaginate,
+  getPaginateProduct,
 };

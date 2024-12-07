@@ -1,7 +1,11 @@
 import { Row, Col, Button } from "antd";
 import { Form } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import { getByOrder } from "../../../services/orderServices";
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getByOrder,
+  updateOrderPayment,
+} from "../../../services/orderServices";
 import { useEffect, useState } from "react";
 
 const Payment = () => {
@@ -10,6 +14,7 @@ const Payment = () => {
   const [order, setOrder] = useState({});
   const [listOrderItem, setListOrderItem] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const navigate = useNavigate();
 
   const fetchOrder = async () => {
     const data = await getByOrder(order_id);
@@ -17,9 +22,16 @@ const Payment = () => {
     setTotalAmount(data.data.total_amount);
     setListOrderItem(data.data.orderItems);
   };
-  console.log("check order", order);
-  console.log("check listOrderItem", listOrderItem);
-  console.log("check totalAmount", totalAmount);
+
+  const handlePayment = async () => {
+    const data = await updateOrderPayment(order_id);
+    if (data && data.errCode === 0) {
+      toast.success("Thanh toán thành công");
+      navigate(`/order-details`, {
+        state: { dataOrder: order, totalAmount: totalAmount },
+      });
+    }
+  };
 
   useEffect(() => {
     fetchOrder();
@@ -152,14 +164,13 @@ const Payment = () => {
                 </Col>
                 <Col xs={6} sm={4} md={2}>
                   <div className="text-sm font-semibold text-gray-700">
-                    {item?.total_price || "0đ"}
+                    {item?.total_price.toLocaleString() || "0đ"}
                   </div>
                 </Col>
               </Row>
             ))}
         </div>
 
-        {/* Tổng tiền và tiền giao hàng */}
         <div className="mt-6 mb-6 flex flex-col items-end space-y-3">
           <div className="text-base text-gray-800">
             Tiền giao hàng:{" "}
@@ -168,19 +179,19 @@ const Payment = () => {
             </span>
           </div>
           <div className="text-lg font-semibold text-gray-800">
-            Tổng tiền:{" "}
+            Tổng tiền:
             <span className="text-red-500">
               {finalAmount.toLocaleString()}đ
             </span>
           </div>
         </div>
 
-        {/* Xác nhận đặt hàng */}
         <div className="flex justify-end">
           <Button
             type="primary"
             size="large"
             className="bg-blue-600 text-white font-medium px-6 py-2 rounded-md shadow hover:bg-blue-500 transition"
+            onClick={handlePayment}
           >
             Xác nhận đặt hàng
           </Button>

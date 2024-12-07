@@ -2,7 +2,7 @@ import SideBar from "./Side_Bar/Side_Bar";
 import "./Admin.scss";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
 
@@ -22,18 +22,6 @@ const Admin = () => {
           <Outlet />
         </div>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 };

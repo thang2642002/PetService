@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { updateUser } from "../../../services/userServices";
 
 const ModalUpdateUser = (props) => {
@@ -203,18 +203,6 @@ const ModalUpdateUser = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   );
 };

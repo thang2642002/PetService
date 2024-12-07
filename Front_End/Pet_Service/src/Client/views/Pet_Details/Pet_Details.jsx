@@ -7,6 +7,7 @@ import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Pet_Details.jsx.scss";
 import Suggest from "../Suggest/Suggest";
 import { getPetById } from "../../../services/petServices";
@@ -72,12 +73,12 @@ const Pet_Details = () => {
   const handleAddCart = async () => {
     try {
       if (!user) {
-        alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
+        toast.error("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
         return;
       }
       const addCartResponse = await createCart(user?.data?.user_id, 0);
       if (addCartResponse?.errCode !== 0) {
-        alert("Không thể tạo giỏ hàng. Vui lòng thử lại!");
+        toast.error("Không thể tạo giỏ hàng. Vui lòng thử lại!");
         return;
       }
       const cartId = addCartResponse?.data?.cart_id;
@@ -88,7 +89,7 @@ const Pet_Details = () => {
         pet?.price * quantity
       );
       if (addCartItemResponse?.errCode === 0) {
-        const cartDetails = await getByCartId(cartId);
+        const cartDetails = await getByCartId(user.data.user_id);
         if (cartDetails?.errCode === 0) {
           const totalAmount = cartDetails.data.cartItems.reduce(
             (total, item) => {
@@ -103,21 +104,18 @@ const Pet_Details = () => {
             totalAmount
           );
           if (updateCartResponse?.errCode === 0) {
-            alert(
-              "Sản phẩm đã được thêm vào giỏ hàng thành công và tổng số tiền đã được cập nhật!"
-            );
+            toast.success("Sản phẩm đã được thêm vào giỏ hàng thành công");
           } else {
-            alert(
+            toast.error(
               "Sản phẩm đã thêm vào giỏ hàng nhưng không thể cập nhật tổng số tiền!"
             );
           }
         }
       } else {
-        alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+        toast.error("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
       }
     } catch (error) {
       console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
-      alert("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
     }
   };
 

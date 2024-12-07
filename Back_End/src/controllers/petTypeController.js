@@ -53,7 +53,6 @@ const updatePetType = async (req, res) => {
   try {
     const pet_type_id = req.params.id;
     const { type_name, description } = req.body;
-    console.log(req.body);
     const updatePetType = await petTypeService.updatePetType(
       pet_type_id,
       type_name,

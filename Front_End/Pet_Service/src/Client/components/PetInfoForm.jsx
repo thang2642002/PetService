@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input, Button } from "antd";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { createUserPet } from "../../services/userPetServices";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
@@ -34,11 +35,11 @@ const PetInfoForm = () => {
       userId
     );
     if (data && data.errCode === 0) {
-      console.log("Bạn đã nhập thông tin thành công");
+      toast.success("Bạn đã nhập thông tin thành công");
       const userPetId = data.data.user_pet_id;
       navigate("/appointment", { state: { userPetId, userId } });
     } else {
-      console.log("Bạn đã nhập thông tin thất bại");
+      toast.error("Bạn chưa nhập đầy đủ thông tin");
     }
   };
 

@@ -53,7 +53,6 @@ const updateCart = async (req, res) => {
   const { user_id, total_amount } = req.body;
   try {
     const data = await CartService.updateCart(cart_id, user_id, total_amount);
-    console.log("data", data);
     if (data) {
       return res.status(200).json({
         errCode: 0,
@@ -100,7 +99,6 @@ const deleteCart = async (req, res) => {
 
 const getByCartId = async (req, res) => {
   const user_id = req.params.id;
-  console.log("pẩm", req.params);
   try {
     const data = await CartService.getByCartId(user_id);
     if (data) {

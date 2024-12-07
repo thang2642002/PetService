@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { routers } from "./routers/routers";
+import { ToastContainer } from "react-toastify";
 import { getUserById } from "./services/userServices";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
@@ -25,22 +26,38 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Routes>
-        {routers.map((route, index) => (
-          <Route key={index} path={route.path} element={route.element}>
-            {route.children &&
-              route.children.map((child, childIndex) => (
-                <Route
-                  key={childIndex}
-                  path={child.path}
-                  element={child.element}
-                />
-              ))}
-          </Route>
-        ))}
-      </Routes>
-    </div>
+    <>
+      <div>
+        <Routes>
+          {routers.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element}>
+              {route.children &&
+                route.children.map((child, childIndex) => (
+                  <Route
+                    key={childIndex}
+                    path={child.path}
+                    element={child.element}
+                  />
+                ))}
+            </Route>
+          ))}
+        </Routes>
+      </div>
+      <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </div>
+    </>
   );
 }
 

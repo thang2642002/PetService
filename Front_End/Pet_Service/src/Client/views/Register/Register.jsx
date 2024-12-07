@@ -2,7 +2,7 @@ import "./Register.scss";
 import { Row, Col } from "react-bootstrap";
 import background from "../../../assets/img/background.png";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../../services/userServices";
@@ -238,18 +238,6 @@ const Register = () => {
           </Row>
         </div>
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   );
 };

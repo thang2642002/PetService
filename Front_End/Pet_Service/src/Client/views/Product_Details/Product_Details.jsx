@@ -7,6 +7,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import "./Product_Details.scss";
 import Suggest from "../Suggest/Suggest";
 import { getProductById } from "../../../services/productServices";
@@ -74,13 +75,13 @@ const ProductDetails = () => {
   const handleAddCart = async () => {
     try {
       if (!user) {
-        alert("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
+        toast.error("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
         return;
       }
       const addCartResponse = await createCart(user?.data?.user_id, 0);
 
       if (addCartResponse?.errCode !== 0) {
-        alert("Không thể tạo giỏ hàng. Vui lòng thử lại!");
+        toast.error("Không thể tạo giỏ hàng. Vui lòng thử lại!");
         return;
       }
       const cartId = addCartResponse?.data?.cart_id;
@@ -113,21 +114,18 @@ const ProductDetails = () => {
               total_price: product?.price * quantity,
             };
             dispatch(addItemToCart(newItem));
-            alert(
-              "Sản phẩm đã được thêm vào giỏ hàng thành công và tổng số tiền đã được cập nhật!"
-            );
+            toast.success("Sản phẩm đã được thêm vào giỏ hàng thành công ");
           } else {
-            alert(
+            toast.error(
               "Sản phẩm đã thêm vào giỏ hàng nhưng không thể cập nhật tổng số tiền!"
             );
           }
         }
       } else {
-        alert("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+        toast.error("Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
       }
     } catch (error) {
       console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
-      alert("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
     }
   };
 

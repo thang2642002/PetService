@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import db from "../models/index";
 const getAllOrder = async () => {
   try {
@@ -119,6 +118,22 @@ const getOrderByOrder = async (order_id) => {
   }
 };
 
+const updateOrderPayment = async (order_id) => {
+  try {
+    const updateOrder = await db.Order.findByPk(order_id);
+    if (!updateOrder) {
+      return null;
+    }
+    await updateOrder.update({
+      status: "completed",
+    });
+    console.log("updateOrder", updateOrder);
+    return updateOrder;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
@@ -126,4 +141,5 @@ module.exports = {
   deleteOrder,
   getOrderById,
   getOrderByOrder,
+  updateOrderPayment,
 };

@@ -23,4 +23,15 @@ const deleteOrder = (order_id) => {
   });
 };
 
-export { getAllOrder, createOrder, updateOrder, deleteOrder, getByOrder };
+const updateOrderPayment = (order_id) => {
+  return axios.put(`/order/update-order-payment/${order_id}`);
+};
+
+export {
+  getAllOrder,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+  getByOrder,
+  updateOrderPayment,
+};

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Shopping_Cart.scss";
 import { Row, Col, Container, Form } from "react-bootstrap";
+import { toast } from "react-toastify";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,10 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCart, updateItemQuantity } from "../../../redux/Slices/cartSlices";
 import { getByCartId, updateCart } from "../../../services/cartService";
-import { updateCartItem } from "../../../services/cartItemServices";
+import {
+  updateCartItem,
+  deleteCartItem,
+} from "../../../services/cartItemServices";
 import { createOrder } from "../../../services/orderServices";
 import { createOrderItem } from "../../../services/orderItemServices";
 
@@ -48,7 +52,6 @@ const Shopping_Cart = () => {
       );
 
       const selectedItems = listCartItem.filter((_, index) => check[index]);
-      console.log("selectedItems", selectedItems);
       const itemsForOrder = selectedItems.map((item) => ({
         item_id: item.item_id,
         quantity: item.quantity,
@@ -140,6 +143,14 @@ const Shopping_Cart = () => {
 
     await updateCart(cartId, id, newTotalAmount);
   };
+
+  const handleDeleteItem = async (id) => {
+    const data = await deleteCartItem(id);
+    if (data && data.errCode === 0) {
+      toast.success("Sản phẩm này đã xóa khỏi giỏ hàng");
+      fetchListCartItem();
+    }
+  };
   useEffect(() => {
     fetchListCartItem();
   }, []);
@@ -152,24 +163,38 @@ const Shopping_Cart = () => {
           <Row>
             <Col lg={9}>
               <div className="details-product">
-                <div className="title-carts-product">
-                  <Form.Check
-                    inline
-                    label="Tất cả"
-                    className="check-box"
-                    checked={isAllChecked}
-                    onChange={handleCheckAll}
-                  />
-                  <div className="title-price">Đơn giá</div>
-                  <div className="title-quantity">Số lượng</div>
-                  <div className="title-total-price">Thành tiền</div>
-                  <div className="delete">
-                    <MdDelete />
-                  </div>
+                <div>
+                  <Row>
+                    <Col md={2}>
+                      <Form.Check
+                        inline
+                        label="Tất cả"
+                        className="check-box"
+                        checked={isAllChecked}
+                        onChange={handleCheckAll}
+                      />
+                    </Col>
+                    <Col md={2}>
+                      <div>Sản phẩm</div>
+                    </Col>
+
+                    <Col md={2} className="ml-14">
+                      <div>Đơn giá</div>
+                    </Col>
+                    <Col md={2} className="ml-[-35px]">
+                      <div>Số lượng</div>
+                    </Col>
+                    <Col md={2}>
+                      <div>Thành tiền</div>
+                    </Col>
+                    <Col md={1}>
+                      <div className="text-[20px]">
+                        <MdDelete />
+                      </div>
+                    </Col>
+                  </Row>
                 </div>
                 <div className="product-carts">
-                  <div className="title">Sản phẩm</div>
-
                   {listCartItem &&
                     Array.isArray(listCartItem) &&
                     listCartItem.map((item, index) => (
@@ -182,7 +207,7 @@ const Shopping_Cart = () => {
                           />
                         </Col>
 
-                        <Col md={4}>
+                        <Col md={3}>
                           <div className="title-product">
                             <img
                               src="https://product.hstatic.net/200000263355/product/z5625317232002_a6d5cca3bb39d486d8870c927d894c21_839973b078544de8bc1a13c2a6aef528_medium.jpg"
@@ -246,6 +271,15 @@ const Shopping_Cart = () => {
                         <Col md={2}>
                           <div className="total-price-product">
                             {formatPrice(item.total_price)} đ
+                          </div>
+                        </Col>
+
+                        <Col md={1}>
+                          <div
+                            className="text-[20px] cursor-pointer"
+                            onClick={() => handleDeleteItem(item.cart_item_id)}
+                          >
+                            <MdDelete />
                           </div>
                         </Col>
                       </Row>

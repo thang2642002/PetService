@@ -76,7 +76,6 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const post_id = req.params.id;
-    console.log(post_id);
     const deletePost = await postService.deletePost(post_id);
     if (deletePost) {
       return res.status(200).json({

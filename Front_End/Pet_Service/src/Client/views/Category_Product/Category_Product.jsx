@@ -88,7 +88,6 @@ const Category_Product = () => {
       const data = await findByCategory(2);
       setListProduct(data.data);
     } else if (type === "search") {
-      console.log("chek type");
       const data = await getProductByName(inputSearch.inputSearch);
       setListProduct(data.data);
     }

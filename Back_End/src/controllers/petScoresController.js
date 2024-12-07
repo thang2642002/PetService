@@ -67,7 +67,6 @@ const createPetScores = async (req, res) => {
 const updatePetScores = async (req, res) => {
   try {
     const score_id = req.params.id;
-    console.log(score_id);
     const {
       score_date,
       health_score,

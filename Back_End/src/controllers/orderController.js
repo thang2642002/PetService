@@ -156,6 +156,31 @@ const getOrderByOrder = async (req, res) => {
     });
   }
 };
+
+const updateOrderPayment = async (req, res) => {
+  try {
+    const order_id = req.params.id;
+
+    const updateOrder = await orderService.updateOrderPayment(order_id);
+    if (updateOrder) {
+      return res.status(200).json({
+        message: "Update order is the success",
+        errCode: 0,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Update order is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server error, Update order is the fails",
+      errCode: -1,
+    });
+  }
+};
 module.exports = {
   getAllOrder,
   createOrder,
@@ -163,4 +188,5 @@ module.exports = {
   deleteOrder,
   getOrderById,
   getOrderByOrder,
+  updateOrderPayment,
 };

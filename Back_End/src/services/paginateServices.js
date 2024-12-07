@@ -1,5 +1,3 @@
-
-
 const fetchPaginatedData = async (model, page, pageSize) => {
   try {
     const totalItems = await model.count();
@@ -23,4 +21,18 @@ const fetchPaginatedData = async (model, page, pageSize) => {
   }
 };
 
-module.exports = { fetchPaginatedData };
+const paginateProducts = ({ listProduct, page = 1, limit = 8 }) => {
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + parseInt(limit);
+
+  const paginatedProducts = listProduct.slice(startIndex, endIndex);
+
+  return {
+    paginatedProducts,
+    currentPage: parseInt(page),
+    totalItems: listProduct.length,
+    totalPages: Math.ceil(listProduct.length / limit),
+  };
+};
+
+module.exports = { fetchPaginatedData, paginateProducts };

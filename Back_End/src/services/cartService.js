@@ -78,7 +78,6 @@ const getByCartId = async (user_id) => {
         },
       ],
     });
-    console.log("data", data);
     return data;
   } catch (error) {
     console.error("Error in getByCartId:", error);
