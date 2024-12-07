@@ -13,7 +13,7 @@ const Home = () => {
         <Group_Menu />
         <Slice />
         <Promotion />
-        <List_Product />
+        <List_Product type="products" />
         <List_Pets />
         <Banner />
         <Blog />

@@ -29,7 +29,7 @@ const Product_Cart_Item = (props) => {
             {product?.name || product.name}
           </div>
           <div className="pl-2 text-sm text-black font-medium">
-            {product.price} đ
+            {product.price.toLocaleString()} đ
           </div>
           <button className="mt-3 w-full h-[40px] flex items-center justify-center relative group overflow-hidden p-2 border border-[#6b4433] rounded">
             <span className="absolute inset-0 bg-[#6b4433] transition-transform duration-300 ease-in-out transform -translate-x-[101%] group-hover:translate-x-0"></span>

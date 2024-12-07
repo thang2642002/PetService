@@ -1,10 +1,14 @@
-const ButtonSeeMore = () => {
+const ButtonSeeMore = ({ onClick, disabled }) => {
   return (
-    <div className="flex justify-center items-center mt-5 cursor-pointer">
-      <div className="text-sm px-4 py-2 border-[1px] border-[#6b4433] rounded-sm text-[#6b4433] text-center font-normal">
-        Xem thêm sản phẩm
-      </div>
-    </div>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`mt-4 px-6 py-2 rounded ${
+        disabled ? "bg-gray-300 cursor-not-allowed" : "bg-[#6b4433] text-white"
+      }`}
+    >
+      {disabled ? "Hết sản phẩm" : "Xem thêm"}
+    </button>
   );
 };
 

@@ -6,4 +6,9 @@ const getPaginate = (model, page, pageSize) => {
   );
 };
 
-export { getPaginate };
+const getPaginateProduct = ({ listProduct, page = 1, limit = 8 }) =>{
+  const data = { listProduct, page, limit  }
+  return axios.post("/paginate/get-paginated-product", data)
+}
+
+export { getPaginate, getPaginateProduct };
