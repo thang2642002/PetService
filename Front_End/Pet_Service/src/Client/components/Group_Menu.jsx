@@ -41,7 +41,10 @@ const Group_Menu = () => {
             <p>Khuyến mãi</p>
           </div>
           <div className="cart-item">
-            <Link style={{ textDecoration: "none", color: "#252a2b" }}>
+            <Link
+              to="/post"
+              style={{ textDecoration: "none", color: "#252a2b" }}
+            >
               Tin tức
             </Link>
           </div>

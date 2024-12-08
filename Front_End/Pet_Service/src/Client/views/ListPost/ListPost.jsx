@@ -129,6 +129,17 @@ const ListPost = () => {
                   </div>
                 </div>
               </div>
+              <div>
+                <div className="text-[20px] text-[#522f1f] font-medium mb-3 mt-[100px]">
+                  Dịch vụ Hot
+                </div>
+                <div className="mt-2 text-[16px] border-t-2 pt-2 font-medium">
+                  Tắm cắt spa Chó Mèo
+                </div>
+                <div className="mt-2 text-[16px] border-t-2 pt-2 font-medium">
+                  Dịch vụ đưa đón
+                </div>
+              </div>
             </Col>
           </Row>
         </div>

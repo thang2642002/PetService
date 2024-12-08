@@ -7,6 +7,7 @@ import {
   updateOrderPayment,
 } from "../../../services/orderServices";
 import { useEffect, useState } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const Payment = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const Payment = () => {
   const [order, setOrder] = useState({});
   const [listOrderItem, setListOrderItem] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const navigate = useNavigate();
 
   const fetchOrder = async () => {
@@ -23,22 +25,46 @@ const Payment = () => {
     setListOrderItem(data.data.orderItems);
   };
 
-  const handlePayment = async () => {
-    const data = await updateOrderPayment(order_id);
-    if (data && data.errCode === 0) {
-      toast.success("Thanh toán thành công");
-      navigate(`/order-details`, {
-        state: { dataOrder: order, totalAmount: totalAmount },
-      });
-    }
-  };
-
   useEffect(() => {
     fetchOrder();
   }, [order_id]);
 
   const shippingFee = 30000;
   const finalAmount = totalAmount + shippingFee;
+
+  const handlePaymentSelection = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
+  const handleOrderCompletion = async () => {
+    try {
+      const response = await updateOrderPayment(order_id);
+      if (response?.errCode === 0) {
+        toast.success("Thanh toán thành công!");
+        navigate(`/order-details`, {
+          state: { dataOrder: order, totalAmount: finalAmount },
+        });
+      }
+    } catch (error) {
+      toast.error(
+        "Có lỗi xảy ra trong quá trình cập nhật thông tin thanh toán."
+      );
+    }
+  };
+
+  const handlePayPalSuccess = async () => {
+    try {
+      const response = await updateOrderPayment(order_id);
+      if (response?.errCode === 0) {
+        toast.success("Thanh toán qua PayPal thành công!");
+        navigate(`/order-details`, {
+          state: { dataOrder: order, totalAmount: finalAmount },
+        });
+      }
+    } catch (error) {
+      toast.error("Có lỗi trong việc xác nhận thanh toán qua PayPal");
+    }
+  };
 
   return (
     <div className="bg-gray-50 flex items-center justify-center">
@@ -48,34 +74,27 @@ const Payment = () => {
             Thông tin giao hàng
           </div>
           <div className="text-sm text-gray-600">
-            <div className="block">
+            <div>
               Gmail khách hàng:
               <span className="font-medium text-gray-800 ml-2">
                 {order?.user?.email}
               </span>
             </div>
-            <div className="block mt-2">
+            <div>
               Họ và tên khách hàng:
               <span className="font-medium text-gray-800 ml-2">
                 {order?.user?.user_name}
               </span>
             </div>
-            <div className="block mt-2">
+            <div>
               Địa chỉ giao hàng:
               <span className="font-medium text-gray-800 ml-2">
                 {order?.user?.address}
               </span>
             </div>
-            <div className="block mt-2">
-              Số điện thoại khách hàng:
-              <span className="font-medium text-gray-800 ml-2">
-                {/* {data.user.phone} */}
-              </span>
-            </div>
           </div>
         </div>
 
-        {/* Phương thức thanh toán */}
         <div className="mb-6">
           <div className="text-lg font-semibold text-gray-800 mb-2">
             Phương thức Thanh toán
@@ -86,89 +105,71 @@ const Payment = () => {
               label="Thanh toán bằng Ví PayPal"
               name="payment"
               type="radio"
-              value="paypall"
+              value="paypal"
+              onChange={handlePaymentSelection}
               id="1"
-              className="mr-2"
+              checked={paymentMethod === "paypal"}
             />
             <Form.Check
               inline
               label="Thanh toán khi nhận hàng"
               name="payment"
-              value="cod"
               type="radio"
+              value="cod"
+              onChange={handlePaymentSelection}
               id="2"
-              className="mr-2"
+              checked={paymentMethod === "cod"}
             />
           </div>
         </div>
 
-        {/* Kiểm tra lại đơn hàng */}
-        <div className="mb-6">
-          <div className="text-lg font-semibold text-gray-800 mb-4">
-            KIỂM TRA LẠI ĐƠN HÀNG
-          </div>
-          <div>
-            <Row className="flex items-center justify-between border-b border-[#e5e7eb] pb-3 mb-2">
-              <Col xs={6} sm={4} md={2}>
-                <div className="text-base font-medium text-gray-800">
-                  Hình ảnh
-                </div>
-              </Col>
-              <Col xs={6} sm={8} md={6}>
-                <div className="text-base font-medium text-gray-800">
-                  Tên sản phẩm
-                </div>
-              </Col>
-              <Col xs={6} sm={4} md={2}>
-                <div className="text-sm font-semibold text-gray-700">
-                  Số lượng
-                </div>
-              </Col>
-              <Col xs={6} sm={4} md={2}>
-                <div className="text-sm font-semibold text-gray-700">
-                  Giá sản phẩm
-                </div>
-              </Col>
-            </Row>
-          </div>
-          {listOrderItem &&
-            listOrderItem.map((item, index) => (
-              <Row
-                key={index}
-                className="flex items-center justify-between shadow-sm bg-white rounded-md py-4 px-3 mb-4 hover:shadow-md transition-shadow mt-4"
+        <div className="flex justify-between items-center mt-4">
+          {paymentMethod === "paypal" && (
+            <div className="flex-grow flex justify-end">
+              <PayPalScriptProvider
+                options={{
+                  "client-id":
+                    "AeEIeat65GIA9xV5QvJLsZlU8YiQmdrV_mfROsmnXIFlaJelvTK95RXd-KG_6F3CADfHSpxGzPPXmmlT",
+                }}
               >
-                <Col
-                  xs={6}
-                  sm={4}
-                  md={2}
-                  className="w-16 h-16 overflow-hidden rounded-md"
-                >
-                  <img
-                    src={
-                      item?.product_item?.images[0] || item?.pet_item?.images[0]
-                    }
-                    alt="product"
-                    className="w-full h-full object-cover"
-                  />
-                </Col>
+                <PayPalButtons
+                  style={{
+                    layout: "horizontal",
+                    height: 40,
+                  }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: (finalAmount / 32000).toFixed(2),
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                  onApprove={(data, actions) => {
+                    return actions.order.capture().then(() => {
+                      handlePayPalSuccess();
+                    });
+                  }}
+                />
+              </PayPalScriptProvider>
+            </div>
+          )}
 
-                <Col xs={6} sm={8} md={6}>
-                  <div className="text-base font-medium text-gray-800">
-                    {item?.product_item?.name || item?.pet_item?.name}
-                  </div>
-                </Col>
-                <Col xs={6} sm={4} md={2}>
-                  <div className="text-sm font-semibold text-gray-700">
-                    {item?.quantity}
-                  </div>
-                </Col>
-                <Col xs={6} sm={4} md={2}>
-                  <div className="text-sm font-semibold text-gray-700">
-                    {item?.total_price.toLocaleString() || "0đ"}
-                  </div>
-                </Col>
-              </Row>
-            ))}
+          {paymentMethod === "cod" && (
+            <div className="flex-grow flex justify-end">
+              <Button
+                type="primary"
+                size="large"
+                className="bg-blue-600 text-white font-medium px-6 py-2 rounded-md shadow hover:bg-blue-500 transition"
+                onClick={handleOrderCompletion}
+              >
+                Xác nhận đặt hàng
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 mb-6 flex flex-col items-end space-y-3">
@@ -179,22 +180,11 @@ const Payment = () => {
             </span>
           </div>
           <div className="text-lg font-semibold text-gray-800">
-            Tổng tiền:
+            Tổng tiền:{" "}
             <span className="text-red-500">
               {finalAmount.toLocaleString()}đ
             </span>
           </div>
-        </div>
-
-        <div className="flex justify-end">
-          <Button
-            type="primary"
-            size="large"
-            className="bg-blue-600 text-white font-medium px-6 py-2 rounded-md shadow hover:bg-blue-500 transition"
-            onClick={handlePayment}
-          >
-            Xác nhận đặt hàng
-          </Button>
         </div>
       </div>
     </div>
