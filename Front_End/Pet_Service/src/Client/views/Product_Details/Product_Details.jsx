@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Spinner } from "react-bootstrap";
 import Slider from "react-slick";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
@@ -37,6 +37,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [showDesc, setShowDesc] = useState(false);
   const [showService, setShowService] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -68,8 +69,19 @@ const ProductDetails = () => {
   };
 
   const fetchProductById = async () => {
-    const dataProduct = await getProductById(id);
-    setProduct(dataProduct.data);
+    try {
+      const response = await getProductById(id);
+      if (response?.data) {
+        setProduct(response.data);
+      } else {
+        toast.error("Không thể tải thông tin sản phẩm!");
+      }
+    } catch (error) {
+      console.error("Error loading product details:", error);
+      toast.error("Có lỗi xảy ra khi tải thông tin sản phẩm.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddCart = async () => {
@@ -129,11 +141,21 @@ const ProductDetails = () => {
     }
   };
 
+  console.log("check product", product);
+
   useEffect(() => {
     fetchProductById();
   }, [id]);
 
   const sliderRef = React.useRef();
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spinner animation="border" role="status" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

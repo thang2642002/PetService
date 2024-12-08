@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Product_Cart_Item from "../../components/Product_Cart_Item";
-import Pet_Carts_Item from "../../components/Pet_Carts_Item";
+import Product_Cart_Item from "../../../Client/components/Product_Cart_Item";
+import PetProductCartsItem from "../ListPetProduct/PetProductCartsItem";
 import { Row, Col } from "react-bootstrap";
 import { getAllProduct } from "../../../services/productServices";
 import { getAllPets } from "../../../services/petServices";
@@ -14,8 +14,7 @@ const Suggest = (props) => {
     if (product && product?.category_id) {
       const dataProduct = await getAllProduct();
       setListProduct(dataProduct?.data);
-    }
-    if (pet && pet?.pet_type_id) {
+    } else {
       const dataPet = await getAllPets();
       setListPet(dataPet?.data);
     }
@@ -23,7 +22,7 @@ const Suggest = (props) => {
 
   useEffect(() => {
     fetchAllData();
-  }, [product, pet]);
+  }, [product]);
 
   const filteredProducts =
     product && product?.category_id
@@ -32,15 +31,10 @@ const Suggest = (props) => {
             product?.category_id === item?.category_id &&
             product.product_id !== item.product_id
         )
-      : [];
-
-  const filteredPets =
-    pet && pet.pet_type_id
-      ? listPet.filter(
+      : listPet.filter(
           (item) =>
             pet.pet_type_id === item.pet_type_id && pet.pet_id !== item.pet_id
-        )
-      : [];
+        );
 
   return (
     <>
@@ -53,14 +47,8 @@ const Suggest = (props) => {
             {filteredProducts.length > 0 &&
               filteredProducts.map((product, index) => (
                 <Col xs={12} sm={6} md={4} lg={3} key={`product-${index}`}>
+                  {console.log("product", product)}
                   <Product_Cart_Item product={product} />
-                </Col>
-              ))}
-
-            {filteredPets.length > 0 &&
-              filteredPets.map((pet, index) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={`pet-${index}`}>
-                  <Pet_Carts_Item pet={pet} />
                 </Col>
               ))}
           </Row>

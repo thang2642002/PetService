@@ -31,7 +31,7 @@ const Pet_Details = () => {
   ];
 
   const { id } = useParams();
-  const [pet, setPet] = useState(null);
+  const [pet, setPet] = useState({});
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
   const [showDesc, setShowDesc] = useState(false);
@@ -118,6 +118,8 @@ const Pet_Details = () => {
       console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
     }
   };
+
+  console.log("pet", pet);
 
   useEffect(() => {
     fetchPetById();

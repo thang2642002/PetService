@@ -12,6 +12,7 @@ import {
 } from "../../../services/productServices";
 import { getPaginateProduct } from "../../../services/paginateServices";
 import { fetchAllCategory } from "../../../services/categoryServices";
+import { getAllPetType } from "../../../services/petTypeServices";
 
 const Category_Product = () => {
   const location = useLocation();
@@ -19,25 +20,99 @@ const Category_Product = () => {
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [listProduct, setListProduct] = useState([]);
-  const [listCategory, setListCategory] = useState([]);
+  const [filterOptions, setFilterOptions] = useState([]); // Chứa category hoặc pet_type
   const [paginatedProducts, setPaginatedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { type } = useParams();
 
-  const fetchListCategory = async () => {
+  // Lấy danh sách filter options
+  const fetchFilterOptions = async () => {
     try {
-      const data = await fetchAllCategory();
-      setListCategory(data.data);
-      console.log("Fetched categories: ", data.data);
+      if (type === "pets") {
+        const data = await getAllPetType();
+        setFilterOptions(data.data);
+      } else {
+        const data = await fetchAllCategory();
+        setFilterOptions(data.data);
+      }
     } catch (error) {
-      console.error("Error fetching categories: ", error);
+      console.error("Error fetching filter options:", error);
+    }
+  };
+
+  // Lấy danh sách sản phẩm hoặc thú cưng
+  const fetchListProduct = async () => {
+    try {
+      let data;
+      switch (type) {
+        case "pets":
+          data = await getAllPets();
+          break;
+        case "products":
+          data = await getAllProduct();
+          break;
+        case "pettags":
+          data = await findByCategory(2);
+          break;
+        case "search":
+          data = await getProductByName(inputSearch?.inputSearch);
+          break;
+        default:
+          data = { data: [] };
+      }
+
+      let productList = data?.data || [];
+
+      if (selectedPrices.length > 0) {
+        productList = productList.filter((product) => {
+          return selectedPrices.some((priceRange) => {
+            switch (priceRange) {
+              case "under_20000":
+                return product.price < 20000;
+              case "20000_50000":
+                return product.price >= 20000 && product.price <= 50000;
+              case "50000_100000":
+                return product.price >= 50000 && product.price <= 100000;
+              case "100000_200000":
+                return product.price >= 100000 && product.price <= 200000;
+              case "above_200000":
+                return product.price > 200000;
+              default:
+                return false;
+            }
+          });
+        });
+      }
+
+      if (selectedBrands.length > 0) {
+        productList = productList.filter((product) =>
+          selectedBrands.includes(
+            String(type === "pets" ? product.pet_type_id : product.category_id)
+          )
+        );
+      }
+
+      setListProduct(productList);
+
+      const response = await getPaginateProduct({
+        listProduct: productList,
+        page: 1,
+        limit: 8,
+      });
+
+      setPaginatedProducts(response.data || []);
+      setCurrentPage(1);
+      setHasMore((response.totalPages || 0) > 1);
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
   };
 
   useEffect(() => {
-    fetchListCategory();
-  }, []);
+    fetchFilterOptions();
+    fetchListProduct();
+  }, [type, inputSearch, selectedPrices, selectedBrands]);
 
   const priceOptions = [
     { label: "Dưới 20.000đ", value: "under_20000" },
@@ -47,13 +122,12 @@ const Category_Product = () => {
     { label: "Trên 200.000đ", value: "above_200000" },
   ];
 
-  const brandOptions = listCategory.map((category) => ({
-    label: category.name,
-    value: String(category.category_id), // Ensure type consistency
+  const brandOptions = filterOptions.map((option) => ({
+    label: type === "pets" ? option.type_name : option.name,
+    value: String(type === "pets" ? option.pet_type_id : option.category_id),
   }));
 
   const handleCheckboxChange = (value, type) => {
-    console.log("Checkbox clicked. Value: ", value, "Type: ", type);
     if (type === "price") {
       setSelectedPrices((prev) =>
         prev.includes(value)
@@ -115,83 +189,12 @@ const Category_Product = () => {
     }
   };
 
-  const fetchListProduct = async () => {
-    try {
-      let data;
-      switch (type) {
-        case "pets":
-          data = await getAllPets();
-          break;
-        case "products":
-          data = await getAllProduct();
-          break;
-        case "pettags":
-          data = await findByCategory(2);
-          break;
-        case "search":
-          data = await getProductByName(inputSearch?.inputSearch);
-          break;
-        default:
-          data = { data: [] };
-      }
-
-      let productList = data?.data || [];
-
-      // Filter by selected prices
-      if (selectedPrices.length > 0) {
-        productList = productList.filter((product) => {
-          return selectedPrices.some((priceRange) => {
-            switch (priceRange) {
-              case "under_20000":
-                return product.price < 20000;
-              case "20000_50000":
-                return product.price >= 20000 && product.price <= 50000;
-              case "50000_100000":
-                return product.price > 50000 && product.price <= 100000;
-              case "100000_200000":
-                return product.price > 100000 && product.price <= 200000;
-              case "above_200000":
-                return product.price > 200000;
-              default:
-                return false;
-            }
-          });
-        });
-      }
-
-      if (selectedBrands.length > 0) {
-        console.log("Filtering by brands: ", selectedBrands);
-        productList = productList.filter(
-          (product) => selectedBrands.includes(String(product.category_id)) // Ensure type conversion
-        );
-      }
-
-      setListProduct(productList);
-
-      const response = await getPaginateProduct({
-        listProduct: productList,
-        page: 1,
-        limit: 8,
-      });
-
-      console.log("Paginated response: ", response);
-
-      setPaginatedProducts(response.data || []);
-      setCurrentPage(1);
-      setHasMore((response.totalPages || 0) > 1);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchListProduct();
-  }, [type, inputSearch, selectedPrices, selectedBrands]);
-
   return (
     <div className="container my-10">
       <div>
-        <h3 className="text-[#522f1f] ml-3">Mua đồ cho chó</h3>
+        <h3 className="text-[#522f1f] ml-3">
+          {type === "pets" ? "Mua thú cưng" : "Mua đồ dùng cho thú cưng"}
+        </h3>
       </div>
       <div className="flex gap-[50px] mt-4">
         <div className="mt-2 flex items-center">
@@ -223,7 +226,7 @@ const Category_Product = () => {
                 trigger={["hover"]}
               >
                 <Button className="mr-12 pr-[100px] py-[20px] rounded-none font-medium text-sm">
-                  Lọc thương hiệu
+                  {type === "pets" ? "Lọc loại thú cưng" : "Lọc danh mục"}
                 </Button>
               </Dropdown>
               <Dropdown
@@ -242,7 +245,9 @@ const Category_Product = () => {
       <div>
         <Product_Carts paginatedProducts={paginatedProducts} />
       </div>
-      <ButtonSeeMore onClick={loadMoreProducts} disabled={!hasMore} />
+      <div className="flex align-items-center justify-center">
+        <ButtonSeeMore onClick={loadMoreProducts} disabled={!hasMore} />
+      </div>
     </div>
   );
 };

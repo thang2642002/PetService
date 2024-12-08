@@ -13,7 +13,19 @@ const Contact = () => {
   return (
     <div>
       <Group_Menu />
-      <div></div>
+      <div className="mt-4">
+        <div style={{ width: "100%", height: "450px" }}>
+          <iframe
+            title="Google Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.560215766145!2d106.78983976291934!3d10.844928789308085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527158a0a5b81%3A0xf45c5d34ac580517!2zUGjDom4gaGnhu4d1IFRyxrDhu51uZyDEkOG6oWkgaOG7jWMgR1RWVCB04bqhaSBUcC4gSOG7kyBDaMOtIE1pbmg!5e0!3m2!1sen!2s!4v1733647802640!5m2!1sen!2s"
+            width="100%"
+            height="100%"
+            style={{ border: "0" }}
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
       <div>
         <Row>
           <Col xs={5}>
@@ -29,7 +41,8 @@ const Contact = () => {
                   <div className="font-bold">Địa chỉ</div>
                   <div>
                     <span className="text-[#696969] font-medium">Địa chỉ:</span>{" "}
-                    136 Huỳnh Văn Bánh, p. 11, quận Phú Nhuận, HCM
+                    450-451 Lê Văn Việt, Phường Tăng Nhơn Phú A, Hồ Chí Minh,
+                    Vietnam
                   </div>
                 </div>
               </div>
