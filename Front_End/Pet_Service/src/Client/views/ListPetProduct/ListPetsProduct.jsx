@@ -30,9 +30,11 @@ const ListPetsProduct = (props) => {
         const response = await findByCategory(2);
         dataPet = response.data || [];
       }
-      setListPetProduct(dataPet);
-      setDisplayedProducts(dataPet.slice(0, 8));
-      if (dataPet.length <= 8) setHasMore(false);
+      if (dataPet) {
+        setListPetProduct(dataPet);
+        setDisplayedProducts(dataPet.slice(0, 8));
+        if (dataPet.length <= 8) setHasMore(false);
+      }
     } catch (error) {
       console.error("Error fetching initial products:", error);
     }

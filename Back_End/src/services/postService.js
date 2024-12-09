@@ -1,4 +1,5 @@
 import db from "../models/index";
+import { cloudinary } from "../config/cloudinaryConfig";
 const getAllPost = async () => {
   try {
     const getAllPost = await db.Post.findAll();
@@ -8,11 +9,13 @@ const getAllPost = async () => {
   }
 };
 
-const createPost = async (title, content) => {
+const createPost = async (title, content, image) => {
   try {
     const createPost = await db.Post.create({
       title,
       content,
+      image,
+      created_date: new Date().toISOString(),
     });
     return createPost;
   } catch (error) {
@@ -20,7 +23,7 @@ const createPost = async (title, content) => {
   }
 };
 
-const updatePost = async (post_id, title, content) => {
+const updatePost = async (post_id, title, content, imageFile) => {
   try {
     const updatePost = await db.Post.findByPk(post_id);
     console.log(updatePost.title);
@@ -29,6 +32,14 @@ const updatePost = async (post_id, title, content) => {
     }
     updatePost.title = title;
     updatePost.content = content;
+    updatePost.created_date = new Date().toISOString();
+    if (imageFile) {
+      const result = await cloudinary.uploader.upload(avatarFile.path, {
+        folder: "uploads_image",
+      });
+      user.image = result.secure_url;
+    }
+
     updatePost.save();
     return updatePost;
   } catch (error) {

@@ -27,7 +27,8 @@ const getAllPost = async (req, res) => {
 const createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
-    const createPost = await postService.createPost(title, content);
+    const image = req.file ? req.file.path : null;
+    const createPost = await postService.createPost(title, content, image);
     if (createPost) {
       return res.status(200).json({
         message: "Create post is the success",
@@ -52,7 +53,13 @@ const updatePost = async (req, res) => {
   try {
     const post_id = req.params.id;
     const { title, content } = req.body;
-    const updatePost = await postService.updatePost(post_id, title, content);
+    const imageFile = req.file;
+    const updatePost = await postService.updatePost(
+      post_id,
+      title,
+      content,
+      imageFile
+    );
     if (updatePost) {
       return res.status(200).json({
         message: "Update post is the success",

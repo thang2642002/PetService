@@ -119,8 +119,6 @@ const Pet_Details = () => {
     }
   };
 
-  console.log("pet", pet);
-
   useEffect(() => {
     fetchPetById();
   }, [id]);

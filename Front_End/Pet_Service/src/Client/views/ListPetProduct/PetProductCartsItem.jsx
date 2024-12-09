@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const PetProductCartsItem = (props) => {
-  const { productPet } = props; 
+  const { productPet } = props;
+  console.log("chek productPet", productPet?.images[0]);
   return (
     <>
       <Link
@@ -22,7 +23,7 @@ const PetProductCartsItem = (props) => {
         >
           <div className="max-w-[300px] max-h-[300px] overflow-hidden">
             <img
-              src={img}
+              src={productPet?.images[0]}
               alt="img-product"
               className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
             />

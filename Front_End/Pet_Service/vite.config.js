@@ -6,4 +6,11 @@ export default defineConfig({
   optimizeDeps: {
     include: ["react-pro-sidebar"],
   },
+  css: {
+    preprocessorOptions: {
+      css: {
+        // Cần xử lý các import như CKEditor đúng cách
+      },
+    },
+  },
 });

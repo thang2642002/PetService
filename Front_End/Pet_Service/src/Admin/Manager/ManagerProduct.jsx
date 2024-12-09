@@ -10,6 +10,7 @@ import ModalDeleteProduct from "../Modal/ModalProduct/ModalDeleteProduct";
 import TableProduct from "../Modal/ModalProduct/TableProduct";
 // import { getAllProduct } from "../../services/productServices";
 import { getPaginate } from "../../services/paginateServices";
+import { fetchAllCategory } from "../../services/categoryServices";
 
 const ManagerProduct = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -23,6 +24,7 @@ const ManagerProduct = () => {
   const [listProduct, setListProduct] = useState([]);
   const [productDelete, setProductDelete] = useState({});
   const [productUpdate, setProductUpdate] = useState({});
+  const [category, setCategory] = useState([]);
 
   const handleShowUpdateModal = (product) => {
     setProductUpdate(product);
@@ -40,9 +42,18 @@ const ManagerProduct = () => {
     setTotalPages(data.totalPages);
   };
 
+  const fetchCategory = async () => {
+    const dataCategory = await fetchAllCategory();
+    if (dataCategory && dataCategory.errCode === 0) {
+      setCategory(dataCategory.data);
+    }
+  };
+
   useEffect(() => {
     fetchAllProduct();
+    fetchCategory();
   }, []);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Product</div>
@@ -80,12 +91,14 @@ const ManagerProduct = () => {
           show={showModalCreateProduct}
           setShow={setShowModalCreateProduct}
           fetchAllProduct={fetchAllProduct}
+          category={category}
         />
         <ModalUpdateProduct
           show={showModalUpdateProduct}
           setShow={setShowModalUpdateProduct}
           productUpdate={productUpdate}
           fetchAllProduct={fetchAllProduct}
+          category={category}
         />
         <ModalDeleteProduct
           show={showModalDeleteProduct}

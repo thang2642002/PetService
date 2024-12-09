@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   class Post extends Model {}
@@ -16,6 +16,10 @@ module.exports = (sequelize) => {
       content: {
         type: DataTypes.TEXT,
       },
+      image: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       created_date: {
         type: DataTypes.DATE,
       },
@@ -30,8 +34,8 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: 'Post',
-      tableName: 'Post',
+      modelName: "Post",
+      tableName: "Post",
       timestamps: true, // Tự động cập nhật `createdAt` và `updatedAt`
     }
   );

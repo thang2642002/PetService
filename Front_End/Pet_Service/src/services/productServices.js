@@ -11,7 +11,6 @@ const getProductById = (product_id) => {
 };
 
 const getProductByName = (name) => {
-  console.log("chek name", name);
   return axios.get(`/product/find-by-name?name=${name}`);
 };
 

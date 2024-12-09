@@ -23,17 +23,9 @@ import Rating from "../Rating/Rating";
 import Comment from "../Comment/Comment";
 
 const ProductDetails = () => {
-  const images = [
-    "https://product.hstatic.net/200000263355/product/z5625317223514_c94f473e834069458b8276b952ca4616_546454172a204e45a34c4c8f1ce843b0_master.jpg",
-    "https://product.hstatic.net/200000263355/product/3cb799e827474155b6d60d67cc1f1307_cf910be7efd14cd595518002e146c5b6_master.jpeg",
-    "https://product.hstatic.net/200000263355/product/3f1264f10ec54345b4716da32e188329_fb8ad6fe4452408e98f53c151b7ee4a0_master.jpeg",
-    "https://product.hstatic.net/200000263355/product/3cb799e827474155b6d60d67cc1f1307_cf910be7efd14cd595518002e146c5b6_master.jpeg",
-    "https://product.hstatic.net/200000263355/product/z5625317223514_c94f473e834069458b8276b952ca4616_546454172a204e45a34c4c8f1ce843b0_master.jpg",
-  ];
-
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [selectedImage, setSelectedImage] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [showDesc, setShowDesc] = useState(false);
   const [showService, setShowService] = useState(false);
@@ -47,15 +39,16 @@ const ProductDetails = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
     arrows: true,
     centerMode: false,
   };
 
   const handleThumbnailClick = (index) => {
-    setSelectedImage(images[index]);
-    sliderRef.current.slickGoTo(index);
+    const selectedImageURL = product?.images[index];
+    setSelectedImage(selectedImageURL);
+    sliderRef.current?.slickGoTo(index);
   };
 
   const increaseQuantity = () => {
@@ -141,8 +134,6 @@ const ProductDetails = () => {
     }
   };
 
-  console.log("check product", product);
-
   useEffect(() => {
     fetchProductById();
   }, [id]);
@@ -162,7 +153,7 @@ const ProductDetails = () => {
       <Row className="gy-4">
         <Col md={6} className="d-flex flex-column flex-md-row gap-3">
           <div className="d-flex flex-column gap-3">
-            {images.map((image, index) => (
+            {product?.images?.map((image, index) => (
               <img
                 key={index}
                 src={image}
@@ -177,8 +168,8 @@ const ProductDetails = () => {
 
           <div className="flex-grow ms-3 max-w-[500px] max-h-[800px] overflow-hidden flex-shrink-0">
             <Slider ref={sliderRef} {...sliderSettings}>
-              {images.map((image, index) => (
-                <div key={index}>
+              {product?.images?.map((image, index) => (
+                <div key={index} className="w-full">
                   <TransformWrapper>
                     <TransformComponent>
                       <img

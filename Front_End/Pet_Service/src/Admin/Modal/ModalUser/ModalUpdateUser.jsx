@@ -7,7 +7,6 @@ import { updateUser } from "../../../services/userServices";
 
 const ModalUpdateUser = (props) => {
   const { show, setShow, userUpdate, getListUser } = props;
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");

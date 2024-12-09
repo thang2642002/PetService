@@ -8,6 +8,7 @@ import {
 } from "../../../services/orderServices";
 import { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { createPayment } from "../../../services/vnPayServices";
 
 const Payment = () => {
   const location = useLocation();
@@ -66,6 +67,22 @@ const Payment = () => {
     }
   };
 
+  const handleVNPayPayment = async () => {
+    try {
+      const paymentUrl = await createPayment(
+        finalAmount,
+        `Thanh toan đon hang #${order_id}`,
+        order_id
+      );
+
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
+      }
+    } catch (error) {
+      toast.error("Có lỗi khi tạo thanh toán VNPay.");
+    }
+  };
+
   return (
     <div className="bg-gray-50 flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-md p-6 w-full">
@@ -120,6 +137,16 @@ const Payment = () => {
               id="2"
               checked={paymentMethod === "cod"}
             />
+            <Form.Check
+              inline
+              label="Thanh toán VnPay"
+              name="payment"
+              type="radio"
+              value="vnPay"
+              onChange={handlePaymentSelection}
+              id="3"
+              checked={paymentMethod === "vnPay"}
+            />
           </div>
         </div>
 
@@ -167,6 +194,19 @@ const Payment = () => {
                 onClick={handleOrderCompletion}
               >
                 Xác nhận đặt hàng
+              </Button>
+            </div>
+          )}
+
+          {paymentMethod === "vnPay" && (
+            <div className="flex-grow flex justify-end">
+              <Button
+                type="primary"
+                size="large"
+                className="bg-blue-600 text-white font-medium px-6 py-2 rounded-md shadow hover:bg-blue-500 transition"
+                onClick={handleVNPayPayment}
+              >
+                Thanh toán VnPay
               </Button>
             </div>
           )}

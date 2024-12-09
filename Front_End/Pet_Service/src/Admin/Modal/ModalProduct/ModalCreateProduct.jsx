@@ -6,13 +6,15 @@ import { FcPlus } from "react-icons/fc";
 import { createProduct } from "../../../services/productServices";
 import "./ModalCreateProduct.scss";
 
-const ModalCreateProduct = ({ show, setShow, fetchAllProduct }) => {
+const ModalCreateProduct = ({ show, setShow, fetchAllProduct, category }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [stock, setStock] = useState("");
   const [images, setImages] = useState([]);
+
+  console.log("category", category);
 
   const handleClose = () => {
     setShow(false);
@@ -90,14 +92,20 @@ const ModalCreateProduct = ({ show, setShow, fetchAllProduct }) => {
             />
           </div>
           <div className="col-md-6">
-            <label className="form-label">Category ID</label>
-            <input
-              type="text"
+            <label className="form-label">Category</label>
+            <select
               className="form-control"
-              placeholder="Enter category ID"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-            />
+            >
+              <option value="">Select a category</option>
+              {category &&
+                category.map((item) => (
+                  <option key={item.category_id} value={item.category_id}>
+                    {item.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className="col-md-4">
             <label className="form-label">Price</label>

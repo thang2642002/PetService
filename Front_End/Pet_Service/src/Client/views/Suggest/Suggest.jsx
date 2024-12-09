@@ -47,7 +47,6 @@ const Suggest = (props) => {
             {filteredProducts.length > 0 &&
               filteredProducts.map((product, index) => (
                 <Col xs={12} sm={6} md={4} lg={3} key={`product-${index}`}>
-                  {console.log("product", product)}
                   <Product_Cart_Item product={product} />
                 </Col>
               ))}

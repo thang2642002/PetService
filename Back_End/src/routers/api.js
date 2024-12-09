@@ -15,6 +15,7 @@ import apiServiceReview from "./apiServiceReview";
 import apiCart from "./apiCart";
 import apiCartItem from "./apiCartItem";
 import apiPaginate from "./apiPaginate";
+import apiVnPay from "./apiVnPay";
 
 const apiInitWebRouter = (app) => {
   app.use("/v1/api/user", apiUser);
@@ -34,6 +35,7 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/cart", apiCart);
   app.use("/v1/api/cart-item", apiCartItem);
   app.use("/v1/api/paginate", apiPaginate);
+  app.use("/v1/api/vnPay", apiVnPay);
 };
 
 export default apiInitWebRouter;
