@@ -24,7 +24,7 @@ const ManagerProduct = () => {
   const [listProduct, setListProduct] = useState([]);
   const [productDelete, setProductDelete] = useState({});
   const [productUpdate, setProductUpdate] = useState({});
-  const [category, setCategory] = useState([]);
+  const [listCategory, setListCategory] = useState([]);
 
   const handleShowUpdateModal = (product) => {
     setProductUpdate(product);
@@ -45,7 +45,7 @@ const ManagerProduct = () => {
   const fetchCategory = async () => {
     const dataCategory = await fetchAllCategory();
     if (dataCategory && dataCategory.errCode === 0) {
-      setCategory(dataCategory.data);
+      setListCategory(dataCategory.data);
     }
   };
 
@@ -91,14 +91,14 @@ const ManagerProduct = () => {
           show={showModalCreateProduct}
           setShow={setShowModalCreateProduct}
           fetchAllProduct={fetchAllProduct}
-          category={category}
+          listCategory={listCategory}
         />
         <ModalUpdateProduct
           show={showModalUpdateProduct}
           setShow={setShowModalUpdateProduct}
           productUpdate={productUpdate}
           fetchAllProduct={fetchAllProduct}
-          category={category}
+          listCategory={listCategory}
         />
         <ModalDeleteProduct
           show={showModalDeleteProduct}

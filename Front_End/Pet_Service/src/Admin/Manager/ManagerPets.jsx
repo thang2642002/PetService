@@ -10,6 +10,7 @@ import TablePet from "../Modal/ModalPets/TablePet";
 import { useEffect, useState } from "react";
 // import { getAllPets } from "../../services/petServices";
 import { getPaginate } from "../../services/paginateServices";
+import { getAllPetType } from "../../services/petTypeServices";
 
 const ManagerPets = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -23,6 +24,7 @@ const ManagerPets = () => {
   const [listPets, setListPets] = useState([]);
   const [petDelete, setPetDelete] = useState({});
   const [petUpdate, setPetUpdate] = useState({});
+  const [listPetType, setListPetType] = useState([]);
 
   const handleShowUpdateModal = (pet) => {
     setPetUpdate(pet);
@@ -40,8 +42,16 @@ const ManagerPets = () => {
     setTotalPages(data.totalPages);
   };
 
+  const fetchListPetType = async () => {
+    const dataListPetType = await getAllPetType();
+    if (dataListPetType && dataListPetType.errCode === 0) {
+      setListPetType(dataListPetType.data);
+    }
+  };
+
   useEffect(() => {
     fetchAllPet();
+    fetchListPetType();
   }, []);
   return (
     <div className="manager-user-container">
@@ -80,12 +90,14 @@ const ManagerPets = () => {
           show={showModalCreatePet}
           setShow={setShowModalCreatePet}
           fetchAllPet={fetchAllPet}
+          listPetType={listPetType}
         />
         <ModalUpdatePet
           show={showModalUpdatePet}
           setShow={setShowModalUpdatePet}
           petUpdate={petUpdate}
           fetchAllPet={fetchAllPet}
+          listPetType={listPetType}
         />
         <ModalDeletePet
           show={showModalDeletePet}

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { updateProduct } from "../../../services/productServices";
 
 const ModalUpdateProduct = (props) => {
-  const { show, setShow, productUpdate, fetchAllProduct } = props;
+  const { show, setShow, productUpdate, fetchAllProduct, listCategory } = props;
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -100,12 +100,19 @@ const ModalUpdateProduct = (props) => {
           </div>
           <div className="col-md-6">
             <label className="form-label">Category</label>
-            <input
-              type="text"
+            <select
               className="form-control"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-            />
+            >
+              <option value="">Select a category</option>
+              {listCategory &&
+                listCategory.map((item) => (
+                  <option key={item.category_id} value={item.category_id}>
+                    {item.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className="col-md-6">
             <label className="form-label">Price</label>

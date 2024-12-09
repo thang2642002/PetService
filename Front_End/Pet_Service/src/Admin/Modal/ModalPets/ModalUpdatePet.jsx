@@ -5,7 +5,13 @@ import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { updatePet } from "../../../services/petServices";
 
-const ModalUpdatePet = ({ show, setShow, petUpdate, fetchAllPet }) => {
+const ModalUpdatePet = ({
+  show,
+  setShow,
+  petUpdate,
+  fetchAllPet,
+  listPetType,
+}) => {
   const [petDetails, setPetDetails] = useState({
     name: "",
     age: "",
@@ -145,18 +151,24 @@ const ModalUpdatePet = ({ show, setShow, petUpdate, fetchAllPet }) => {
 
           <div className="col-md-6">
             <label className="form-label">Pet Type</label>
-            <input
-              type="text"
+            <select
               className="form-control"
               value={petTypeId}
-              placeholder="Pet Type"
               onChange={(e) =>
                 setPetDetails((prev) => ({
                   ...prev,
                   petTypeId: e.target.value,
                 }))
               }
-            />
+            >
+              <option value="">Select a pet type</option>
+              {listPetType &&
+                listPetType.map((item) => (
+                  <option key={item.pet_type_id} value={item.pet_type_id}>
+                    {item.type_name}
+                  </option>
+                ))}
+            </select>
           </div>
 
           <div className="col-4">
@@ -230,7 +242,7 @@ const ModalUpdatePet = ({ show, setShow, petUpdate, fetchAllPet }) => {
           <div className="col-md-4">
             <label className="form-label">Price</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder="Price"
               value={price}

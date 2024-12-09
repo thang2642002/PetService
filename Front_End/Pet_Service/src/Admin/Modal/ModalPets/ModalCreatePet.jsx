@@ -6,7 +6,7 @@ import { FcPlus } from "react-icons/fc";
 import { createPets } from "../../../services/petServices";
 
 const ModalCreatePet = (props) => {
-  const { show, setShow, fetchAllPet } = props;
+  const { show, setShow, fetchAllPet, listPetType } = props;
 
   const handleClose = () => {
     setShow(false);
@@ -108,13 +108,19 @@ const ModalCreatePet = (props) => {
           </div>
           <div className="col-md-6">
             <label className="form-label">Pet Type</label>
-            <input
-              type="text"
+            <select
               className="form-control"
               value={petTypeId}
-              placeholder="Pet Type"
               onChange={(e) => setPetTypeId(e.target.value)}
-            />
+            >
+              <option value="">Select a pet type</option>
+              {listPetType &&
+                listPetType.map((item) => (
+                  <option key={item.pet_type_id} value={item.pet_type_id}>
+                    {item.type_name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className="col-4">
             <label className="form-label">Age</label>
