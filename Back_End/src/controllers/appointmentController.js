@@ -25,18 +25,24 @@ const getAllAppointment = async (req, res) => {
 
 const createAppointment = async (req, res) => {
   try {
-    const {
-      // appointment_date,
+    const { appointment_date, time_date, status, service_id, user_pet_id } =
+      req.body;
+    console.log("Received payload: ", {
+      appointment_date,
+      time_date,
       status,
       service_id,
       user_pet_id,
-    } = req.body;
+    });
     const createAppointment = await appointmentService.createAppointment(
-      // appointment_date,
+      appointment_date,
+      time_date,
       status,
       service_id,
       user_pet_id
     );
+
+    console.log("Appointment DB result: ", createAppointment);
     if (createAppointment) {
       return res.status(200).json({
         message: "Create appointment is the success",
@@ -60,15 +66,12 @@ const createAppointment = async (req, res) => {
 const updateAppointment = async (req, res) => {
   try {
     const appointment_id = req.params.id;
-    const {
-      //  appointment_date
-      status,
-      service_id,
-      user_pet_id,
-    } = req.body;
+    const { appointment_date, time_date, status, service_id, user_pet_id } =
+      req.body;
     const updateAppointment = await appointmentService.updateAppointment(
       appointment_id,
-      // appointment_date,
+      appointment_date,
+      time_date,
       status,
       service_id,
       user_pet_id

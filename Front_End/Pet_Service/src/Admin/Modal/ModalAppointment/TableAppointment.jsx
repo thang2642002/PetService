@@ -20,6 +20,7 @@ const TableAppointment = (props) => {
           <tr>
             <td>ID</td>
             <th scope="col">Appointment Date</th>
+            <th scope="col">Appointment Time</th>
             <th scope="col">Status</th>
             <th scope="col">Service ID</th>
             <th scope="col">User Pet ID</th>
@@ -33,6 +34,7 @@ const TableAppointment = (props) => {
               <tr key={index}>
                 <td>{item.appointment_id}</td>
                 <td>{item.appointment_date}</td>
+                <td>{item.time_date}</td>
                 <td>{item.status}</td>
                 <td>{item.service_id}</td>
                 <td>{item.user_pet_id}</td>

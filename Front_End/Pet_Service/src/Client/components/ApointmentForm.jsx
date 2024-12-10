@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DatePicker,
   TimePicker,
   Button,
-  Input,
   Select,
   notification,
+  Input,
 } from "antd";
 import moment from "moment";
-import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { createAppointment } from "../../services/appointmentServices";
+import { getAllServices } from "../../services/serviceServices";
 
 const { Option } = Select;
 
@@ -22,45 +22,84 @@ const AppointmentForm = () => {
   const [appointmentTime, setAppointmentTime] = useState(null);
   const [serviceId, setServiceId] = useState("");
   const [description, setDescription] = useState("");
+  const [listServices, setListServices] = useState([]);
 
   const handleDateChange = (date) => {
-    setAppointmentDate(date);
+    if (date) {
+      setAppointmentDate(date);
+    } else {
+      setAppointmentDate(null);
+    }
   };
 
-  const handleTimeChange = (time) => {
-    setAppointmentTime(time);
+  const handleTimeChange = (time, timeString) => {
+    if (time) {
+      const formattedTime = time.format("HH:mm:ss");
+      setAppointmentTime(formattedTime);
+    } else {
+      console.log("No valid time selected.");
+      setAppointmentTime(null);
+    }
   };
 
   const handleServiceChange = (value) => {
     setServiceId(value);
   };
 
-  const handleSubmit = async () => {
-    // if (!appointmentDate || !appointmentTime || !serviceId) {
-    //   notification.error({
-    //     message: "Vui lòng chọn đầy đủ thông tin!",
-    //   });
-    //   return;
-    // }
-
-    // const appointmentDateTime = moment(appointmentDate).set({
-    //   hour: appointmentTime.hour(),
-    //   minute: appointmentTime.minute(),
-    // });
-
-    const data = await createAppointment("pending", serviceId, userPetId);
-    if (data && data.errCode === 0) {
-      console.log("Đặt lịch thành công");
-    } else {
-      console.log("Đặt lịch thất bại");
+  const fetchListServices = async () => {
+    const dataListServices = await getAllServices();
+    if (dataListServices && dataListServices.errCode === 0) {
+      setListServices(dataListServices.data);
     }
   };
 
+  const handleSubmit = async () => {
+    if (!appointmentDate || !appointmentTime || !serviceId) {
+      notification.error({
+        message: "Vui lòng chọn đầy đủ thông tin!",
+      });
+      return;
+    }
+    const formattedDate = moment(appointmentDate).format("YYYY-MM-DD");
+    try {
+      const data = await createAppointment(
+        formattedDate,
+        appointmentTime,
+        "pending",
+        serviceId,
+        userPetId
+      );
+      if (data && data.errCode === 0) {
+        notification.success({
+          message: "Đặt lịch thành công!",
+        });
+        setAppointmentDate(null);
+        setAppointmentTime(null);
+        setServiceId("");
+        setDescription("");
+      } else {
+        notification.error({
+          message: "Đặt lịch thất bại!",
+          description: data?.errMessage || "Có lỗi xảy ra, vui lòng thử lại!",
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: "Đặt lịch thất bại!",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchListServices();
+  }, []);
+
   return (
     <div className="p-4 max-w-xl mx-auto bg-white shadow-md rounded-md">
-      <h2 className="text-lg font-bold mb-4">Đặt lịch cho thú cưng</h2>
+      <h2 className="text-lg font-bold mb-4">Đặt lịch khám thú cưng</h2>
 
       <div className="space-y-4">
+        {/* Date Picker */}
         <div>
           <p className="text-sm">Chọn ngày</p>
           <DatePicker
@@ -70,6 +109,7 @@ const AppointmentForm = () => {
           />
         </div>
 
+        {/* Time Picker */}
         <div>
           <p className="text-sm">Chọn giờ</p>
           <TimePicker
@@ -88,11 +128,17 @@ const AppointmentForm = () => {
             onChange={handleServiceChange}
             placeholder="Chọn dịch vụ"
           >
-            <Option value="1">Dịch vụ 1</Option>
-            <Option value="4">Dịch vụ 2</Option>
+            <option value="">Select a service</option>
+            {listServices &&
+              listServices.map((item, index) => {
+                return (
+                  <Option value={item.service_id} key={item.service_id}>
+                    {item.name} - {item.price.toLocaleString()}đ
+                  </Option>
+                );
+              })}
           </Select>
         </div>
-
         <div>
           <p className="text-sm">Mô tả thêm</p>
           <Input.TextArea
@@ -103,6 +149,7 @@ const AppointmentForm = () => {
           />
         </div>
 
+        {/* Submit Button */}
         <Button type="primary" block className="mt-4" onClick={handleSubmit}>
           Đặt lịch
         </Button>

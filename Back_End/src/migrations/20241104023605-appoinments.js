@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      time_date: {
+        type: Sequelize.TIME,
+        allowNull: true, 
+      },
       status: {
         type: Sequelize.ENUM("pending", "completed", "cancelled"),
         allowNull: false,

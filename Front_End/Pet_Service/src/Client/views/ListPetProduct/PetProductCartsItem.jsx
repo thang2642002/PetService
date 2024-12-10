@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const PetProductCartsItem = (props) => {
   const { productPet } = props;
-  console.log("chek productPet", productPet?.images[0]);
+
   return (
     <>
       <Link
