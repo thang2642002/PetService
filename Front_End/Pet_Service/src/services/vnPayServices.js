@@ -1,6 +1,6 @@
 import axios from "../configs/axiosCustommize";
 
-export const createPayment = async (amount, orderInfo, order_id) => {
+const createPayment = async (amount, orderInfo, order_id) => {
   try {
     const response = await axios.post("/vnPay/create-payment", {
       amount,
@@ -14,3 +14,9 @@ export const createPayment = async (amount, orderInfo, order_id) => {
     throw error;
   }
 };
+
+const handleVNPayReturn = (query) => {
+  return axios.get(`/vnPay/payment-return?query=${query}`);
+};
+
+export { createPayment, handleVNPayReturn };

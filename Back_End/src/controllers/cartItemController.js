@@ -58,6 +58,7 @@ const updateCartItem = async (req, res) => {
       return res.status(200).json({
         errCode: 0,
         message: "Update cart item is the success",
+        data: data,
       });
     } else {
       return res.status(400).json({

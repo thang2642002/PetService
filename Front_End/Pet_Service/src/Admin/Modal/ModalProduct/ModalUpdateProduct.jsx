@@ -14,6 +14,7 @@ const ModalUpdateProduct = (props) => {
   const [categoryId, setCategoryId] = useState("");
   const [stock, setStock] = useState("");
   const [addedDate, setAddedDate] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [images, setImages] = useState([]);
 
   const handleClose = () => {
@@ -27,6 +28,7 @@ const ModalUpdateProduct = (props) => {
     setPrice("");
     setCategoryId("");
     setStock("");
+    setDiscount("");
     setAddedDate("");
     setImages([]);
   };
@@ -38,6 +40,7 @@ const ModalUpdateProduct = (props) => {
       setPrice(productUpdate.price || "");
       setCategoryId(productUpdate.category_id || "");
       setStock(productUpdate.stock || "");
+      setDiscount(productUpdate.discount || "");
       setImages([]);
     }
   }, [productUpdate]);
@@ -117,7 +120,7 @@ const ModalUpdateProduct = (props) => {
           <div className="col-md-6">
             <label className="form-label">Price</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder="Price"
               value={price}
@@ -127,11 +130,21 @@ const ModalUpdateProduct = (props) => {
           <div className="col-md-6">
             <label className="form-label">Stock</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder="Stock"
               value={stock}
               onChange={(e) => setStock(e.target.value)}
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Discount</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Discount"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
           <div className="col-md-6">

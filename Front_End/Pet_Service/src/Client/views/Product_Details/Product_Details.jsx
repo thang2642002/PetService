@@ -19,8 +19,8 @@ import {
 import { createCartItem } from "../../../services/cartItemServices";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "../../../redux/Slices/cartSlices";
-import Rating from "../Rating/Rating";
-import Comment from "../Comment/Comment";
+import Rating from "../ReviewProducts/Rating/Rating";
+import Comment from "../ReviewProducts/Comment/Comment";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -83,29 +83,46 @@ const ProductDetails = () => {
         toast.error("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
         return;
       }
+
       const addCartResponse = await createCart(user?.data?.user_id, 0);
 
       if (addCartResponse?.errCode !== 0) {
         toast.error("Không thể tạo giỏ hàng. Vui lòng thử lại!");
         return;
       }
+
       const cartId = addCartResponse?.data?.cart_id;
+      const priceAfterDiscount =
+        product?.discount !== 0
+          ? (product?.price - (product?.price * product?.discount) / 100) *
+            quantity
+          : product?.price * quantity;
+
       const addCartItemResponse = await createCartItem(
         cartId,
         id,
         quantity,
-        product?.price * quantity
+        priceAfterDiscount
       );
+
       if (addCartItemResponse?.errCode === 0) {
         const cartDetails = await getByCartId(user.data.user_id);
         if (cartDetails?.errCode === 0) {
           const totalAmount = cartDetails.data.cartItems.reduce(
             (total, item) => {
-              return total + item.total_price;
+              const itemPrice =
+                item?.product_item?.discount !== 0
+                  ? (item?.product_item?.price -
+                      (item?.product_item?.price *
+                        item?.product_item?.discount) /
+                        100) *
+                    item?.product_item?.quantity
+                  : item?.product_item?.price * item?.product_item?.quantity;
+
+              return total + itemPrice;
             },
             0
           );
-
           const updateCartResponse = await updateCart(
             cartId,
             cartDetails.data.user_id,
@@ -116,7 +133,7 @@ const ProductDetails = () => {
             const newItem = {
               product_id: id,
               quantity: quantity,
-              total_price: product?.price * quantity,
+              total_price: priceAfterDiscount,
             };
             dispatch(addItemToCart(newItem));
             toast.success("Sản phẩm đã được thêm vào giỏ hàng thành công ");
@@ -195,7 +212,31 @@ const ProductDetails = () => {
               <p className="ml-5">Thương hiệu: Royal Canin</p>
             </div>
 
-            <h3 className="text-danger mb-3">{product?.price} VND</h3>
+            <div className="flex gap-x-24">
+              <div>
+                <h3
+                  className={`${
+                    product?.discount > 0
+                      ? "text-gray-400 line-through"
+                      : "text-danger"
+                  } mb-3`}
+                >
+                  {product?.price.toLocaleString()} VND
+                </h3>
+              </div>
+              {product.discount > 0 && (
+                <div>
+                  <h3 className="text-danger mb-3">
+                    {(
+                      product?.price -
+                      (product?.price * product.discount) / 100
+                    ).toLocaleString()}{" "}
+                    VND
+                  </h3>
+                </div>
+              )}
+            </div>
+
             <div className="d-flex justify-content-between align-items-center gap-3 mt-5">
               <div
                 className="d-flex gap-3 align-items-center"

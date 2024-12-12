@@ -5,6 +5,7 @@ import { getAllPets } from "../../../services/petServices";
 import {
   getAllProduct,
   findByCategory,
+  findDiscount,
 } from "../../../services/productServices";
 import { getPaginateProduct } from "../../../services/paginateServices";
 import ButtonSeeMore from "../../components/ButtonSeeMore";
@@ -28,6 +29,9 @@ const ListPetsProduct = (props) => {
         dataPet = response.data || [];
       } else if (type === "pettags") {
         const response = await findByCategory(2);
+        dataPet = response.data || [];
+      } else if (type === "discount") {
+        const response = await findDiscount();
         dataPet = response.data || [];
       }
       if (dataPet) {
@@ -58,8 +62,10 @@ const ListPetsProduct = (props) => {
         return "Sản phẩm";
       case "pettags":
         return "Thẻ thú cưng";
-      default:
+      case "discount":
         return "Sản phẩm khuyến mãi";
+      default:
+        return "Không có sản phẩm";
     }
   };
 

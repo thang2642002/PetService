@@ -18,4 +18,5 @@ routes.delete("/delete-product/:id", productController.deleteProduct);
 routes.get("/find-by-name", productController.findByName);
 routes.get("/find-by-id/:id", productController.findById);
 routes.get("/find-by-category/:id", productController.findByCategory);
+routes.get("/find-by-discount", productController.findByDiscount);
 export default routes;

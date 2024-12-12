@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import Product_Cart_Item from "../../../Client/components/Product_Cart_Item";
-import PetProductCartsItem from "../ListPetProduct/PetProductCartsItem";
-import { Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import SuggestProduct from "./SuggestProduct";
+import Slider from "react-slick";
+import "./SuggestProduct.scss";
 import { getAllProduct } from "../../../services/productServices";
 import { getAllPets } from "../../../services/petServices";
 
@@ -36,24 +36,52 @@ const Suggest = (props) => {
             pet.pet_type_id === item.pet_type_id && pet.pet_id !== item.pet_id
         );
 
+  // Cấu hình cho Slider
+  const settings = {
+    // dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4, // Số item hiển thị cùng lúc
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true, // Tự động chạy
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024, // Màn hình nhỏ hơn 1024px
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768, // Màn hình nhỏ hơn 768px
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480, // Màn hình nhỏ hơn 480px
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
   return (
-    <>
-      <div className="container">
-        <h2 className="title mt-10 text-2xl mb-4 text-center text-[#522f1f] font-medium">
-          SẢN PHẨM LIÊN QUAN
-        </h2>
-        <div>
-          <Row>
-            {filteredProducts.length > 0 &&
-              filteredProducts.map((product, index) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={`product-${index}`}>
-                  <Product_Cart_Item product={product} />
-                </Col>
-              ))}
-          </Row>
-        </div>
-      </div>
-    </>
+    <div className="container">
+      <h2 className="title mt-10 text-2xl mb-4 text-center text-[#522f1f] font-medium">
+        SẢN PHẨM LIÊN QUAN
+      </h2>
+      <Slider {...settings}>
+        {filteredProducts.length > 0 &&
+          filteredProducts.map((product, index) => (
+            <div key={`product-${index}`}>
+              <SuggestProduct product={product} />
+            </div>
+          ))}
+      </Slider>
+    </div>
   );
 };
 

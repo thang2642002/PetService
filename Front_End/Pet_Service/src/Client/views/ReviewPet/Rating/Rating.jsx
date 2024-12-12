@@ -1,9 +1,9 @@
 import StarRatings from "react-star-ratings";
 import { useSelector } from "react-redux";
-import { createProductReview } from "../../../services/productReviewServices";
+import { createPetReview } from "../../../../services/petReviewServices";
 import { useState } from "react";
 
-const Rating = ({ productId }) => {
+const Rating = ({ petId }) => {
   const { user } = useSelector((state) => state.user);
   const user_id = user && user.data ? user.data.user_id : null;
   const [rating, setRating] = useState(0);
@@ -21,12 +21,7 @@ const Rating = ({ productId }) => {
     }
     setError("");
     try {
-      const data = await createProductReview(
-        rating,
-        comment,
-        user_id,
-        productId
-      );
+      const data = await createPetReview(rating, comment, user_id, petId);
       if (data && data.errCode === 0) {
         console.log("Bình luận thành công");
         setComment("");

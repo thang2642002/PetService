@@ -9,15 +9,18 @@ import {
 import { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayment } from "../../../services/vnPayServices";
+import { sendEmail } from "../../../services/sendEmailServices";
 
 const Payment = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { order_id } = location.state || {};
   const [order, setOrder] = useState({});
   const [listOrderItem, setListOrderItem] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("cod");
-  const navigate = useNavigate();
+  const shippingFee = 30000;
+  const finalAmount = totalAmount + shippingFee;
 
   const fetchOrder = async () => {
     const data = await getByOrder(order_id);
@@ -30,8 +33,16 @@ const Payment = () => {
     fetchOrder();
   }, [order_id]);
 
-  const shippingFee = 30000;
-  const finalAmount = totalAmount + shippingFee;
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const vnp_ResponseCode = query.get("vnp_ResponseCode");
+    const vnp_TxnRef = query.get("vnp_TxnRef");
+
+    if (vnp_ResponseCode === "00" && vnp_TxnRef === String(order_id)) {
+      // Thanh toán thành công
+      handleVNPaySuccess();
+    }
+  }, [order_id]);
 
   const handlePaymentSelection = (e) => {
     setPaymentMethod(e.target.value);
@@ -45,6 +56,7 @@ const Payment = () => {
         navigate(`/order-details`, {
           state: { dataOrder: order, totalAmount: finalAmount },
         });
+        // await sendEmail(order?.user?.email, listOrderItem);
       }
     } catch (error) {
       toast.error(
@@ -67,6 +79,36 @@ const Payment = () => {
     }
   };
 
+  const handleVNPaySuccess = async () => {
+    try {
+      const response = await updateOrderPayment(order_id);
+      if (response?.errCode === 0) {
+        toast.success("Thanh toán VNPay thành công!");
+        navigate(`/order-details`, {
+          state: { dataOrder: order, totalAmount: finalAmount },
+        });
+      }
+    } catch (error) {
+      toast.error("Có lỗi trong việc xác nhận thanh toán VNPay.");
+    }
+  };
+
+  // const handleVNPayPayment = async () => {
+  //   try {
+  //     const paymentUrl = await createPayment(
+  //       finalAmount,
+  //       `Thanh toan đon hang #${order_id}`,
+  //       order_id
+  //     );
+
+  //     if (paymentUrl) {
+  //       window.location.href = paymentUrl;
+  //     }
+  //   } catch (error) {
+  //     toast.error("Có lỗi khi tạo thanh toán VNPay.");
+  //   }
+  // };
+
   const handleVNPayPayment = async () => {
     try {
       const paymentUrl = await createPayment(
@@ -74,7 +116,6 @@ const Payment = () => {
         `Thanh toan đon hang #${order_id}`,
         order_id
       );
-
       if (paymentUrl) {
         window.location.href = paymentUrl;
       }

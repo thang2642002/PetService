@@ -11,11 +11,13 @@ import apiPetScores from "./apiPetScores";
 import apiAppointment from "./apiAppointment";
 import apiOrderItem from "./apiOrderItem";
 import apiProductReview from "./apiProductReview";
+import apiPetReview from "./apiPetReview";
 import apiServiceReview from "./apiServiceReview";
 import apiCart from "./apiCart";
 import apiCartItem from "./apiCartItem";
 import apiPaginate from "./apiPaginate";
 import apiVnPay from "./apiVnPay";
+import apiSendEmail from "./apiSendEmail";
 
 const apiInitWebRouter = (app) => {
   app.use("/v1/api/user", apiUser);
@@ -31,11 +33,13 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/appointment", apiAppointment);
   app.use("/v1/api/order-item", apiOrderItem);
   app.use("/v1/api/product-review", apiProductReview);
+  app.use("/v1/api/pet-review", apiPetReview);
   app.use("/v1/api/service-review", apiServiceReview);
   app.use("/v1/api/cart", apiCart);
   app.use("/v1/api/cart-item", apiCartItem);
   app.use("/v1/api/paginate", apiPaginate);
   app.use("/v1/api/vnPay", apiVnPay);
+  app.use("/v1/api/email", apiSendEmail);
 };
 
 export default apiInitWebRouter;

@@ -65,7 +65,14 @@ module.exports = (sequelize, DataTypes) => {
 
     User.hasMany(models.Product_Review, {
       foreignKey: "user_id",
-      as: "reviews",
+      as: "product_reviews",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+
+    User.hasMany(models.Pet_Review, {
+      foreignKey: "user_id",
+      as: "pet_reviews",
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
@@ -76,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
-    
+
     // Mối quan hệ giữa User và Order
     User.hasMany(models.Order, {
       foreignKey: "user_id",

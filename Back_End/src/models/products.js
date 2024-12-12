@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      discount: {
+        type: DataTypes.FLOAT, // Lưu giảm giá theo phần trăm (ví dụ: 20%)
+        allowNull: true,
+        defaultValue: 0, // Mặc định không có giảm giá
+      },
       images: {
         type: DataTypes.JSON, // Dùng JSON để lưu danh sách URL ảnh
         allowNull: true,

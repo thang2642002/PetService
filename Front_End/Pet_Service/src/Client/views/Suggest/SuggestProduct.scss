@@ -1,0 +1,28 @@
+.slick-slide {
+  padding: 0 10px; /* Thêm khoảng cách ngang giữa các item */
+}
+
+.slick-list {
+  margin: 0 -10px; /* Đảm bảo slider không bị lệch */
+}
+/* Đảm bảo màu nền của nút "prev" và "next" không phải là trắng */
+// .slick-prev,
+// .slick-next {
+//   background-color: #6b4433 !important; /* Thay đổi màu nền của nút */
+//   color: #fff !important; /* Thay đổi màu văn bản (nếu có) của nút */
+//   border-radius: 50%; /* Để các nút có dạng tròn nếu cần */
+// }
+.slick-prev:before,
+.slick-next:before {
+  color: #355e5e !important;
+}
+
+/* Mũi tên cho nút "prev" */
+.slick-prev:before {
+  content: "←"; /* Mũi tên quay lại */
+}
+
+/* Mũi tên cho nút "next" */
+.slick-next:before {
+  content: "→"; /* Mũi tên tiếp theo */
+}

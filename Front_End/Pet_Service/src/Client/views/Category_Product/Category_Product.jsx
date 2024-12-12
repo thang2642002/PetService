@@ -9,6 +9,7 @@ import {
   getAllProduct,
   findByCategory,
   getProductByName,
+  findDiscount,
 } from "../../../services/productServices";
 import { getPaginateProduct } from "../../../services/paginateServices";
 import { fetchAllCategory } from "../../../services/categoryServices";
@@ -54,6 +55,9 @@ const Category_Product = () => {
           break;
         case "pettags":
           data = await findByCategory(2);
+          break;
+        case "discount":
+          data = await findDiscount();
           break;
         case "search":
           data = await getProductByName(inputSearch?.inputSearch);

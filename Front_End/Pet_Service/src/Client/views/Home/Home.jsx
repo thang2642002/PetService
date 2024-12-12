@@ -12,6 +12,8 @@ const Home = () => {
         <Group_Menu />
         <Slice />
         <Promotion />
+        <ListPetsProduct type="discount" />
+        <Banner />
         <ListPetsProduct type="pets" />
         <Banner />
         <ListPetsProduct type="products" />

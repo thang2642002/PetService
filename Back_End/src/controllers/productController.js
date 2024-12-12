@@ -25,15 +25,16 @@ const getAllProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category_id, stock } = req.body;
+    const { name, description, price, category_id, stock, discount } = req.body;
     const images = req.files;
-   
+
     const createProduct = await productService.createProduct(
       name,
       description,
       price,
       category_id,
       stock,
+      discount,
       images ? images.map((file) => file.path) : []
     );
     if (createProduct) {
@@ -59,7 +60,7 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const product_id = req.params.id;
-    const { name, description, price, category_id, stock } = req.body;
+    const { name, description, price, category_id, stock, discount } = req.body;
     const images = req.files;
     const updateProduct = await productService.updateProduct(
       product_id,
@@ -68,6 +69,7 @@ const updateProduct = async (req, res) => {
       price,
       category_id,
       stock,
+      discount,
       images ? images.map((file) => file.path) : []
     );
     if (updateProduct) {
@@ -189,6 +191,29 @@ const findByCategory = async (req, res) => {
   }
 };
 
+const findByDiscount = async (req, res) => {
+  try {
+    const dataDiscount = await productService.findByDiscount();
+    if (dataDiscount) {
+      return res.status(200).json({
+        message: "Find product is the success",
+        errCode: 0,
+        data: dataDiscount,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Find product is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Find product is the fails",
+      errCode: -1,
+    });
+  }
+};
 module.exports = {
   getAllProduct,
   createProduct,
@@ -197,4 +222,5 @@ module.exports = {
   findByName,
   findById,
   findByCategory,
+  findByDiscount,
 };

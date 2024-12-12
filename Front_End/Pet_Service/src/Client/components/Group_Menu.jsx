@@ -37,7 +37,10 @@ const Group_Menu = () => {
               Dịch vụ pet
             </Link>
           </div>
-          <div className="cart-item">
+          <div
+            className="cart-item"
+            onClick={() => handleNavigation("discount")}
+          >
             <p>Khuyến mãi</p>
           </div>
           <div className="cart-item">

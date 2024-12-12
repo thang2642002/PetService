@@ -4,7 +4,7 @@ import {
   getProductReviewById,
   deleteProductReview,
   updateProductReview,
-} from "../../../services/productReviewServices";
+} from "../../../../services/productReviewServices";
 import { useSelector } from "react-redux";
 
 const Comment = ({ productId }) => {

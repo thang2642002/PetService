@@ -17,6 +17,7 @@ const ModalCreateProduct = ({
   const [price, setPrice] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [stock, setStock] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [images, setImages] = useState([]);
 
   const handleClose = () => {
@@ -30,6 +31,7 @@ const ModalCreateProduct = ({
     setPrice("");
     setCategoryId("");
     setStock("");
+    setDiscount("");
     setImages([]);
   };
 
@@ -55,6 +57,7 @@ const ModalCreateProduct = ({
         price,
         categoryId,
         stock,
+        discount,
         images
       );
 
@@ -128,6 +131,16 @@ const ModalCreateProduct = ({
               placeholder="Enter stock quantity"
               value={stock}
               onChange={(e) => setStock(e.target.value)}
+            />
+          </div>
+          <div className="col-md-4">
+            <label className="form-label">Discount</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Enter Discount"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
           <div className="col-md-12">

@@ -73,6 +73,13 @@ module.exports = (sequelize) => {
       as: "petType",
     });
 
+    Pets.hasMany(models.Pet_Review, {
+      foreignKey: "pet_id",
+      as: "reviews",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+
     Pets.hasMany(models.Pet_Image, {
       foreignKey: "pet_id",
       as: "pet_images",

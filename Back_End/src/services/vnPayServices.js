@@ -77,46 +77,49 @@ const createVNPayPayment = async (req) => {
  * @param {Object} req Request object của Express
  * @param {Object} res Response object của Express
  */
-const handleVNPayReturn = async (req, res) => {
-  try {
-    const query = req.query;
-    const secureHash = query.vnp_SecureHash;
-    delete query.vnp_SecureHash;
-    delete query.vnp_SecureHashType;
+const handleVNPayReturn = async (query) => {
+  const secureHash = query.vnp_SecureHash;
 
-    // Sắp xếp query để kiểm tra chữ ký
-    const sortedQuery = Object.keys(query)
-      .sort()
-      .map((key) => `${key}=${decodeURIComponent(query[key])}`)
-      .join("&");
+  // Loại bỏ các tham số không cần thiết
+  delete query.vnp_SecureHash;
+  delete query.vnp_SecureHashType;
 
-    const generatedHash = crypto
-      .createHmac("sha512", vnpHashSecret)
-      .update(sortedQuery)
-      .digest("hex");
+  // Sắp xếp query để kiểm tra chữ ký
+  const sortedQuery = Object.keys(query)
+    .sort()
+    .map((key) => `${key}=${decodeURIComponent(query[key])}`)
+    .join("&");
 
-    if (secureHash !== generatedHash) {
-      return res.redirect(
-        `${vnpReturnUrl}?status=error&message=Invalid secure hash&order_id=${query.vnp_TxnRef}`
-      );
-    }
+  // Tạo hash để xác thực
+  const generatedHash = crypto
+    .createHmac("sha512", vnpHashSecret)
+    .update(sortedQuery)
+    .digest("hex");
 
-    // Kiểm tra trạng thái giao dịch
-    if (query.vnp_ResponseCode === "00") {
-      // Cập nhật trạng thái đơn hàng
-      await updateOrderPayment(query.vnp_TxnRef);
-      return res.redirect(
-        `${vnpReturnUrl}?status=success&message=Payment successful&order_id=${query.vnp_TxnRef}`
-      );
-    } else {
-      return res.redirect(
-        `${vnpReturnUrl}?status=error&message=Payment failed&order_id=${query.vnp_TxnRef}`
-      );
-    }
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: `Error handling VNPay return: ${error.message}` });
+  // Kiểm tra chữ ký
+  if (secureHash !== generatedHash) {
+    return {
+      status: "error",
+      message: "Invalid secure hash",
+      orderId: query.vnp_TxnRef,
+    };
+  }
+
+  // Kiểm tra trạng thái giao dịch
+  if (query.vnp_ResponseCode === "00") {
+    return {
+      status: "success",
+      message: "Payment successful",
+      orderId: query.vnp_TxnRef,
+      transactionId: query.vnp_TransactionNo,
+      amount: query.vnp_Amount / 100, // VNPay trả về số tiền nhân 100
+    };
+  } else {
+    return {
+      status: "error",
+      message: "Payment failed",
+      orderId: query.vnp_TxnRef,
+    };
   }
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Shopping_Cart.scss";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloudFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -72,30 +72,37 @@ const Shopping_Cart = () => {
   };
 
   const handleUpdateQuantity = async (
+    item,
     id,
     changeQuantity,
-    total_price,
+    unitPrice,
     type
   ) => {
+    const isProduct = !!item?.product_item;
+    const isPet = !!item?.pet_item;
+    const discount = isProduct ? item?.product_item?.discount || 0 : 0;
+
+    const calculateTotalPrice = (quantity) =>
+      isProduct
+        ? unitPrice * quantity - (unitPrice * discount * quantity) / 100
+        : unitPrice * quantity;
+
     if (type === "minus") {
-      await updateCartItem(
-        id,
-        changeQuantity - 1,
-        total_price * (changeQuantity - 1)
-      );
-    } else {
-      await updateCartItem(
-        id,
-        changeQuantity + 1,
-        total_price * (changeQuantity + 1)
-      );
-      dispatch(
-        updateItemQuantity({
+      if (changeQuantity > 1) {
+        const newQuantity = changeQuantity - 1;
+        const newTotalPrice = calculateTotalPrice(newQuantity);
+        const checkUpdate = await updateCartItem(
           id,
-          quantity: changeQuantity + 1,
-          totalPrice: total_price * (changeQuantity + 1),
-        })
-      );
+          newQuantity,
+          newTotalPrice
+        );
+        console.log("Check update khi giảm", checkUpdate);
+      }
+    } else if (type === "plus") {
+      const newQuantity = changeQuantity + 1;
+      const newTotalPrice = calculateTotalPrice(newQuantity);
+      const checkUpdate = await updateCartItem(id, newQuantity, newTotalPrice);
+      console.log("Check update khi tăng", checkUpdate);
     }
     fetchListCartItem();
   };
@@ -104,8 +111,13 @@ const Shopping_Cart = () => {
     let sumTotal = 0;
     listCartItem.forEach((item, index) => {
       if (check[index]) {
-        const price = item?.product_item?.price || item?.pet_item?.price;
-        sumTotal += price * item.quantity;
+        const isProduct = !!item?.product_item; // Kiểm tra nếu là sản phẩm
+        const price = isProduct
+          ? (item?.product_item?.price || 0) *
+            (1 - (item?.product_item?.discount || 0) / 100)
+          : item.pet_item?.price || 0; // Nếu không phải sản phẩm, lấy giá thú cưng
+
+        sumTotal += price * (item?.quantity || 1); // Tính tổng số tiền
       }
     });
     return sumTotal;
@@ -120,8 +132,13 @@ const Shopping_Cart = () => {
     let newTotalAmount = 0;
     if (newCheckState) {
       newTotalAmount = listCartItem.reduce((sum, item) => {
-        const price = item?.product_item?.price || item?.pet_item?.price;
-        return sum + price * item.quantity;
+        const isProduct = !!item.product_item; // Kiểm tra loại
+        const price = isProduct
+          ? (item.product_item.price || 0) *
+            (1 - (item.product_item.discount || 0) / 100)
+          : item.pet_item?.price || 0;
+
+        return sum + price * (item.quantity || 1);
       }, 0);
     }
     await updateCart(cartId, id, newTotalAmount);
@@ -132,12 +149,23 @@ const Shopping_Cart = () => {
     updatedCheck[index] = !updatedCheck[index];
     setCheck(updatedCheck);
     setIsAllChecked(updatedCheck.every((item) => item === true));
+
     let newTotalAmount = 0;
     updatedCheck.forEach((isChecked, idx) => {
       if (isChecked) {
         const item = listCartItem[idx];
-        const price = item?.product_item?.price || item?.pet_item?.price;
-        newTotalAmount += price * item.quantity;
+        const itemPrice = item?.product_item?.price || item?.pet_item?.price;
+        const discount = item?.product_item?.discount || 0;
+
+        let finalPrice;
+        if (item?.product_item) {
+          finalPrice = itemPrice * (1 - discount / 100);
+        } else {
+          finalPrice = itemPrice;
+        }
+
+        const quantity = Number(item?.quantity) || 1;
+        newTotalAmount += finalPrice * quantity;
       }
     });
 
@@ -210,7 +238,10 @@ const Shopping_Cart = () => {
                         <Col md={3}>
                           <div className="title-product">
                             <img
-                              src="https://product.hstatic.net/200000263355/product/z5625317232002_a6d5cca3bb39d486d8870c927d894c21_839973b078544de8bc1a13c2a6aef528_medium.jpg"
+                              src={
+                                item?.product_item?.images[0] ||
+                                item?.pet_item?.images[0]
+                              }
                               alt="product"
                             />
                             <div className="ml-5">
@@ -232,6 +263,7 @@ const Shopping_Cart = () => {
                               className="minus"
                               onClick={() =>
                                 handleUpdateQuantity(
+                                  item,
                                   item.cart_item_id,
                                   item.quantity,
                                   item?.product_item?.price ||
@@ -256,6 +288,7 @@ const Shopping_Cart = () => {
                               className="plus"
                               onClick={() =>
                                 handleUpdateQuantity(
+                                  item,
                                   item.cart_item_id,
                                   item.quantity,
                                   item?.product_item?.price ||

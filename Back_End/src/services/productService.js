@@ -1,5 +1,5 @@
 import db from "../models/index";
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 import { cloudinary } from "../config/cloudinaryConfig";
 
 const uploadImageToCloudinary = async (image) => {
@@ -37,6 +37,7 @@ const createProduct = async (
   price,
   category_id,
   stock,
+  discount,
   images
 ) => {
   try {
@@ -46,6 +47,7 @@ const createProduct = async (
       price,
       category_id,
       stock,
+      discount,
     });
 
     const imageUrls = [];
@@ -78,6 +80,7 @@ const updateProduct = async (
   price,
   category_id,
   stock,
+  discount,
   images
 ) => {
   try {
@@ -92,6 +95,7 @@ const updateProduct = async (
       price,
       category_id,
       stock,
+      discount,
     });
 
     if (images && images.length > 0) {
@@ -179,6 +183,21 @@ const findByCategory = async (category_id) => {
   }
 };
 
+const findByDiscount = async () => {
+  try {
+    const discountedProducts = await db.Products.findAll({
+      where: {
+        discount: {
+          [Op.gt]: 0, // Tìm sản phẩm có discount > 0
+        },
+      },
+    });
+    return discountedProducts;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllProduct,
   createProduct,
@@ -187,4 +206,5 @@ module.exports = {
   findByName,
   findById,
   findByCategory,
+  findByDiscount,
 };
