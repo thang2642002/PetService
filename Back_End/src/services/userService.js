@@ -162,7 +162,6 @@ const handleLogin = async (email, password) => {
     }
 
     const isPasswordValid = bcrypt.compareSync(password, login.password);
-    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       return {

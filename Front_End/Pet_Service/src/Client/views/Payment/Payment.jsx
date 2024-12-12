@@ -56,7 +56,7 @@ const Payment = () => {
         navigate(`/order-details`, {
           state: { dataOrder: order, totalAmount: finalAmount },
         });
-        // await sendEmail(order?.user?.email, listOrderItem);
+        await sendEmail(order?.user?.email, listOrderItem);
       }
     } catch (error) {
       toast.error(

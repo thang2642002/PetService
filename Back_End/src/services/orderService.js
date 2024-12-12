@@ -127,7 +127,6 @@ const updateOrderPayment = async (order_id) => {
     await updateOrder.update({
       status: "completed",
     });
-    console.log("updateOrder", updateOrder);
     return updateOrder;
   } catch (error) {
     console.log(error);

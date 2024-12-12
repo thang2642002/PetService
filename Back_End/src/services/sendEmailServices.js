@@ -1,30 +1,56 @@
+import transporter from "../config/configNodemailer";
 const sendEmail = (email, order) => {
   if (!email || typeof email !== "string") {
-    console.error("Email recipient is invalid:", email);
     throw new Error("Email recipient is not defined or invalid.");
   }
 
   if (!order || !Array.isArray(order)) {
-    console.error("Order is invalid:", order);
     throw new Error("Order is not defined or invalid.");
   }
 
   // Lặp qua danh sách order để tạo nội dung bảng HTML
   const orderDetails = order
     .map((item) => {
-      const product = item.product_item || {}; // Kiểm tra nếu product_item không null
-      const discountedPrice = product.price * (1 - product.discount / 100);
+      // Kiểm tra loại sản phẩm (pet_item hoặc product_item)
+      if (item.pet_item) {
+        const pet = item.pet_item;
 
-      return `
-        <tr>
-          <td>${product.name || "Không có tên sản phẩm"}</td>
-          <td>${item.quantity || 0}</td>
-          <td>${product.price.toLocaleString()} VND</td>
-          <td>${product.discount}%</td>
-          <td>${discountedPrice.toLocaleString()} VND</td>
-          <td>${item.total_price.toLocaleString()} VND</td>
-        </tr>
-      `;
+        return `
+          <tr>
+            <td>${pet.name || "Không có tên thú cưng"}</td>
+            <td>${item.quantity || 0}</td>
+            <td>${pet.price.toLocaleString()} VND</td>
+            <td>0%</td>
+            <td>${pet.price.toLocaleString()} VND</td>
+            <td>${item.total_price.toLocaleString()} VND</td>
+          </tr>
+        `;
+      } else if (item.product_item) {
+        const product = item.product_item;
+        const discountedPrice =
+          product.price * (1 - (product.discount || 0) / 100);
+        return `
+          <tr>
+            <td>${product.name || "Không có tên sản phẩm"}</td>
+            <td>${item.quantity || 0}</td>
+            <td>${product.price.toLocaleString()} VND</td>
+            <td>${product.discount || 0}%</td>
+            <td>${discountedPrice.toLocaleString()} VND</td>
+            <td>${item.total_price.toLocaleString()} VND</td>
+          </tr>
+        `;
+      } else {
+        return `
+          <tr>
+            <td>Không xác định</td>
+            <td>${item.quantity || 0}</td>
+            <td>0 VND</td>
+            <td>0%</td>
+            <td>0 VND</td>
+            <td>${item.total_price.toLocaleString()} VND</td>
+          </tr>
+        `;
+      }
     })
     .join(""); // Nối các dòng HTML thành một chuỗi
 

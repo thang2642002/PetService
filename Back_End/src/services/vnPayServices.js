@@ -42,15 +42,11 @@ const createVNPayPayment = async (req) => {
       vnp_ExpireDate: moment().add(5, "minutes").format("YYYYMMDDHHmmss"),
     };
 
-    console.log("Debug - Query Params: ", queryParams);
-
     // Tạo Query String đã được sắp xếp theo quy tắc VNPay yêu cầu
     const sortedQuery = Object.keys(queryParams)
       .sort()
       .map((key) => `${key}=${encodeURIComponent(queryParams[key])}`)
       .join("&");
-
-    console.log("Debug - Sorted Query String: ", sortedQuery);
 
     // Tính toán Secure Hash với secret key
     const secureHash = crypto
@@ -58,12 +54,8 @@ const createVNPayPayment = async (req) => {
       .update(sortedQuery)
       .digest("hex");
 
-    console.log("Debug - Generated Secure Hash: ", secureHash);
-
     // Ghép URL đầy đủ
     const url = `${vnpUrl}?${sortedQuery}&vnp_SecureHash=${secureHash}`;
-
-    console.log("Debug - Final Payment URL: ", url);
 
     return url;
   } catch (error) {

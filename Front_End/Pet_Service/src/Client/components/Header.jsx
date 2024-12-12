@@ -46,7 +46,6 @@ const Header = () => {
 
   const handleSearch = (e, type) => {
     if (e.key === "Enter") {
-      console.log("Check inputSearch before navigate:", inputSearch);
       navigate(`/category-product/${type}`, { state: { inputSearch } });
       setInputSearch("");
     }

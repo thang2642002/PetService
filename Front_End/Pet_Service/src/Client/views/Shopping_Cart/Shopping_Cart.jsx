@@ -91,18 +91,12 @@ const Shopping_Cart = () => {
       if (changeQuantity > 1) {
         const newQuantity = changeQuantity - 1;
         const newTotalPrice = calculateTotalPrice(newQuantity);
-        const checkUpdate = await updateCartItem(
-          id,
-          newQuantity,
-          newTotalPrice
-        );
-        console.log("Check update khi giảm", checkUpdate);
+        await updateCartItem(id, newQuantity, newTotalPrice);
       }
     } else if (type === "plus") {
       const newQuantity = changeQuantity + 1;
       const newTotalPrice = calculateTotalPrice(newQuantity);
-      const checkUpdate = await updateCartItem(id, newQuantity, newTotalPrice);
-      console.log("Check update khi tăng", checkUpdate);
+      await updateCartItem(id, newQuantity, newTotalPrice);
     }
     fetchListCartItem();
   };

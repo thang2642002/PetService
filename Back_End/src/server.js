@@ -5,7 +5,7 @@ import apiInitWebRouter from "./routers/api.js";
 import cors from "cors";
 
 const app = express();
-const PORT = 8089;
+const PORT = 8090 || 8088;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
