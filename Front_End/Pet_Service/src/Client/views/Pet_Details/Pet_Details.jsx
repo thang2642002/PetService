@@ -42,6 +42,8 @@ const Pet_Details = () => {
     centerMode: false,
   };
 
+  console.log("pet", pet);
+
   const handleThumbnailClick = (index) => {
     const selectedImageURL = pet?.images[index];
     setSelectedImage(selectedImageURL);
@@ -161,12 +163,37 @@ const Pet_Details = () => {
             <div className=" p-4  ">
               <h1 className="text-2xl font-bold mb-4">{pet?.name}</h1>
               <div className="flex">
-                <p className="pr-5 border-solid border-r-2 border-[#cccccc] ">
-                  Mã sản phẩm: 8936204290164
+                <p className="pr-5 border-solid border-r-2 border-[#cccccc] customPetId">
+                  Mã sản phẩm: {pet?.pet_id}
                 </p>
-                <p className="ml-5">Thương hiệu: Royal Canin</p>
+                <p className="ml-5">
+                  Giống loài: <strong>{pet?.breed}</strong>
+                </p>
               </div>
-
+              <div className="flex justify-between">
+                <p>
+                  Tuổi: <strong>{pet?.age} tuổi</strong>
+                </p>
+                <p>
+                  Chiều cao: <strong>{pet?.height} cm</strong>
+                </p>
+                <p>
+                  Cân nặng: <strong>{pet?.weight} kg</strong>
+                </p>
+              </div>
+              <div className="flex gap-28">
+                <p>
+                  Màu lông: <strong>{pet?.coat_color}</strong>
+                </p>
+                <p>
+                  Phòng vecxin:{" "}
+                  <strong>
+                    {pet.available === true
+                      ? "Đã tiêm vecxin"
+                      : "Chưa tiêm vecxin"}
+                  </strong>
+                </p>
+              </div>
               <h3 className="text-danger mb-3">
                 {pet?.price?.toLocaleString()} VND
               </h3>
@@ -224,25 +251,10 @@ const Pet_Details = () => {
                   </span>
                 </div>
                 {showDesc && (
-                  <p className="mt-4">
-                    Sữa tắm Olive cho chó mèo là sản phẩm bổ sung tinh dầu
-                    olive_ chuyên dưỡng lông , chăm sóc toàn diện da và lông của
-                    thú cưng, mang đến cho pet của bạn bộ lông và làm da khỏe
-                    đẹp. 1. Sữa tắm Olive cho lông trắng: Sản phẩm chuyên biệt
-                    cho chó – mèo có lông màu trắng. Giúp loại bỏ các vết ố
-                    vàng, xỉn màu trên bộ lông của vật nuôi, trả lại một bộ lông
-                    trắng muốt, óng ả cho chúng. 2. Sữa tắm Olive cho lông nâu
-                    đỏ: Dành riêng cho các giống vật nuôi có lông màu nâu – đỏ,
-                    giúp lông không bị bạc màu, màu lông nâu – đỏ đặc trưng sẽ
-                    trở nên đậm hơn, óng ả và đều màu . 3. Sữa tắm Olive Dưỡng
-                    lông: là sản phẩm dưỡng lông tối ưu, bổ sung các tinh chất
-                    dưỡng giúp thẩm thấu sâu vào bề mặt da & lông, mang đến cho
-                    vật nuôi một bộ lông sáng óng, mềm mượt. 4. Sữa tắm Olive
-                    T.rị ve rận:Sản phẩm có bổ sung tinh chất diệt khuẩn, giúp
-                    đánh bay các loại ve rận, bọ chét, ký sinh trùng bám trên da
-                    của vật nuôi, giúp chúng luôn khỏe mạnh, thoải mái. Quy
-                    cách: Chai 450ml
-                  </p>
+                  <div
+                    className="mt-4 customDescription"
+                    dangerouslySetInnerHTML={{ __html: pet?.description }}
+                  ></div>
                 )}
               </div>
               <div className="pt-4 border-t-2 border-[#cccccc]">

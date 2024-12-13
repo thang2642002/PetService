@@ -3,7 +3,18 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { FcPlus } from "react-icons/fc";
+import Quill from "quill";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { createPets } from "../../../services/petServices";
+
+const Size = Quill.import("formats/size");
+Size.whitelist = ["small", "normal", "large", "huge"]; // Thêm kích cỡ tùy chỉnh nếu muốn
+Quill.register(Size, true);
+
+const Header = Quill.import("formats/header");
+Header.whitelist = [1, 2, 3, 4]; // Hỗ trợ h1 -> h4
+Quill.register(Header, true);
 
 const ModalCreatePet = (props) => {
   const { show, setShow, fetchAllPet, listPetType } = props;
@@ -46,6 +57,10 @@ const ModalCreatePet = (props) => {
 
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescription(value);
   };
 
   const handleSave = async () => {
@@ -122,7 +137,7 @@ const ModalCreatePet = (props) => {
                 ))}
             </select>
           </div>
-          <div className="col-4">
+          <div className="col-3">
             <label className="form-label">Age</label>
             <input
               type="text"
@@ -132,7 +147,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setAge(e.target.value)}
             />
           </div>
-          <div className="col-4">
+          <div className="col-3">
             <label className="form-label">Height</label>
             <input
               type="text"
@@ -142,7 +157,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setHeight(e.target.value)}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Weight</label>
             <input
               type="text"
@@ -152,7 +167,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setWeight(e.target.value)}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Coat Color</label>
             <input
               type="text"
@@ -182,7 +197,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label">Available</label>
             <select
               className="form-control"
@@ -193,14 +208,41 @@ const ModalCreatePet = (props) => {
               <option value="false">Not Available</option>
             </select>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-12 mb-5">
             <label className="form-label">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Description"
+            <ReactQuill
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={handleDescriptionChange}
+              modules={{
+                toolbar: [
+                  [
+                    { header: "1" },
+                    { header: "2" },
+                    { header: "3" },
+                    { header: "4" },
+                    { font: [] },
+                  ],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["bold", "italic", "underline"],
+                  [{ align: [] }],
+                  ["link"],
+                  ["image"],
+                ],
+              }}
+              formats={[
+                "header", // Hỗ trợ h1 -> h4
+                "font",
+                "bold",
+                "italic",
+                "underline",
+                "list",
+                "bullet",
+                "align",
+                "link",
+                "image",
+              ]}
+              className="mt-1"
+              style={{ height: "150px" }}
             />
           </div>
           <div className="col-md-12">

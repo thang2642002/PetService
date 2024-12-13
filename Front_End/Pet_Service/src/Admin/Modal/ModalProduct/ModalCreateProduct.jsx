@@ -4,8 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import Quill from "quill";
 import { FcPlus } from "react-icons/fc";
-import ReactQuill from "react-quill"; // Thư viện soạn thảo WYSIWYG
-import "react-quill/dist/quill.snow.css"; // CSS cho editor
+import ReactQuill from "react-quill"; 
+import "react-quill/dist/quill.snow.css"; 
 import { createProduct } from "../../../services/productServices";
 import "./ModalCreateProduct.scss";
 
@@ -160,13 +160,6 @@ const ModalCreateProduct = ({
           </div>
           <div className="col-md-12 mb-5">
             <label className="form-label">Description</label>
-            {/* <textarea
-              className="form-control"
-              rows="3"
-              placeholder="Enter product description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            /> */}
             <ReactQuill
               value={description}
               onChange={handleDescriptionChange}

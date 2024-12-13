@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { updatePet } from "../../../services/petServices";
 
 const ModalUpdatePet = ({
@@ -12,33 +14,17 @@ const ModalUpdatePet = ({
   fetchAllPet,
   listPetType,
 }) => {
-  const [petDetails, setPetDetails] = useState({
-    name: "",
-    age: "",
-    height: "",
-    weight: "",
-    coatColor: "",
-    breed: "",
-    description: "",
-    price: "",
-    available: false,
-    petTypeId: "",
-    images: [],
-  });
-
-  const {
-    name,
-    age,
-    height,
-    weight,
-    coatColor,
-    breed,
-    description,
-    price,
-    available,
-    petTypeId,
-    images,
-  } = petDetails;
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [coatColor, setCoatColor] = useState("");
+  const [breed, setBreed] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [available, setAvailable] = useState("true");
+  const [petTypeId, setPetTypeId] = useState("");
+  const [images, setImages] = useState([]);
 
   const handleClose = () => {
     setShow(false);
@@ -46,37 +32,34 @@ const ModalUpdatePet = ({
   };
 
   const resetForm = () => {
-    setPetDetails({
-      name: "",
-      age: "",
-      height: "",
-      weight: "",
-      coatColor: "",
-      breed: "",
-      description: "",
-      price: "",
-      available: false,
-      petTypeId: "",
-      images: [],
-    });
+    setName("");
+    setAge("");
+    setHeight("");
+    setWeight("");
+    setCoatColor("");
+    setBreed("");
+    setDescription("");
+    setPrice("");
+    setAvailable("true");
+    setPetTypeId("");
+    setImages([]);
   };
 
   useEffect(() => {
     if (petUpdate) {
-      setPetDetails({
-        name: petUpdate.name || "",
-        age: petUpdate.age || "",
-        height: petUpdate.height || "",
-        weight: petUpdate.weight || "",
-        coatColor: petUpdate.coat_color || "",
-        breed: petUpdate.breed || "",
-        description: petUpdate.description || "",
-        price: petUpdate.price || "",
-        available:
-          petUpdate.available === true || petUpdate.available === "true",
-        petTypeId: petUpdate.pet_type_id || "",
-        images: [],
-      });
+      setName(petUpdate.name || ""),
+        setAge(petUpdate.age || ""),
+        setHeight(petUpdate.height || ""),
+        setWeight(petUpdate.weight || ""),
+        setCoatColor(petUpdate.coat_color || ""),
+        setBreed(petUpdate.breed || ""),
+        setDescription(petUpdate.description || ""),
+        setPrice(petUpdate.price || ""),
+        setAvailable(
+          petUpdate.available === true || petUpdate.available === "true"
+        ),
+        setPetTypeId(petUpdate.pet_type_id || ""),
+        setImages([]);
     }
   }, [petUpdate]);
 
@@ -85,11 +68,21 @@ const ModalUpdatePet = ({
     const validImages = selectedFiles.filter((file) =>
       file.type.startsWith("image/")
     );
-    const updatedImages = [...images, ...validImages];
-    const uniqueImages = Array.from(
-      new Set(updatedImages.map((file) => file.name))
-    ).map((name) => updatedImages.find((file) => file.name === name));
-    setPetDetails((prev) => ({ ...prev, images: uniqueImages }));
+    const uniqueImages = validImages.filter(
+      (file) =>
+        !images.some(
+          (existingImage) =>
+            existingImage.name === file.name &&
+            existingImage.size === file.size &&
+            existingImage.lastModified === file.lastModified
+        )
+    );
+
+    setImages((prev) => [...prev, ...uniqueImages]);
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescription(value);
   };
 
   const handleSubmitUpdatePet = async () => {
@@ -143,9 +136,7 @@ const ModalUpdatePet = ({
               className="form-control"
               value={name}
               placeholder="Name"
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, name: e.target.value }))
-              }
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -154,12 +145,7 @@ const ModalUpdatePet = ({
             <select
               className="form-control"
               value={petTypeId}
-              onChange={(e) =>
-                setPetDetails((prev) => ({
-                  ...prev,
-                  petTypeId: e.target.value,
-                }))
-              }
+              onChange={(e) => setPetTypeId(e.target.value)}
             >
               <option value="">Select a pet type</option>
               {listPetType &&
@@ -171,84 +157,69 @@ const ModalUpdatePet = ({
             </select>
           </div>
 
-          <div className="col-4">
+          <div className="col-3">
             <label className="form-label">Age</label>
             <input
               type="text"
               className="form-control"
               placeholder="Age"
               value={age}
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, age: e.target.value }))
-              }
+              onChange={(e) => setAge(e.target.value)}
             />
           </div>
 
-          <div className="col-4">
+          <div className="col-3">
             <label className="form-label">Height</label>
             <input
               type="text"
               className="form-control"
               placeholder="Height"
               value={height}
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, height: e.target.value }))
-              }
+              onChange={(e) => setHeight(e.target.value)}
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Weight</label>
             <input
               type="text"
               className="form-control"
               placeholder="Weight"
               value={weight}
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, weight: e.target.value }))
-              }
+              onChange={(e) => setWeight(e.target.value)}
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Coat Color</label>
             <input
               type="text"
               className="form-control"
               placeholder="Coat Color"
               value={coatColor}
-              onChange={(e) =>
-                setPetDetails((prev) => ({
-                  ...prev,
-                  coatColor: e.target.value,
-                }))
-              }
+              onChange={(e) => setCoatColor(e.target.value)}
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Breed</label>
             <input
               type="text"
               className="form-control"
               placeholder="Breed"
               value={breed}
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, breed: e.target.value }))
-              }
+              onChange={(e) => setBreed(e.target.value)}
             />
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Price</label>
             <input
               type="number"
               className="form-control"
               placeholder="Price"
               value={price}
-              onChange={(e) =>
-                setPetDetails((prev) => ({ ...prev, price: e.target.value }))
-              }
+              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
 
@@ -257,31 +228,46 @@ const ModalUpdatePet = ({
             <select
               className="form-control"
               value={available ? "true" : "false"}
-              onChange={(e) =>
-                setPetDetails((prev) => ({
-                  ...prev,
-                  available: e.target.value === "true",
-                }))
-              }
+              onChange={(e) => setAvailable(e.target.value)}
             >
               <option value="true">Available</option>
               <option value="false">Not Available</option>
             </select>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-12 mb-5">
             <label className="form-label">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Description"
+            <ReactQuill
               value={description}
-              onChange={(e) =>
-                setPetDetails((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
+              onChange={handleDescriptionChange}
+              modules={{
+                toolbar: [
+                  [
+                    { header: "1" },
+                    { header: "2" },
+                    { header: "3" },
+                    { header: "4" },
+                  ],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["bold", "italic", "underline"],
+                  [{ align: [] }],
+                  ["link"],
+                  ["image"],
+                ],
+              }}
+              formats={[
+                "header",
+                "font",
+                "bold",
+                "italic",
+                "underline",
+                "list",
+                "bullet",
+                "align",
+                "link",
+                "image",
+              ]}
+              style={{ height: "150px" }}
             />
           </div>
 

@@ -29,7 +29,6 @@ const TablePet = (props) => {
             <th scope="col">Breed</th>
             <th scope="col">Price</th>
             <th scope="col">Available</th>
-            <th scope="col">Description</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -48,7 +47,6 @@ const TablePet = (props) => {
                 <td>{item.breed}</td>
                 <td>{item.price}</td>
                 <td>{item.available ? "Available" : "Not Available"}</td>
-                <td>{item.description}</td>
                 <td>
                   <button className="btn btn-secondary">View</button>
                   <button

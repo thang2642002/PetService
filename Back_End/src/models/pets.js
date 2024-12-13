@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       age: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       height: {
         type: DataTypes.INTEGER,
@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       price: {
         type: DataTypes.INTEGER,
