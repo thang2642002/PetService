@@ -289,24 +289,10 @@ const ProductDetails = () => {
                 </span>
               </div>
               {showDesc && (
-                <p className="mt-4">
-                  Sữa tắm Olive cho chó mèo là sản phẩm bổ sung tinh dầu olive_
-                  chuyên dưỡng lông , chăm sóc toàn diện da và lông của thú
-                  cưng, mang đến cho pet của bạn bộ lông và làm da khỏe đẹp. 1.
-                  Sữa tắm Olive cho lông trắng: Sản phẩm chuyên biệt cho chó –
-                  mèo có lông màu trắng. Giúp loại bỏ các vết ố vàng, xỉn màu
-                  trên bộ lông của vật nuôi, trả lại một bộ lông trắng muốt, óng
-                  ả cho chúng. 2. Sữa tắm Olive cho lông nâu đỏ: Dành riêng cho
-                  các giống vật nuôi có lông màu nâu – đỏ, giúp lông không bị
-                  bạc màu, màu lông nâu – đỏ đặc trưng sẽ trở nên đậm hơn, óng ả
-                  và đều màu . 3. Sữa tắm Olive Dưỡng lông: là sản phẩm dưỡng
-                  lông tối ưu, bổ sung các tinh chất dưỡng giúp thẩm thấu sâu
-                  vào bề mặt da & lông, mang đến cho vật nuôi một bộ lông sáng
-                  óng, mềm mượt. 4. Sữa tắm Olive T.rị ve rận:Sản phẩm có bổ
-                  sung tinh chất diệt khuẩn, giúp đánh bay các loại ve rận, bọ
-                  chét, ký sinh trùng bám trên da của vật nuôi, giúp chúng luôn
-                  khỏe mạnh, thoải mái. Quy cách: Chai 450ml
-                </p>
+                <div
+                  className="mt-4 customDescription"
+                  dangerouslySetInnerHTML={{ __html: product?.description }}
+                ></div>
               )}
             </div>
             <div className="pt-4 border-t-2 border-[#cccccc]">

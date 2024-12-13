@@ -28,7 +28,6 @@ const TableProduct = (props) => {
             <th scope="col">Category ID</th>
             <th scope="col">Stock</th>
             <th scope="col">Discount</th>
-            <th scope="col">Description</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -43,7 +42,6 @@ const TableProduct = (props) => {
                 <td>{item.category_id}</td>
                 <td>{item.stock}</td>
                 <td>{item.discount}</td>
-                <td>{item.description}</td>
                 <td>
                   <button className="btn btn-secondary">View</button>
                   <button

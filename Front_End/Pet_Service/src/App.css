@@ -17,3 +17,11 @@
   text-overflow: ellipsis;
   max-width: 300px;
 }
+
+.customTdDescription {
+  white-space: nowrap; /* Không cho xuống dòng */
+  overflow: hidden; /* Cắt bớt nội dung nếu quá dài */
+  text-overflow: ellipsis; /* Hiển thị dấu "..." */
+  max-width: 232px; /* Giới hạn chiều rộng của nội dung */
+  max-height: 54px;
+}

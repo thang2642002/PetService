@@ -2,9 +2,20 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
+import Quill from "quill";
 import { FcPlus } from "react-icons/fc";
+import ReactQuill from "react-quill"; // Thư viện soạn thảo WYSIWYG
+import "react-quill/dist/quill.snow.css"; // CSS cho editor
 import { createProduct } from "../../../services/productServices";
 import "./ModalCreateProduct.scss";
+
+const Size = Quill.import("formats/size");
+Size.whitelist = ["small", "normal", "large", "huge"]; // Thêm kích cỡ tùy chỉnh nếu muốn
+Quill.register(Size, true);
+
+const Header = Quill.import("formats/header");
+Header.whitelist = [1, 2, 3, 4]; // Hỗ trợ h1 -> h4
+Quill.register(Header, true);
 
 const ModalCreateProduct = ({
   show,
@@ -42,6 +53,10 @@ const ModalCreateProduct = ({
 
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescription(value);
   };
 
   const handleSave = async () => {
@@ -139,18 +154,52 @@ const ModalCreateProduct = ({
               type="number"
               className="form-control"
               placeholder="Enter Discount"
-              value={discount}
+              value={discount || 0}
               onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
-          <div className="col-md-12">
+          <div className="col-md-12 mb-5">
             <label className="form-label">Description</label>
-            <textarea
+            {/* <textarea
               className="form-control"
               rows="3"
               placeholder="Enter product description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+            /> */}
+            <ReactQuill
+              value={description}
+              onChange={handleDescriptionChange}
+              modules={{
+                toolbar: [
+                  [
+                    { header: "1" },
+                    { header: "2" },
+                    { header: "3" },
+                    { header: "4" },
+                    { font: [] },
+                  ],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["bold", "italic", "underline"],
+                  [{ align: [] }],
+                  ["link"],
+                  ["image"],
+                ],
+              }}
+              formats={[
+                "header", // Hỗ trợ h1 -> h4
+                "font",
+                "bold",
+                "italic",
+                "underline",
+                "list",
+                "bullet",
+                "align",
+                "link",
+                "image",
+              ]}
+              className="mt-1"
+              style={{ height: "150px" }}
             />
           </div>
 

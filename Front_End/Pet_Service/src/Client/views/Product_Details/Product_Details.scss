@@ -32,3 +32,43 @@
     transform: translateX(100%);
   }
 }
+
+// .customDescription {
+//   font-size: 14px;
+//   max-height: 300px;
+//   overflow-y: hidden;
+// }
+
+.customDescription {
+  max-height: 200px; /* Chiều cao tối đa của phần tử */
+  overflow-y: auto; /* Kích hoạt cuộn dọc */
+  /* (Tùy chọn) Thêm viền để phân biệt vùng cuộn */
+  padding: 8px; /* (Tùy chọn) Thêm khoảng cách bên trong */
+  scrollbar-width: thin; /* Thu gọn thanh cuộn (Firefox) */
+
+  p {
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+  }
+
+  ul {
+    margin-bottom: 5px !important;
+  }
+}
+
+.customDescription::-webkit-scrollbar {
+  width: 8px; /* Độ rộng thanh cuộn (Chrome, Safari) */
+}
+
+.customDescription::-webkit-scrollbar-thumb {
+  background: #fff; /* Màu thanh cuộn */
+  border-radius: 4px; /* Bo góc */
+}
+
+.customDescription::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu khi hover */
+}
+
+.customDescription::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền thanh cuộn */
+}
