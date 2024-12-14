@@ -19,4 +19,6 @@ routes.get("/find-by-name", productController.findByName);
 routes.get("/find-by-id/:id", productController.findById);
 routes.get("/find-by-category/:id", productController.findByCategory);
 routes.get("/find-by-discount", productController.findByDiscount);
+routes.get("/count-product", productController.countProduct);
+routes.get("/product-by-category", productController.getProductByCategory);
 export default routes;

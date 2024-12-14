@@ -197,6 +197,15 @@ const handleLogin = async (email, password) => {
   }
 };
 
+const countUser = async () => {
+  try {
+    const userCount = await db.User.count();
+    return userCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllUser,
   createUser,
@@ -204,6 +213,7 @@ module.exports = {
   deleteUser,
   findName,
   findById,
+  countUser,
   handleRegister,
   handleLogin,
 };

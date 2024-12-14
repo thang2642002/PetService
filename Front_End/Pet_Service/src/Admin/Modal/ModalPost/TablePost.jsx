@@ -1,4 +1,5 @@
 import ReactPaginate from "react-paginate";
+
 const TablePost = (props) => {
   const {
     totalPages,
@@ -15,27 +16,29 @@ const TablePost = (props) => {
 
   return (
     <div className="table-user-container px-4 mt-4">
-      <table className="table table-striped table-hover table-bordered">
+      <table className="table table-striped table-hover table-bordered w-full">
         <thead>
-          <tr>
-            <td>ID</td>
-            <th scope="col">Title</th>
-            <th scope="col">Content</th>
-            <th scope="col">Create Date</th>
-            <th scope="col">Action</th>
+          <tr className="bg-gray-100">
+            <td className="px-4 py-2 text-left">ID</td>
+            <th className="px-4 py-2 text-left">Title</th>
+            <th className="px-4 py-2 text-left">Content</th>
+            <th className="px-4 py-2 text-left">Action</th>
           </tr>
         </thead>
         <tbody>
           {listPost &&
             Array.isArray(listPost) &&
             listPost.map((item, index) => (
-              <tr key={index}>
-                <td>{item.post_id}</td>
-                <td>{item.title}</td>
-                <td>{item.content}</td>
-                <td>{item.created_date}</td>
-
-                <td>
+              <tr key={index} className="border-b">
+                <td className="px-4 py-2">{item.post_id}</td>
+                <td className="px-4 py-2">{item.title}</td>
+                <td className="px-4 py-2 max-w-xl whitespace-normal">
+                  <div
+                    className="h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200"
+                    dangerouslySetInnerHTML={{ __html: item.content }}
+                  ></div>
+                </td>
+                <td className="px-4 py-2">
                   <button className="btn btn-secondary">View</button>
                   <button
                     className="btn btn-warning mx-3"

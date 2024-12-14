@@ -46,7 +46,7 @@ const ManagerCarts = () => {
 
   useEffect(() => {
     fetchAllCart();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="manager-user-container">

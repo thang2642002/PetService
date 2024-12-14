@@ -35,7 +35,7 @@ const ManagerCategory = () => {
 
   useEffect(() => {
     getListCategory();
-  }, [listCategory]);
+  }, [currentPage]);
 
   const handleShowUpdateModal = (category) => {
     setCategoryUpdate(category);

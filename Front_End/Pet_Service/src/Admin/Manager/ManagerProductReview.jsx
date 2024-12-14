@@ -38,14 +38,16 @@ const ManagerProductReview = () => {
 
   const fetchAllProductReview = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
-    setListProductReview(data.data);
-    setTotalItems(data.totalItems);
-    setTotalPages(data.totalPages);
+    if (data && data.errCode === 0) {
+      setListProductReview(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   };
 
   useEffect(() => {
     fetchAllProductReview();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="manager-user-container">

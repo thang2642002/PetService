@@ -15,14 +15,12 @@ const ModalCreatePost = (props) => {
     setShow(false);
     setTitle("");
     setContent("");
-    setCreateDate("");
     setImage("");
     setPreviewImage("");
   };
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [createDate, setCreateDate] = useState("");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
 
@@ -33,8 +31,12 @@ const ModalCreatePost = (props) => {
     }
   };
 
+  const handleContentChange = (value) => {
+    setContent(value);
+  };
+
   const handleSubmitCreatePost = async () => {
-    const data = await createPost(title, content, createDate);
+    const data = await createPost(title, content, image);
     if (data && data.errCode === 0) {
       toast(data.message);
       await fetchAllPost();
@@ -71,10 +73,42 @@ const ModalCreatePost = (props) => {
             </div>
 
             {/* Thêm CKEditor */}
-            <div className="col-12">
+            <div className="col-12 mb-5">
               <label className="form-label">Content</label>
-              <ReactQuill theme="snow" value={content} onChange={setContent} />
-              <p>Value: {content}</p>
+              <ReactQuill
+                value={content}
+                onChange={handleContentChange}
+                modules={{
+                  toolbar: [
+                    [
+                      { header: "1" },
+                      { header: "2" },
+                      { header: "3" },
+                      { header: "4" },
+                      { font: [] },
+                    ],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                    ["link"],
+                    ["image"],
+                  ],
+                }}
+                formats={[
+                  "header", // Hỗ trợ h1 -> h4
+                  "font",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "list",
+                  "bullet",
+                  "align",
+                  "link",
+                  "image",
+                ]}
+                className="mt-1"
+                style={{ height: "150px" }}
+              />
             </div>
 
             <div className="col-md-12">

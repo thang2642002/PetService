@@ -214,6 +214,55 @@ const findByDiscount = async (req, res) => {
     });
   }
 };
+
+const countProduct = async (req, res) => {
+  try {
+    const productCount = await productService.countProduct();
+    if (productCount) {
+      return res.status(200).json({
+        message: "Count product is the success",
+        errCode: 0,
+        data: productCount,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Count product is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Count product is the fails",
+      errCode: -1,
+    });
+  }
+};
+
+const getProductByCategory = async (req, res) => {
+  try {
+    const categoryPercentage =
+      await productService.getProductStatisticsByCategory();
+    if (categoryPercentage && categoryPercentage.length > 0) {
+      return res.status(200).json({
+        message: "Product statistics by category retrieved successfully",
+        errCode: 0,
+        data: categoryPercentage,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Product statistics by category retrieved fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Product statistics by category retrieved fails",
+      errCode: -1,
+    });
+  }
+};
 module.exports = {
   getAllProduct,
   createProduct,
@@ -223,4 +272,6 @@ module.exports = {
   findById,
   findByCategory,
   findByDiscount,
+  countProduct,
+  getProductByCategory,
 };

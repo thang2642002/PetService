@@ -37,9 +37,11 @@ const ManagerPets = () => {
 
   const fetchAllPet = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
-    setListPets(data.data);
-    setTotalItems(data.totalItems);
-    setTotalPages(data.totalPages);
+    if (data && data.errCode === 0) {
+      setListPets(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   };
 
   const fetchListPetType = async () => {
@@ -53,6 +55,10 @@ const ManagerPets = () => {
     fetchAllPet();
     fetchListPetType();
   }, []);
+
+  useEffect(() => {
+    fetchAllPet();
+  }, [currentPage]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Pets</div>

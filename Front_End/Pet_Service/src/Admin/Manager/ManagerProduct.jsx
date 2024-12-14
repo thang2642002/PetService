@@ -50,9 +50,12 @@ const ManagerProduct = () => {
   };
 
   useEffect(() => {
-    fetchAllProduct();
     fetchCategory();
   }, []);
+
+  useEffect(() => {
+    fetchAllProduct();
+  }, [currentPage]);
 
   return (
     <div className="manager-user-container">
@@ -115,6 +118,7 @@ const ManagerProduct = () => {
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listProduct={listProduct}
+          fetchAllProduct={fetchAllProduct}
         />
         <div
           className="custom-pagination"

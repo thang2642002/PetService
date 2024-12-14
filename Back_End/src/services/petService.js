@@ -174,6 +174,15 @@ const findById = async (pet_id) => {
   }
 };
 
+const countPet = async () => {
+  try {
+    const petCount = await db.Pets.count();
+    return petCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllPet,
   createPet,
@@ -181,4 +190,5 @@ module.exports = {
   deletePet,
   findByName,
   findById,
+  countPet,
 };

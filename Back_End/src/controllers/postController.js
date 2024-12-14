@@ -104,4 +104,28 @@ const deletePost = async (req, res) => {
   }
 };
 
-module.exports = { getAllPost, createPost, updatePost, deletePost };
+const countPost = async (req, res) => {
+  try {
+    const countPost = await postService.countPost();
+    if (countPost) {
+      return res.status(200).json({
+        message: "Count post is the success",
+        errCode: 0,
+        data: countPost,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Count post is the success",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Count post is the success",
+      errCode: -1,
+    });
+  }
+};
+
+module.exports = { getAllPost, createPost, updatePost, deletePost, countPost };

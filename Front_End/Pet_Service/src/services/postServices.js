@@ -4,9 +4,12 @@ const getAllPost = () => {
   return axios.get("/post/get-all-post");
 };
 
-const createPost = (title, content, created_date) => {
-  const data = { title, content, created_date };
-  return axios.post("/post/create-post", data);
+const createPost = (title, content, image) => {
+  const dataPost = new FormData();
+  dataPost.append("title", title);
+  dataPost.append("content", content);
+  dataPost.append("image", image);
+  return axios.post("/post/create-post", dataPost);
 };
 
 const updatePost = (post_id, title, content, created_date) => {

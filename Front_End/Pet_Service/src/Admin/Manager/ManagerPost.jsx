@@ -33,14 +33,16 @@ const ManagerPost = () => {
   };
   const fetchAllPost = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
-    setListPost(data.data);
-    setTotalItems(data.totalItems);
-    setTotalPages(data.totalPages);
+    if (data && data.errCode === 0) {
+      setListPost(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   };
 
   useEffect(() => {
     fetchAllPost();
-  }, [listPost]);
+  }, [currentPage]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Post</div>

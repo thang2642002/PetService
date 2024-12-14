@@ -1,8 +1,8 @@
-import petServive from "../services/petService";
+import petService from "../services/petService";
 
 const getAllPet = async (req, res) => {
   try {
-    const getAllPet = await petServive.getAllPet();
+    const getAllPet = await petService.getAllPet();
     if (getAllPet) {
       return res.status(200).json({
         message: "Get all pet is the success",
@@ -39,7 +39,7 @@ const createPet = async (req, res) => {
       pet_type_id,
     } = req.body;
     const images = req.files;
-    const createPet = await petServive.createPet(
+    const createPet = await petService.createPet(
       name,
       age,
       height,
@@ -88,7 +88,7 @@ const updatePet = async (req, res) => {
       pet_type_id,
     } = req.body;
     const images = req.files;
-    const updatePet = await petServive.updatePet(
+    const updatePet = await petService.updatePet(
       pet_id,
       name,
       age,
@@ -125,7 +125,7 @@ const updatePet = async (req, res) => {
 const deletePet = async (req, res) => {
   try {
     const pet_id = req.params.id;
-    const deletePet = await petServive.deletePet(pet_id);
+    const deletePet = await petService.deletePet(pet_id);
     if (deletePet) {
       return res.status(200).json({
         message: "Delete pet is the success",
@@ -149,7 +149,7 @@ const deletePet = async (req, res) => {
 const findByName = async (req, res) => {
   try {
     const { name } = req.query;
-    const findByName = await petServive.findByName(name);
+    const findByName = await petService.findByName(name);
     if (findByName) {
       return res.status(200).json({
         message: "Find pet is the success",
@@ -174,7 +174,7 @@ const findByName = async (req, res) => {
 const findById = async (req, res) => {
   try {
     const pet_id = req.params.id;
-    const findById = await petServive.findById(pet_id);
+    const findById = await petService.findById(pet_id);
     if (findById) {
       return res.status(200).json({
         message: "Find pet is the success",
@@ -196,6 +196,30 @@ const findById = async (req, res) => {
   }
 };
 
+const countPet = async (req, res) => {
+  try {
+    const countPet = await petService.countPet();
+    if (countPet) {
+      return res.status(200).json({
+        message: "Count pet is the success",
+        errCode: 0,
+        data: countPet,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Count pet is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Count pet is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllPet,
   createPet,
@@ -203,4 +227,5 @@ module.exports = {
   deletePet,
   findByName,
   findById,
+  countPet,
 };

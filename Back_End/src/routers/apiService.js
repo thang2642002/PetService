@@ -8,5 +8,6 @@ routes.put("/update-service/:id", serviceController.updateService);
 routes.delete("/delete-service/:id", serviceController.deleteService);
 routes.get("/get-by-id/:id", serviceController.getById);
 routes.get("/get-by-name", serviceController.getByName);
+routes.get("/count-service", serviceController.countService);
 
 export default routes;

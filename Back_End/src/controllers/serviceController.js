@@ -156,6 +156,30 @@ const getByName = async (req, res) => {
   }
 };
 
+const countService = async (req, res) => {
+  try {
+    const countService = await serviceService.countService();
+    if (countService) {
+      return res.status(200).json({
+        message: "Count service is the success",
+        errCode: 0,
+        data: countService,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Count service is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: "Server error, Count service is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -163,4 +187,5 @@ module.exports = {
   deleteService,
   getById,
   getByName,
+  countService,
 };

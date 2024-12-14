@@ -35,14 +35,16 @@ const ManagerUser = () => {
 
   const getListUser = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
-    setListUser(data.data);
-    setTotalItems(data.totalItems);
-    setTotalPages(data.totalPages);
+    if (data && data.errCode === 0) {
+      setListUser(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   };
 
   useEffect(() => {
     getListUser();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="manager-user-container">

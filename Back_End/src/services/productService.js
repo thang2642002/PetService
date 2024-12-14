@@ -198,6 +198,55 @@ const findByDiscount = async () => {
   }
 };
 
+const countProduct = async () => {
+  try {
+    const productCount = await db.Products.count();
+    return productCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getProductStatisticsByCategory = async () => {
+  try {
+    const categories = await db.Category.findAll({
+      include: {
+        model: db.Products,
+        as: "products",
+      },
+    });
+
+    console.log("categories", categories);
+
+    // Tính số lượng sản phẩm trong mỗi thể loại
+    const categoryData = categories.map(
+      (category) => (
+        console.log("check category", category),
+        {
+          category: category.name,
+          count: category.products.length, // Số lượng sản phẩm trong thể loại
+        }
+      )
+    );
+
+    // Tính tổng số sản phẩm
+    const totalProducts = categoryData.reduce(
+      (sum, category) => sum + category.count,
+      0
+    );
+
+    // Tính phần trăm cho mỗi thể loại
+    const categoryPercentage = categoryData.map((category) => ({
+      ...category,
+      percentage: ((category.count / totalProducts) * 100).toFixed(2),
+    }));
+
+    return categoryPercentage;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllProduct,
   createProduct,
@@ -207,4 +256,6 @@ module.exports = {
   findById,
   findByCategory,
   findByDiscount,
+  countProduct,
+  getProductStatisticsByCategory,
 };

@@ -78,6 +78,15 @@ const findByName = async (name) => {
   }
 };
 
+const countService = async () => {
+  try {
+    const serviceCount = await db.Services.count();
+    return serviceCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -85,4 +94,5 @@ module.exports = {
   deleteService,
   findById,
   findByName,
+  countService,
 };

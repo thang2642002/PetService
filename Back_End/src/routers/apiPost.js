@@ -10,5 +10,6 @@ routes.put(
   postController.updatePost
 );
 routes.delete("/delete-post/:id", postController.deletePost);
+routes.get("/count-post", postController.countPost);
 
 export default routes;

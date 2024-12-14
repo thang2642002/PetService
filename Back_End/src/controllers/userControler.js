@@ -283,12 +283,37 @@ const handleLogout = (req, res) => {
   }
 };
 
+const countUser = async (req, res) => {
+  try {
+    const userCount = await UserService.countUser();
+    if (userCount) {
+      return res.status(200).json({
+        message: "Count user is the success",
+        errCode: 0,
+        data: userCount,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Count user is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Count user is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllUser,
   createUser,
   updateUser,
   deleteUser,
   findByName,
+  countUser,
   findById,
   handleRegister,
   handleLogin,

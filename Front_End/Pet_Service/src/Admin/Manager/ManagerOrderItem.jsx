@@ -33,7 +33,9 @@ const ManagerOrderItem = () => {
 
   const fetchAllOrderItem = async () => {
     const data = await getAllOrderItem();
-    setListOrderItem(data.data);
+    if (data && data.errCode === 0) {
+      setListOrderItem(data.data);
+    }
   };
 
   useEffect(() => {

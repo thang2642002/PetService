@@ -14,5 +14,6 @@ routes.put(
 routes.delete("/delete-pet/:id", petController.deletePet);
 routes.get("/find-by-name", petController.findByName);
 routes.get("/find-by-id/:id", petController.findById);
+routes.get("/count-pet", petController.countPet);
 
 export default routes;

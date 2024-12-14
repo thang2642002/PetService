@@ -9,9 +9,12 @@ const TableProduct = (props) => {
     handleShowUpdateModal,
     handleShowDeleteModal,
     listProduct,
+    fetchAllProduct,
   } = props;
 
   const handlePageChange = (selectedItem) => {
+    console.log("selectedItem", selectedItem);
+    fetchAllProduct();
     setCurrentPage(selectedItem.selected + 1);
   };
 

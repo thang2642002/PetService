@@ -35,14 +35,16 @@ const ManagerService = () => {
 
   const fetchAllService = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
-    setListService(data.data);
-    setTotalItems(data.totalItems);
-    setTotalPages(data.totalPages);
+    if (data && data.errCode === 0) {
+      setListService(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   };
 
   useEffect(() => {
     fetchAllService();
-  }, [listService]);
+  }, [currentPage]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Service</div>

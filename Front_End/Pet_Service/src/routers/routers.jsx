@@ -27,6 +27,7 @@ import AppointmentForm from "../Client/components/ApointmentForm";
 import ProfileUser from "../Client/views/ProfileUser/ProfileUser";
 import CategoryProduct from "../Client/views/Category_Product/Category_Product";
 import ListPost from "../Client/views/ListPost/ListPost";
+import Statistical from "../Client/views/Statistical/Statistical";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
@@ -52,6 +53,7 @@ export const routers = [
       { path: "managerCategory", element: <ManagerCategory /> },
       { path: "managerAppointment", element: <ManagerAppointment /> },
       { path: "managerCarts", element: <ManagerCarts /> },
+      { path: "statistical", element: <Statistical /> },
     ],
   },
 

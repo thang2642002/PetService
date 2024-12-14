@@ -13,6 +13,7 @@ routes.put(
 routes.delete("/delete-user/:id", userController.deleteUser);
 routes.get("/find-by-name", userController.findByName);
 routes.get("/find-by-id/:id", userController.findById);
+routes.get("/count-user", userController.countUser);
 routes.post("/register", userController.handleRegister);
 routes.post("/login", userController.handleLogin);
 routes.post("/logout", userController.handleLogout);

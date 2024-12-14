@@ -58,4 +58,13 @@ const deletePost = async (post_id) => {
   }
 };
 
-module.exports = { getAllPost, createPost, updatePost, deletePost };
+const countPost = async () => {
+  try {
+    const postCount = await db.Post.count();
+    return postCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getAllPost, createPost, updatePost, deletePost, countPost };

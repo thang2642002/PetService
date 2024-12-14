@@ -39,7 +39,7 @@ const PetProductCartsItem = (props) => {
         >
           {discountPercentage > 0 && (
             <div className=" absolute bg-red-500 top-[10px] right-[10px] text-white p-2">
-              {discountPercentage}%
+              {discountPercentage || 0}%
             </div>
           )}
 
