@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
+import Statistical from "../Client/views/Statistical/Statistical";
 
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -19,6 +20,7 @@ const Admin = () => {
           <FaBars onClick={() => setCollapsed(!collapsed)} />
         </div>
         <div className="admin-main">
+          {/* <Statistical /> */}
           <Outlet />
         </div>
       </div>

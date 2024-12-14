@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,6 +11,15 @@ import {
   ArcElement,
 } from "chart.js";
 
+import {
+  getCountProduct,
+  getProductStatisticsByCategory,
+} from "../../../services/productServices";
+import { getCountPet } from "../../../services/petServices";
+import { getCountUser } from "../../../services/userServices";
+import { getCountService } from "../../../services/serviceServices";
+import { getCountPost } from "../../../services/postServices";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,13 +31,126 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [countProduct, setCountProduct] = useState(0);
+  const [countPet, setCountPet] = useState(0);
+  const [countUser, setCountUser] = useState(0);
+  const [countService, setCountService] = useState(0);
+  const [countPost, setCountPost] = useState(0);
+  const [pieData, setPieData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: [],
+        hoverBackgroundColor: [],
+      },
+    ],
+  });
+
+  const fetchCountProduct = async () => {
+    const data = await getCountProduct();
+    console.log("check data", data);
+    if (data && data.errCode === 0) {
+      setCountProduct(data.data);
+    }
+  };
+
+  const fetchCountPet = async () => {
+    const data = await getCountPet();
+    if (data && data.errCode === 0) {
+      setCountPet(data.data);
+    }
+  };
+
+  const fetchCountUser = async () => {
+    const data = await getCountUser();
+    if (data && data.errCode === 0) {
+      console.log(data);
+      setCountUser(data.data);
+    }
+  };
+
+  const fetchCountService = async () => {
+    const data = await getCountService();
+    if (data && data.errCode === 0) {
+      setCountService(data.data);
+    }
+  };
+
+  const fetchCountPost = async () => {
+    const data = await getCountPost();
+    if (data && data.errCode === 0) {
+      setCountPost(data.data);
+    }
+  };
+
+  const fetchProductStatisticsByCategory = async () => {
+    try {
+      const data = await getProductStatisticsByCategory();
+      if (data && data.errCode === 0 && data.data.length > 0) {
+        const categories = data.data.map((item) => item.category);
+        const percentages = data.data.map((item) =>
+          parseFloat(item.percentage)
+        );
+        setPieData({
+          labels: categories,
+          datasets: [
+            {
+              data: percentages,
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+              hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56",
+                "#4BC0C0",
+              ],
+            },
+          ],
+        });
+      } else {
+        console.log("No data available or API error:", data.message);
+      }
+    } catch (error) {
+      console.log("Error fetching category data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCountProduct();
+    fetchCountPet();
+    fetchCountUser();
+    fetchCountService();
+    fetchCountPost();
+    fetchProductStatisticsByCategory();
+  }, []);
+
   // Mock data for statistics
   const stats = [
-    { label: "Products", value: 120, icon: "📦", color: "bg-blue-500" },
-    { label: "Pets", value: 45, icon: "🐾", color: "bg-green-500" },
-    { label: "Users", value: 230, icon: "👤", color: "bg-yellow-500" },
-    { label: "Services", value: 15, icon: "🛠️", color: "bg-red-500" },
-    { label: "Posts", value: 85, icon: "✍️", color: "bg-purple-500" },
+    {
+      label: "Products",
+      value: countProduct,
+      icon: "📦",
+      color: "bg-blue-500",
+    },
+    { label: "Pets", value: countPet, icon: "🐾", color: "bg-green-500" },
+    {
+      label: "Users",
+      value: countUser,
+      icon: "👤",
+      color: "bg-yellow-500",
+    },
+    {
+      label: "Services",
+      value: countService,
+      icon: "🛠️",
+      color: "bg-red-500",
+    },
+    {
+      label: "Posts",
+      value: countPost,
+      icon: "✍️",
+      color: "bg-purple-500",
+    },
   ];
 
   // Mock data for revenue chart
@@ -65,18 +187,6 @@ const Dashboard = () => {
         text: "Weekly Revenue",
       },
     },
-  };
-
-  // Mock data for pie chart (category distribution)
-  const pieData = {
-    labels: ["Food", "Toys", "Accessories", "Medicine"],
-    datasets: [
-      {
-        data: [50, 30, 15, 25], // Mock percentages
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
-        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
-      },
-    ],
   };
 
   return (
@@ -118,7 +228,11 @@ const Dashboard = () => {
             <h2 className="text-xl font-bold text-gray-700 mb-4">
               Product Distribution by Category
             </h2>
-            <Pie data={pieData} />
+            {pieData ? (
+              <Pie data={pieData} />
+            ) : (
+              <p className="text-gray-500">Loading data...</p>
+            )}
           </div>
         </div>
       </div>

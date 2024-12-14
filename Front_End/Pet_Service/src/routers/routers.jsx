@@ -38,6 +38,7 @@ export const routers = [
     path: "/admin",
     element: <Admin />,
     children: [
+      { path: "", element: <Statistical /> },
       { path: "managerUsers", element: <ManagerUser /> },
       { path: "managerUserPet", element: <ManagerUserPet /> },
       { path: "managerServiceReview", element: <ManagerServiceReview /> },

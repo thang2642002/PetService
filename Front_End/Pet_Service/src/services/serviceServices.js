@@ -4,6 +4,10 @@ const getAllServices = () => {
   return axios.get("/service/get-all-service");
 };
 
+const getCountService = () => {
+  return axios.get("/service/count-service");
+};
+
 const createService = (name, price, description) => {
   const data = { name, price, description };
   return axios.post("/service/create-service", data);
@@ -20,4 +24,10 @@ const deleteService = (service_id) => {
   });
 };
 
-export { getAllServices, createService, updateService, deleteService };
+export {
+  getAllServices,
+  createService,
+  updateService,
+  deleteService,
+  getCountService,
+};

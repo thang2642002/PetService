@@ -8,6 +8,10 @@ const getUserById = (user_id) => {
   return axios.get(`/user/find-by-id/${user_id}`, { data: { user_id } });
 };
 
+const getCountUser = () => {
+  return axios.get("/user/count-user");
+};
+
 const createUser = (
   email,
   password,
@@ -70,9 +74,10 @@ export {
   getAllUser,
   createUser,
   updateUser,
+  getCountUser,
   deleteUser,
   loginUser,
   registerUser,
   getUserById,
-  logoutUser
+  logoutUser,
 };

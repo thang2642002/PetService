@@ -14,6 +14,14 @@ const getProductByName = (name) => {
   return axios.get(`/product/find-by-name?name=${name}`);
 };
 
+const getCountProduct = () => {
+  return axios.get("/product/count-product");
+};
+
+const getProductStatisticsByCategory = () => {
+  return axios.get("/product/product-by-category");
+};
+
 const createProduct = (
   name,
   description,
@@ -78,4 +86,6 @@ export {
   findByCategory,
   getProductByName,
   findDiscount,
+  getCountProduct,
+  getProductStatisticsByCategory,
 };

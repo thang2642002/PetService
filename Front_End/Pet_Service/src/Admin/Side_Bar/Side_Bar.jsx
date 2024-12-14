@@ -42,14 +42,14 @@ const SideBar = (props) => {
             }}
           >
             <DiReact size={"3em"} color={"00bfff"} />
-            <span>BookStore</span>
+            <span>Mozzi</span>
           </div>
         </SidebarHeader>
 
         <SidebarContent>
           <Menu iconShape="circle">
             <MenuItem icon={<MdDashboard />}>
-              <Link to="/admin/dashboard" />
+              <Link to="/admin" />
               Dashboard
             </MenuItem>
           </Menu>

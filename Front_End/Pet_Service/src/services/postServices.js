@@ -4,6 +4,10 @@ const getAllPost = () => {
   return axios.get("/post/get-all-post");
 };
 
+const getCountPost = () => {
+  return axios.get("/post/count-post");
+};
+
 const createPost = (title, content, image) => {
   const dataPost = new FormData();
   dataPost.append("title", title);
@@ -21,4 +25,4 @@ const deletePost = (post_id) => {
   return axios.delete(`/post/delete-post/${post_id}`, { data: { post_id } });
 };
 
-export { getAllPost, createPost, updatePost, deletePost };
+export { getAllPost, createPost, updatePost, deletePost, getCountPost };
