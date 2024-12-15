@@ -1,11 +1,53 @@
 import { useLocation } from "react-router-dom";
 import { Row, Col, Button } from "antd";
 import "./OrderDetails.scss";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { updateOrderPayment } from "../../../services/orderServices";
+import { getByOrder } from "../../../services/orderServices";
 
 const OrderDetails = () => {
   const location = useLocation();
   const { dataOrder, totalAmount } = location.state || {};
-  const orderItems = dataOrder.orderItems;
+  const [orderItems, setOrderItem] = useState([]);
+  const [sumTotal, setSumTotal] = useState(0);
+
+  useEffect(() => {
+    if (totalAmount) {
+      setSumTotal(totalAmount);
+    }
+    if (dataOrder) {
+      setOrderItem(dataOrder.orderItems);
+    }
+  }, [dataOrder, totalAmount]);
+
+  const handleVNPaySuccess = async () => {
+    try {
+      const orderData = new URLSearchParams(window.location.search);
+      console.log("orderData", orderData);
+      const paymentSuccess = orderData.get("vnp_ResponseCode");
+      const orderInfo = orderData.get("vnp_OrderInfo");
+      console.log("chek paymentSuccess", paymentSuccess);
+      console.log("vnp_OrderType", orderInfo);
+      if (paymentSuccess === "00") {
+        const updateOrder = await updateOrderPayment(orderInfo);
+        if (updateOrder && updateOrder.errCode === 0) {
+          const fetchOrder = await getByOrder(orderInfo);
+          if (fetchOrder && fetchOrder.errCode === 0) {
+            setOrderItem(fetchOrder.data.orderItems);
+            setSumTotal(fetchOrder.data.total_amount + 30000);
+          }
+        }
+        toast.success("Thanh toán VNPay thành công!");
+      }
+    } catch (error) {
+      toast.error("Có lỗi trong việc xác nhận thanh toán VNPay.");
+    }
+  };
+
+  useEffect(() => {
+    handleVNPaySuccess();
+  }, []);
 
   return (
     <>
@@ -91,7 +133,7 @@ const OrderDetails = () => {
               })}
             <div className="sum-product">
               <div className="total-price">
-                Tổng tiền đơn hàng: {totalAmount.toLocaleString()}đ
+                Tổng tiền đơn hàng: {sumTotal.toLocaleString()}đ
               </div>
             </div>
           </div>

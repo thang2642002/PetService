@@ -33,16 +33,16 @@ const Payment = () => {
     fetchOrder();
   }, [order_id]);
 
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    const vnp_ResponseCode = query.get("vnp_ResponseCode");
-    const vnp_TxnRef = query.get("vnp_TxnRef");
+  // useEffect(() => {
+  //   const query = new URLSearchParams(window.location.search);
+  //   const vnp_ResponseCode = query.get("vnp_ResponseCode");
+  //   const vnp_TxnRef = query.get("vnp_TxnRef");
 
-    if (vnp_ResponseCode === "00" && vnp_TxnRef === String(order_id)) {
-      // Thanh toán thành công
-      handleVNPaySuccess();
-    }
-  }, [order_id]);
+  //   if (vnp_ResponseCode === "00" && vnp_TxnRef === String(order_id)) {
+  //     // Thanh toán thành công
+  //     handleVNPaySuccess();
+  //   }
+  // }, [order_id]);
 
   const handlePaymentSelection = (e) => {
     setPaymentMethod(e.target.value);
@@ -80,20 +80,6 @@ const Payment = () => {
     }
   };
 
-  const handleVNPaySuccess = async () => {
-    try {
-      const response = await updateOrderPayment(order_id);
-      if (response?.errCode === 0) {
-        toast.success("Thanh toán VNPay thành công!");
-        navigate(`/order-details`, {
-          state: { dataOrder: order, totalAmount: finalAmount },
-        });
-      }
-    } catch (error) {
-      toast.error("Có lỗi trong việc xác nhận thanh toán VNPay.");
-    }
-  };
-
   // const handleVNPayPayment = async () => {
   //   try {
   //     const paymentUrl = await createPayment(
@@ -112,11 +98,7 @@ const Payment = () => {
 
   const handleVNPayPayment = async () => {
     try {
-      const paymentUrl = await createPayment(
-        finalAmount,
-        `Thanh toan đon hang #${order_id}`,
-        order_id
-      );
+      const paymentUrl = await createPayment(finalAmount, order_id, order_id);
       if (paymentUrl) {
         window.location.href = paymentUrl;
       }
