@@ -4,6 +4,7 @@ import {
   faBars,
   faUser,
   faCartShopping,
+  faBell,
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -11,32 +12,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/Slices/userSlices";
 import { logoutUser } from "../../services/userServices";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getUserNotification } from "../../services/notificationServices";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const [inputSearch, setInputSearch] = useState("");
+  const [notifications, setNotifications] = useState([]);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const menuItems = (
-    <Menu
-      items={[
-        { label: <a href="/">Trang chủ</a>, key: "1" },
-        {
-          label: <div onClick={() => handleProduct("products")}>Sản phẩm</div>,
-          key: "2",
-        },
-        {
-          label: <div onClick={() => handlePet("pets")}>Thú cưng</div>,
-          key: "3",
-        },
-        { label: <a href="/info-pet">Dịch vụ</a>, key: "4" },
-        { label: <div href="#about">Giới thiệu</div>, key: "5" },
-        { label: <a href="/contact">Liên hệ</a>, key: "6" },
-      ]}
-    />
-  );
 
   const handleLogOut = async () => {
     await logoutUser();
@@ -51,45 +36,54 @@ const Header = () => {
     }
   };
 
-  const handleProduct = (type) => {
-    navigate(`/category-product/${type}`);
-  };
-
-  const handlePet = (type) => {
-    navigate(`/category-product/${type}`);
-  };
-
-  const userMenuItems = [
-    { label: <a href="/profile-user">Thông tin tài khoản</a>, key: "1" },
-    { label: <a href="/orders">Xem đơn hàng</a>, key: "2" },
-  ];
-
-  // Kiểm tra role để thêm menu "Quản lý trang"
-  if (user?.data?.role === "manager") {
-    userMenuItems.push({
-      label: <a href="/admin">Quản lý trang</a>,
-      key: "3",
-    });
-  }
-
-  userMenuItems.push({
-    label: <div onClick={handleLogOut}>Đăng xuất</div>,
-    key: "4",
-  });
-
-  const userMenu = <Menu items={userMenuItems} />;
-
   const handleLogin = () => {
     navigate("/login");
   };
 
+  const fetchAllNotification = async () => {
+    const data = await getUserNotification(user?.data?.user_id);
+    console.log("chek data noti", data);
+    if (data && data.errCode === 0) {
+      setNotifications(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllNotification();
+  }, []);
+
+  const notificationMenu = (
+    <div className="max-h-[300px] w-[250px] overflow-y-auto bg-white shadow-lg rounded-lg">
+      {notifications && notifications.length > 0 ? (
+        notifications.map((item) => (
+          <div
+            key={item.notification_id}
+            className="p-2 border-b hover:bg-gray-100 cursor-pointer"
+          >
+            {item.message}
+          </div>
+        ))
+      ) : (
+        <div className="p-2 text-gray-500">Không có thông báo nào</div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="header flex justify-between items-center p-4  bg-white">
+    <div className="header flex justify-between items-center p-4 bg-white">
+      {/* Menu */}
       <div className="menu">
         <Dropdown
-          overlay={menuItems}
+          overlay={
+            <Menu
+              items={[
+                { label: <a href="/">Trang chủ</a>, key: "1" },
+                { label: <a href="/info-pet">Dịch vụ</a>, key: "2" },
+                { label: <a href="/contact">Liên hệ</a>, key: "3" },
+              ]}
+            />
+          }
           trigger={["click"]}
-          overlayClassName="custom-dropdown-menu"
         >
           <div className="flex flex-col justify-center items-center cursor-pointer">
             <FontAwesomeIcon icon={faBars} className="icon text-lg" />
@@ -97,16 +91,20 @@ const Header = () => {
           </div>
         </Dropdown>
       </div>
+
+      {/* Logo */}
       <div className="logo cursor-pointer">
         <a href="/">
           <img
             src="https://theme.hstatic.net/200000263355/1001161916/14/logo.png?v=134"
             alt="logo"
-            className="w-[55px] h-[55px]"
+            className="w-[70px] h-[70px]"
           />
         </a>
       </div>
-      <div className="search flex-grow mx-4">
+
+      {/* Search */}
+      <div className="search mx-4 w-[400px]">
         <input
           type="text"
           placeholder="Tìm kiếm sản phẩm"
@@ -116,9 +114,33 @@ const Header = () => {
           onKeyDown={(e) => handleSearch(e, "search")}
         />
       </div>
+
+      {/* Actions */}
       <div className="header-action flex items-center gap-4">
+        {/* User Info */}
         {user?.data ? (
-          <Dropdown overlay={userMenu} trigger={["click"]}>
+          <Dropdown
+            overlay={
+              <Menu
+                items={[
+                  {
+                    label: <a href="/profile-user">Thông tin tài khoản</a>,
+                    key: "1",
+                  },
+                  { label: <a href="/orders">Xem đơn hàng</a>, key: "2" },
+                  user?.data?.role === "manager" && {
+                    label: <a href="/admin">Quản lý trang</a>,
+                    key: "3",
+                  },
+                  {
+                    label: <div onClick={handleLogOut}>Đăng xuất</div>,
+                    key: "4",
+                  },
+                ]}
+              />
+            }
+            trigger={["click"]}
+          >
             <div className="user-info flex items-center gap-2 cursor-pointer">
               <FontAwesomeIcon
                 icon={faUser}
@@ -138,10 +160,28 @@ const Header = () => {
             <div>Tài Khoản</div>
           </div>
         )}
-        <Link
-          to={`shop-carts/${user?.data?.user_id}`}
-          style={{ textDecoration: "none", color: "#252a2b" }}
-        >
+
+        {/* Bell Notification */}
+        {user?.data && (
+          <Dropdown
+            overlay={notificationMenu}
+            placement="bottom"
+            trigger={["click"]}
+          >
+            <div className="relative cursor-pointer">
+              <FontAwesomeIcon
+                icon={faBell}
+                className="text-gray-700 text-2xl"
+              />
+              <span className="absolute top-[-5px] right-[-8px] px-[5px] bg-red-500 text-[10px] rounded-full text-white">
+                {notifications.length}
+              </span>
+            </div>
+          </Dropdown>
+        )}
+
+        {/* Cart */}
+        <Link to={`shop-carts/${user?.data?.user_id}`}>
           <div className="carts flex flex-col justify-center items-center cursor-pointer">
             <div className="relative">
               <FontAwesomeIcon

@@ -10,8 +10,11 @@ import { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayment } from "../../../services/vnPayServices";
 import { sendEmail } from "../../../services/sendEmailServices";
+import { createNotification } from "../../../services/notificationServices";
+import { useSelector } from "react-redux";
 
 const Payment = () => {
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const navigate = useNavigate();
   const { order_id } = location.state || {};
@@ -57,6 +60,9 @@ const Payment = () => {
           state: { dataOrder: order, totalAmount: finalAmount },
         });
         await sendEmail(order?.user?.email, listOrderItem);
+        await createNotification(
+          "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+        );
       }
     } catch (error) {
       toast.error(

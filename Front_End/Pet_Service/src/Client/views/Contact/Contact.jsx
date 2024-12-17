@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Group_Menu from "../../components/Group_Menu";
 import { Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,8 +8,38 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "antd";
+import { toast } from "react-toastify";
+import { createContact } from "../../../services/contactServices";
 
 const Contact = () => {
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [content, setContent] = useState("");
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const checkEmail = () => {
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (checkEmail()) {
+      const data = await createContact(userName, email, phone, content);
+      if (data && data.errCode === 0) {
+        toast.success("Quý khách đã gửi thành công");
+        setUserName("");
+        setEmail("");
+        setPhone("");
+        setContent("");
+      }
+    } else {
+      toast.error("Quý khách đã nhập sai định dạng email");
+    }
+  };
+
   return (
     <div>
       <Group_Menu />
@@ -103,30 +133,41 @@ const Contact = () => {
                     <Input
                       placeholder="Tên của bạn"
                       className="w-full h-[45px] p-3 border border-[#ddd] rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
                     />
                   </Col>
                   <Col xs={12} md={6}>
                     <Input
                       placeholder="Email của bạn"
                       className="w-full h-[45px] p-3 border border-[#ddd] rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Col>
                   <Col xs={12} md={6}>
                     <Input
                       placeholder="Số điện thoại của bạn"
                       className="w-full h-[45px] p-3 border border-[#ddd] rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                   </Col>
                   <Col xs={12} className="mt-4">
                     <textarea
                       placeholder="Nội dung"
                       className="w-full h-[100px] p-3 border border-[#ddd] rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
                     />
                   </Col>
                 </Row>
-                <button className="w-[200px] py-2 bg-[#6b4433] text-white uppercase">
+                <div
+                  className="w-[200px] py-2 bg-[#6b4433] text-white uppercase text-center cursor-pointer"
+                  onClick={handleSubmit}
+                >
                   Gửi cho chúng tôi
-                </button>
+                </div>
               </form>
             </div>
           </Col>

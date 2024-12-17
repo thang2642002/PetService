@@ -18,6 +18,8 @@ import apiCartItem from "./apiCartItem";
 import apiPaginate from "./apiPaginate";
 import apiVnPay from "./apiVnPay";
 import apiSendEmail from "./apiSendEmail";
+import apiContact from "./apiContact";
+import apiNotification from "./apiNotification";
 
 const apiInitWebRouter = (app) => {
   app.use("/v1/api/user", apiUser);
@@ -39,6 +41,8 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/cart-item", apiCartItem);
   app.use("/v1/api/paginate", apiPaginate);
   app.use("/v1/api/vnPay", apiVnPay);
+  app.use("/v1/api/contact", apiContact);
+  app.use("/v1/api/notification", apiNotification);
   app.use("/v1/api/email", apiSendEmail);
 };
 

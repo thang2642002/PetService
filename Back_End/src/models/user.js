@@ -99,6 +99,13 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "SET NULL", // Khi user bị xóa, user_id trong user_pet sẽ được đặt thành NULL
       onUpdate: "CASCADE", // Khi user được cập nhật, các user_pet liên quan sẽ được cập nhật theo
     });
+
+    User.hasMany(models.Notification, {
+      foreignKey: "user_id",
+      as: "notification", // Tên cho mối quan hệ này
+      onDelete: "SET NULL", // Khi user bị xóa, user_id trong user_pet sẽ được đặt thành NULL
+      onUpdate: "CASCADE", // Khi user được cập nhật, các user_pet liên quan sẽ được cập nhật theo
+    });
   };
 
   return User;

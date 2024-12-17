@@ -1,0 +1,43 @@
+import db from "../models/index";
+
+const getAllNotification = async () => {
+  try {
+    const data = await db.Notification.findAll({
+      include: [{ model: db.User, as: "user" }],
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createNotification = async (message, user_id) => {
+  try {
+    const data = await db.Notification.create({
+      message,
+      user_id,
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getUserNotification = async (id) => {
+  try {
+    const data = await db.Notification.findAll({
+      where: { user_id: id },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+module.exports = {
+  getAllNotification,
+  createNotification,
+  getUserNotification,
+};
