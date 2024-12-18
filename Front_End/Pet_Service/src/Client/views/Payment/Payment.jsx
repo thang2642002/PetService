@@ -11,6 +11,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayment } from "../../../services/vnPayServices";
 import { sendEmail } from "../../../services/sendEmailServices";
 import { createNotification } from "../../../services/notificationServices";
+import { createPayments } from "../../../services/paymentServices";
 import { useSelector } from "react-redux";
 
 const Payment = () => {
@@ -53,16 +54,23 @@ const Payment = () => {
 
   const handleOrderCompletion = async () => {
     try {
-      const response = await updateOrderPayment(order_id);
-      if (response?.errCode === 0) {
-        toast.success("Thanh toán thành công!");
-        navigate(`/order-details`, {
-          state: { dataOrder: order, totalAmount: finalAmount },
-        });
-        await sendEmail(order?.user?.email, listOrderItem);
-        await createNotification(
-          "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
-        );
+      const payment = await createPayments(
+        order_id,
+        "Thanh toán khi nhận hàng",
+        finalAmount
+      );
+      if (payment && payment.errCode === 0) {
+        const response = await updateOrderPayment(order_id);
+        if (response?.errCode === 0) {
+          toast.success("Thanh toán thành công!");
+          navigate(`/order-details`, {
+            state: { dataOrder: order, totalAmount: finalAmount },
+          });
+          await sendEmail(order?.user?.email, listOrderItem);
+          await createNotification(
+            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+          );
+        }
       }
     } catch (error) {
       toast.error(
@@ -73,34 +81,28 @@ const Payment = () => {
 
   const handlePayPalSuccess = async () => {
     try {
-      const response = await updateOrderPayment(order_id);
-      if (response?.errCode === 0) {
-        toast.success("Thanh toán qua PayPal thành công!");
-        navigate(`/order-details`, {
-          state: { dataOrder: order, totalAmount: finalAmount },
-        });
-        await sendEmail(order?.user?.email, listOrderItem);
+      const payment = await createPayments(
+        order_id,
+        "Thanh toán PayPal",
+        finalAmount
+      );
+      if (payment && payment.errCode === 0) {
+        const response = await updateOrderPayment(order_id);
+        if (response?.errCode === 0) {
+          toast.success("Thanh toán qua PayPal thành công!");
+          navigate(`/order-details`, {
+            state: { dataOrder: order, totalAmount: finalAmount },
+          });
+          await sendEmail(order?.user?.email, listOrderItem);
+          await createNotification(
+            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+          );
+        }
       }
     } catch (error) {
       toast.error("Có lỗi trong việc xác nhận thanh toán qua PayPal");
     }
   };
-
-  // const handleVNPayPayment = async () => {
-  //   try {
-  //     const paymentUrl = await createPayment(
-  //       finalAmount,
-  //       `Thanh toan đon hang #${order_id}`,
-  //       order_id
-  //     );
-
-  //     if (paymentUrl) {
-  //       window.location.href = paymentUrl;
-  //     }
-  //   } catch (error) {
-  //     toast.error("Có lỗi khi tạo thanh toán VNPay.");
-  //   }
-  // };
 
   const handleVNPayPayment = async () => {
     try {
@@ -186,7 +188,7 @@ const Payment = () => {
               <PayPalScriptProvider
                 options={{
                   "client-id":
-                    "AeEIeat65GIA9xV5QvJLsZlU8YiQmdrV_mfROsmnXIFlaJelvTK95RXd-KG_6F3CADfHSpxGzPPXmmlT",
+                    "AQkhqIAXG8UUCbDP1riqoBlLqHqGKty3RUXPYygYP9hkse2takNR_Czx-LN-XGJMCAikZuvnfY49L-4X",
                 }}
               >
                 <PayPalButtons

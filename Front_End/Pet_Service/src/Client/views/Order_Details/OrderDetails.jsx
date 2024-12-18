@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { updateOrderPayment } from "../../../services/orderServices";
 import { getByOrder } from "../../../services/orderServices";
+import { sendEmail } from "../../../services/sendEmailServices";
+import { createNotification } from "../../../services/notificationServices";
 
 const OrderDetails = () => {
   const location = useLocation();
@@ -27,15 +29,20 @@ const OrderDetails = () => {
       console.log("orderData", orderData);
       const paymentSuccess = orderData.get("vnp_ResponseCode");
       const orderInfo = orderData.get("vnp_OrderInfo");
-      console.log("chek paymentSuccess", paymentSuccess);
-      console.log("vnp_OrderType", orderInfo);
       if (paymentSuccess === "00") {
         const updateOrder = await updateOrderPayment(orderInfo);
         if (updateOrder && updateOrder.errCode === 0) {
           const fetchOrder = await getByOrder(orderInfo);
           if (fetchOrder && fetchOrder.errCode === 0) {
-            setOrderItem(fetchOrder.data.orderItems);
-            setSumTotal(fetchOrder.data.total_amount + 30000);
+            setOrderItem(fetchOrder?.data?.orderItems);
+            setSumTotal(fetchOrder?.data?.total_amount + 30000);
+            await sendEmail(
+              fetchOrder?.data.user?.email,
+              fetchOrder?.data?.orderItems
+            );
+            await createNotification(
+              "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+            );
           }
         }
         toast.success("Thanh toán VNPay thành công!");
