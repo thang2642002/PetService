@@ -4,8 +4,7 @@ const TableCategory = (props) => {
     totalPages,
     currentPage,
     setCurrentPage,
-    handleShowUpdateModal,
-    handleShowDeleteModal,
+    handleShowViewModal,
     listCart,
   } = props;
 
@@ -34,18 +33,11 @@ const TableCategory = (props) => {
                 <td>{item.total_amount}</td>
 
                 <td>
-                  <button className="btn btn-secondary">View</button>
                   <button
-                    className="btn btn-warning mx-3"
-                    onClick={() => handleShowUpdateModal(item)}
+                    className="btn btn-secondary"
+                    onClick={() => handleShowViewModal(item)}
                   >
-                    Update
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleShowDeleteModal(item)}
-                  >
-                    Delete
+                    View
                   </button>
                 </td>
               </tr>

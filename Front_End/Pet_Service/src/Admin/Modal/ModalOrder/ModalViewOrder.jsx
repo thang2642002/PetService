@@ -1,35 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
-import { createOrder } from "../../../services/orderServices";
+import { updateOrder } from "../../../services/orderServices";
+// import _ from "lodash";
 
-const ModalCreateOrder = (props) => {
-  const { show, setShow, fetchAllOrder } = props;
+const ModalViewOrder = (props) => {
+  const { show, setShow, orderView } = props;
   const handleClose = () => {
     setShow(false);
-    setTotalAmount("");
-    setStatus("");
-    setOrderDate("");
-    setUserId("");
   };
+
+  useEffect(() => {
+    setTotalAmount(orderView.total_amount);
+    setStatus(orderView.status);
+    setUserId(orderView.user_id);
+    setCartId(orderView.cart_id);
+  }, [orderView]);
 
   const [totalAmount, setTotalAmount] = useState("");
   const [status, setStatus] = useState("");
-  const [orderDate, setOrderDate] = useState("");
+  //   const [orderDate, setOrderDate] = useState("");
+  const [cartId, setCartId] = useState("");
   const [userId, setUserId] = useState("");
-
-  const handleSubmitCreateOrder = async () => {
-    const data = await createOrder(totalAmount, status, userId);
-    if (data && data.errCode === 0) {
-      toast(data.message);
-      await fetchAllOrder();
-      handleClose();
-    } else {
-      toast(data.message);
-      handleClose();
-    }
-  };
 
   return (
     <>
@@ -41,7 +34,7 @@ const ModalCreateOrder = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create New Order</Modal.Title>
+          <Modal.Title>Update A Order</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -52,7 +45,6 @@ const ModalCreateOrder = (props) => {
                 className="form-control"
                 placeholder="Total Amount"
                 value={totalAmount}
-                onChange={(e) => setTotalAmount(e.target.value)}
               />
             </div>
             <div className="col-6">
@@ -62,17 +54,15 @@ const ModalCreateOrder = (props) => {
                 className="form-control"
                 placeholder="Status"
                 value={status}
-                onChange={(e) => setStatus(e.target.value)}
               />
             </div>
             <div className="col-6">
-              <label className="form-label">Order Date</label>
+              <label className="form-label">Cart ID</label>
               <input
                 type="text"
                 className="form-control"
                 placeholder="Order Date"
-                value={orderDate}
-                onChange={(e) => setOrderDate(e.target.value)}
+                value={cartId}
               />
             </div>
             <div className="col-6">
@@ -82,7 +72,6 @@ const ModalCreateOrder = (props) => {
                 className="form-control"
                 placeholder="User ID"
                 value={userId}
-                onChange={(e) => setUserId(e.target.value)}
               />
             </div>
           </form>
@@ -91,13 +80,10 @@ const ModalCreateOrder = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleSubmitCreateOrder()}>
-            Save
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 };
 
-export default ModalCreateOrder;
+export default ModalViewOrder;

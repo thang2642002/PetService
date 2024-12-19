@@ -104,6 +104,10 @@ const SideBar = (props) => {
                 Manager Product Review
               </MenuItem>
               <MenuItem>
+                <Link to="/admin/managerPetReview" />
+                Manager Pet Review
+              </MenuItem>
+              <MenuItem>
                 <Link to="/admin/managerServiceReview" />
                 Manager Service Review
               </MenuItem>

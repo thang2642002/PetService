@@ -1,56 +1,57 @@
-// import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
-import ModalViewOrderItem from "../Modal/ModalOrderItem/ModalViewOrderItem";
-import TableOrderItem from "../Modal/ModalOrderItem/TableOrderItem";
+import ModalViewPetReview from "../Modal/ModalPetReview/ModalViewPetReview";
+import TablePetReview from "../Modal/ModalPetReview/TablePetReview";
 import { getPaginate } from "../../services/paginateServices";
-import { FcPlus } from "react-icons/fc";
 
-const ManagerOrderItem = () => {
+const ManagerPetReview = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-  const modelName = "OrderItem";
-  const [showModalViewOrder, setShowModalViewOrder] = useState(false);
-  const [listOrderItem, setListOrderItem] = useState([]);
-  const [orderItemView, setOrderItemView] = useState({});
+  const modelName = "Pet_Review";
+  const [showModalViewPetReview, setShowModalViewPetReview] = useState(false);
+  const [listPetReview, setListPetReview] = useState([]);
+  const [petReviewView, setPetReviewView] = useState({});
 
-  const handleShowViewModal = (orderItem) => {
-    setOrderItemView(orderItem);
-    setShowModalViewOrder(true);
+  const handleShowViewModal = (petReview) => {
+    setPetReviewView(petReview);
+    setShowModalViewPetReview(true);
   };
 
-  const fetchAllOrderItem = async () => {
+  const fetchAllPetReview = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
     if (data && data.errCode === 0) {
-      setListOrderItem(data.data);
+      console.log("data", data);
+      setListPetReview(data.data);
       setTotalItems(data.totalItems);
       setTotalPages(data.totalPages);
     }
   };
 
+  console.log("listPetReview", listPetReview);
+
   useEffect(() => {
-    fetchAllOrderItem();
+    fetchAllPetReview();
   }, [currentPage]);
 
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Order Item
+        Manager Pet Review
       </div>
       <div className="user-contents">
-        <ModalViewOrderItem
-          show={showModalViewOrder}
-          setShow={setShowModalViewOrder}
-          orderItemView={orderItemView}
+        <ModalViewPetReview
+          show={showModalViewPetReview}
+          setShow={setShowModalViewPetReview}
+          petReviewView={petReviewView}
         />
 
         <div className="btn-table-container"></div>
-        <TableOrderItem
-          listOrderItem={listOrderItem}
+        <TablePetReview
           totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          listPetReview={listPetReview}
           handleShowViewModal={handleShowViewModal}
         />
         <div
@@ -62,4 +63,4 @@ const ManagerOrderItem = () => {
   );
 };
 
-export default ManagerOrderItem;
+export default ManagerPetReview;

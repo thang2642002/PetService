@@ -1,97 +1,51 @@
-// import ReactPaginate from "react-paginate";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
-import InputGroup from "react-bootstrap/InputGroup";
-import ModalCreateOrder from "../Modal/ModalOrder/ModalCreateOrder";
-import ModalUpdateOrder from "../Modal/ModalOrder/ModalUpdateOrder";
-import ModalDeleteOrder from "../Modal/ModalOrder/ModalDeleteOrder";
+import ModalViewOrder from "../Modal/ModalOrder/ModalViewOrder";
 import TableOrder from "../Modal/ModalOrder/TableOrder";
-import { getAllOrder } from "../../services/orderServices";
-
-import { FcPlus } from "react-icons/fc";
+import { getPaginate } from "../../services/paginateServices";
 
 const ManagerOrder = () => {
-  const [showModalCreateOrder, setShowModalCreateOrder] = useState(false);
-  const [showModalUpdateOrder, setShowModalUpdateOrder] = useState(false);
-  const [showModalDeleteOrder, setShowModalDeleteOrder] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const modelName = "Order";
+  const [showModalViewOrder, setShowModalViewOrder] = useState(false);
   const [listOrder, setListOrder] = useState([]);
-  const [orderDelete, setOrderDelete] = useState({});
-  const [orderUpdate, setOrderUpdate] = useState({});
-
-  const handleShowUpdateModal = (order) => {
-    setOrderUpdate(order);
-    setShowModalUpdateOrder(true);
-  };
-  const handleShowDeleteModal = (order) => {
-    setOrderDelete(order);
-    setShowModalDeleteOrder(true);
-  };
+  const [orderView, setOrderView] = useState({});
 
   const fetchAllOrder = async () => {
-    const data = await getAllOrder();
-    setListOrder(data.data);
+    const data = await getPaginate(modelName, currentPage, pageSize);
+    if (data && data.errCode === 0) {
+      setListOrder(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
+  };
+
+  const handleShowViewModal = (order) => {
+    setOrderView(order);
+    setShowModalViewOrder(true);
   };
 
   useEffect(() => {
     fetchAllOrder();
-  }, []);
+  }, [currentPage]);
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Order</div>
       <div className="user-contents">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="btn-add-new">
-            <button
-              className="btn btn-primary"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginLeft: "20px",
-                gap: "8px",
-              }}
-              onClick={() => setShowModalCreateOrder(true)}
-            >
-              <FcPlus />
-              Add new Order
-            </button>
-          </div>
-          <div className="search" style={{ marginRight: "28px" }}>
-            <InputGroup className="mb-3" size="md">
-              <Form.Control
-                placeholder="Enter your input"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-              />
-              <Button variant="primary" id="button-addon2">
-                Search
-              </Button>
-            </InputGroup>
-          </div>
-        </div>
-        <ModalCreateOrder
-          show={showModalCreateOrder}
-          setShow={setShowModalCreateOrder}
-          fetchAllOrder={fetchAllOrder}
+        <ModalViewOrder
+          show={showModalViewOrder}
+          setShow={setShowModalViewOrder}
+          orderView={orderView}
         />
-        <ModalUpdateOrder
-          show={showModalUpdateOrder}
-          setShow={setShowModalUpdateOrder}
-          orderUpdate={orderUpdate}
-          fetchAllOrder={fetchAllOrder}
-        />
-        <ModalDeleteOrder
-          show={showModalDeleteOrder}
-          setShow={setShowModalDeleteOrder}
-          orderDelete={orderDelete}
-          fetchAllOrder={fetchAllOrder}
-        />
-
         <div className="btn-table-container"></div>
         <TableOrder
-          handleShowUpdateModal={handleShowUpdateModal}
-          handleShowDeleteModal={handleShowDeleteModal}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
           listOrder={listOrder}
+          handleShowViewModal={handleShowViewModal}
         />
         <div
           className="custom-pagination"

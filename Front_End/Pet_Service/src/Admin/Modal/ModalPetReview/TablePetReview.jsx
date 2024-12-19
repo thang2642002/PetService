@@ -1,12 +1,12 @@
 import ReactPaginate from "react-paginate";
 
-const TableOrder = (props) => {
+const TablePetReview = (props) => {
   const {
-    handleShowViewModal,
-    listOrder,
     totalPages,
     currentPage,
     setCurrentPage,
+    handleShowViewModal,
+    listPetReview,
   } = props;
 
   const handlePageChange = (selectedItem) => {
@@ -19,23 +19,23 @@ const TableOrder = (props) => {
         <thead>
           <tr>
             <td>ID</td>
-            <th scope="col">Total Amount</th>
-            <th scope="col">Status</th>
-            <th scope="col">cart_ID</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Rating</th>
             <th scope="col">User ID</th>
+            <th scope="col">Pet ID</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {listOrder &&
-            Array.isArray(listOrder) &&
-            listOrder.map((item, index) => (
+          {listPetReview &&
+            Array.isArray(listPetReview) &&
+            listPetReview.map((item, index) => (
               <tr key={index}>
-                <td>{item.order_id}</td>
-                <td>{item.total_amount}</td>
-                <td>{item.status}</td>
-                <td>{item.cart_id}</td>
+                <td>{item.pet_review_id}</td>
+                <td>{item.comment}</td>
+                <td>{item.rating}</td>
                 <td>{item.user_id}</td>
+                <td>{item.pet_id}</td>
                 <td>
                   <button
                     className="btn btn-secondary"
@@ -71,4 +71,4 @@ const TableOrder = (props) => {
   );
 };
 
-export default TableOrder;
+export default TablePetReview;

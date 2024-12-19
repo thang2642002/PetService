@@ -1,35 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { toast } from "react-toastify";
-import { createProductReview } from "../../../services/productReviewServices";
 
-const ModalCreateProductReview = (props) => {
-  const { show, setShow, fetchAllProductReview } = props;
+// import _ from "lodash";
+
+const ModalUpdateProductReview = (props) => {
+  const { show, setShow, productReviewView } = props;
   const handleClose = () => {
     setShow(false);
-    setComment("");
-    setRating("");
-    setUserId("");
-    setProductId("");
   };
+
+  useEffect(() => {
+    setComment(productReviewView.comment);
+    setRating(productReviewView.rating);
+    setUserId(productReviewView.user_id);
+    setProductId(productReviewView.product_id);
+  }, [productReviewView]);
 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
   const [userId, setUserId] = useState("");
   const [productId, setProductId] = useState("");
-
-  const handleSubmitCreateProductReview = async () => {
-    const data = await createProductReview(rating, comment, userId, productId);
-    if (data && data.errCode === 0) {
-      toast.success(data.message);
-      await fetchAllProductReview();
-      handleClose();
-    } else {
-      toast.error(data.message);
-      handleClose();
-    }
-  };
 
   return (
     <>
@@ -41,7 +32,7 @@ const ModalCreateProductReview = (props) => {
         className="modal-add-user"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create New Product Review</Modal.Title>
+          <Modal.Title>View A Product Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
@@ -52,7 +43,6 @@ const ModalCreateProductReview = (props) => {
                 className="form-control"
                 placeholder="Comment"
                 value={comment}
-                onChange={(e) => setComment(e.target.value)}
               />
             </div>
             <div className="col-6">
@@ -62,7 +52,6 @@ const ModalCreateProductReview = (props) => {
                 className="form-control"
                 placeholder="Rating"
                 value={rating}
-                onChange={(e) => setRating(e.target.value)}
               />
             </div>
             <div className="col-6">
@@ -72,7 +61,6 @@ const ModalCreateProductReview = (props) => {
                 className="form-control"
                 placeholder="User ID"
                 value={userId}
-                onChange={(e) => setUserId(e.target.value)}
               />
             </div>
             <div className="col-6">
@@ -82,7 +70,6 @@ const ModalCreateProductReview = (props) => {
                 className="form-control"
                 placeholder="Product ID"
                 value={productId}
-                onChange={(e) => setProductId(e.target.value)}
               />
             </div>
           </form>
@@ -91,16 +78,10 @@ const ModalCreateProductReview = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => handleSubmitCreateProductReview()}
-          >
-            Save
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 };
 
-export default ModalCreateProductReview;
+export default ModalUpdateProductReview;

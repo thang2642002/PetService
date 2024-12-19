@@ -5,8 +5,7 @@ const TableProductReview = (props) => {
     totalPages,
     currentPage,
     setCurrentPage,
-    handleShowUpdateModal,
-    handleShowDeleteModal,
+    handleShowViewModal,
     listProductReview,
   } = props;
 
@@ -24,7 +23,6 @@ const TableProductReview = (props) => {
             <th scope="col">Rating</th>
             <th scope="col">User ID</th>
             <th scope="col">Product ID</th>
-
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -39,18 +37,11 @@ const TableProductReview = (props) => {
                 <td>{item.user_id}</td>
                 <td>{item.product_id}</td>
                 <td>
-                  <button className="btn btn-secondary">View</button>
                   <button
-                    className="btn btn-warning mx-3"
-                    onClick={() => handleShowUpdateModal(item)}
+                    className="btn btn-secondary"
+                    onClick={() => handleShowViewModal(item)}
                   >
-                    Update
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleShowDeleteModal(item)}
-                  >
-                    Delete
+                    View
                   </button>
                 </td>
               </tr>
