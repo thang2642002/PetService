@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 // import { getAllPets } from "../../services/petServices";
 import { getPaginate } from "../../services/paginateServices";
 import { getAllPetType } from "../../services/petTypeServices";
+import { getByName } from "../../services/petServices";
+import { getPaginateProduct } from "../../services/paginateServices";
 
 const ManagerPets = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -25,6 +27,7 @@ const ManagerPets = () => {
   const [petDelete, setPetDelete] = useState({});
   const [petUpdate, setPetUpdate] = useState({});
   const [listPetType, setListPetType] = useState([]);
+  const [valueSearch, setValueSearch] = useState("");
 
   const handleShowUpdateModal = (pet) => {
     setPetUpdate(pet);
@@ -51,14 +54,39 @@ const ManagerPets = () => {
     }
   };
 
+  const handleSearch = async () => {
+    if (!valueSearch.trim()) {
+      fetchAllPet();
+      return;
+    }
+    const dataSearch = await getByName(valueSearch);
+    if (dataSearch && dataSearch.errCode === 0) {
+      const listProduct = dataSearch.data;
+      const data = await getPaginateProduct({
+        listProduct: listProduct,
+        page: 1,
+        limit: 8,
+      });
+      if (data) {
+        setListPets(data.data);
+        setTotalItems(data.totalItems);
+        setTotalPages(data.totalPages);
+      }
+    }
+  };
+
   useEffect(() => {
-    fetchAllPet();
     fetchListPetType();
   }, []);
 
   useEffect(() => {
-    fetchAllPet();
-  }, [currentPage]);
+    if (valueSearch.trim() === "") {
+      fetchAllPet();
+    } else {
+      handleSearch();
+    }
+  }, [currentPage, valueSearch]);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Pets</div>
@@ -85,8 +113,14 @@ const ManagerPets = () => {
                 placeholder="Enter your input"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
+                value={valueSearch}
+                onChange={(e) => setValueSearch(e.target.value)}
               />
-              <Button variant="primary" id="button-addon2">
+              <Button
+                variant="primary"
+                id="button-addon2"
+                onClick={handleSearch}
+              >
                 Search
               </Button>
             </InputGroup>

@@ -36,7 +36,11 @@ const getPaginate = async (req, res) => {
 const getPaginateProduct = (req, res) => {
   try {
     const { listProduct, page = 1, limit = 8 } = req.body;
-    const result =paginateServices.paginateProducts({ listProduct, page, limit });
+    const result = paginateServices.paginateProducts({
+      listProduct,
+      page,
+      limit,
+    });
     res.status(200).json({
       data: result.paginatedProducts,
       currentPage: result.currentPage,
@@ -48,7 +52,27 @@ const getPaginateProduct = (req, res) => {
   }
 };
 
+const getPaginateProductSort = async (req, res) => {
+  const { modelName, page, limit, sortBy, order } = req.body;
+  try {
+    const result = await paginateServices.getPaginateProductSort({
+      modelName,
+      page,
+      limit,
+      sortBy,
+      order,
+    });
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: err.message || "Error from server",
+    });
+  }
+};
+
 module.exports = {
   getPaginate,
   getPaginateProduct,
+  getPaginateProductSort,
 };

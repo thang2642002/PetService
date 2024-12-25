@@ -1,3 +1,4 @@
+import db from "../models/index";
 const fetchPaginatedData = async (model, page, pageSize) => {
   try {
     const totalItems = await model.count();
@@ -35,4 +36,40 @@ const paginateProducts = ({ listProduct, page = 1, limit = 8 }) => {
   };
 };
 
-module.exports = { fetchPaginatedData, paginateProducts };
+const getPaginateProductSort = async ({
+  modelName,
+  page,
+  limit,
+  sortBy,
+  order,
+}) => {
+  const offset = (page - 1) * limit;
+  const orderCondition = [];
+  console.log("offset", offset);
+
+  if (sortBy && order) {
+    orderCondition.push([sortBy, order]);
+  }
+
+  try {
+    const products = await db[modelName].findAndCountAll({
+      order: orderCondition,
+      limit,
+      offset,
+    });
+    return {
+      errCode: 0,
+      data: products.rows,
+      totalItems: products.count,
+      totalPages: Math.ceil(products.count / limit),
+    };
+  } catch (err) {
+    throw new Error("Error from server");
+  }
+};
+
+module.exports = {
+  fetchPaginatedData,
+  paginateProducts,
+  getPaginateProductSort,
+};

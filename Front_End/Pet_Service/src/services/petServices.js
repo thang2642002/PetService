@@ -4,6 +4,10 @@ const getAllPets = () => {
   return axios.get("/pet/get-all-pet");
 };
 
+const getByName = (name) => {
+  return axios.get(`/pet/find-by-name?name=${name}`);
+};
+
 const createPets = (
   name,
   age,
@@ -79,6 +83,7 @@ const deletePet = (pet_id) => {
 };
 export {
   getAllPets,
+  getByName,
   createPets,
   updatePet,
   deletePet,

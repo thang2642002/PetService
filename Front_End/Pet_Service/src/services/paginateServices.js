@@ -6,9 +6,14 @@ const getPaginate = (model, page, pageSize) => {
   );
 };
 
-const getPaginateProduct = ({ listProduct, page = 1, limit = 8 }) =>{
-  const data = { listProduct, page, limit  }
-  return axios.post("/paginate/get-paginated-product", data)
-}
+const getPaginateProduct = ({ listProduct, page = 1, limit = 8 }) => {
+  const data = { listProduct, page, limit };
+  return axios.post("/paginate/get-paginated-product", data);
+};
 
-export { getPaginate, getPaginateProduct };
+const getPaginateProductSort = ({ modelName, page, limit, sortBy, order }) => {
+  const data = { modelName, page, limit, sortBy, order };
+  return axios.post("/paginate/get-paginated-product-sort", data);
+};
+
+export { getPaginate, getPaginateProduct, getPaginateProductSort };

@@ -10,6 +10,8 @@ import ModalDeleteService from "../Modal/ModalService/ModalDeleteService";
 import TableService from "../Modal/ModalService/TableService";
 // import { getAllServices } from "../../services/serviceServices";
 import { getPaginate } from "../../services/paginateServices";
+import { getByNameServices } from "../../services/serviceServices";
+import { getPaginateProduct } from "../../services/paginateServices";
 
 const ManagerService = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -23,6 +25,7 @@ const ManagerService = () => {
   const [serviceDelete, setServiceDelete] = useState({});
   const [listService, setListService] = useState([]);
   const [serviceUpdate, setServiceUpdate] = useState({});
+  const [valueSearch, setValueSearch] = useState("");
 
   const handleShowUpdateModal = (service) => {
     setServiceUpdate(service);
@@ -42,9 +45,35 @@ const ManagerService = () => {
     }
   };
 
+  const handleSearch = async () => {
+    if (!valueSearch.trim()) {
+      fetchAllService();
+      return;
+    }
+    const dataSearch = await getByNameServices(valueSearch);
+    if (dataSearch && dataSearch.errCode === 0) {
+      const listProduct = dataSearch.data;
+      const data = await getPaginateProduct({
+        listProduct: listProduct,
+        page: 1,
+        limit: 8,
+      });
+      if (data) {
+        setListService(data.data);
+        setTotalItems(data.totalItems);
+        setTotalPages(data.totalPages);
+      }
+    }
+  };
+
   useEffect(() => {
-    fetchAllService();
-  }, [currentPage]);
+    if (valueSearch.trim() === "") {
+      fetchAllService();
+    } else {
+      handleSearch();
+    }
+  }, [currentPage, valueSearch]);
+
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">Manager Service</div>
@@ -71,8 +100,14 @@ const ManagerService = () => {
                 placeholder="Enter your input"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
+                value={valueSearch}
+                onChange={(e) => setValueSearch(e.target.value)}
               />
-              <Button variant="primary" id="button-addon2">
+              <Button
+                variant="primary"
+                id="button-addon2"
+                onClick={handleSearch}
+              >
                 Search
               </Button>
             </InputGroup>

@@ -24,10 +24,15 @@ const deleteService = (service_id) => {
   });
 };
 
+const getByNameServices = (name) => {
+  return axios.get(`/service/get-by-name?name=${name}`);
+};
+
 export {
   getAllServices,
   createService,
   updateService,
   deleteService,
   getCountService,
+  getByNameServices,
 };

@@ -115,9 +115,7 @@ const Header = () => {
         />
       </div>
 
-      {/* Actions */}
       <div className="header-action flex items-center gap-4">
-        {/* User Info */}
         {user?.data ? (
           <Dropdown
             overlay={
@@ -161,7 +159,6 @@ const Header = () => {
           </div>
         )}
 
-        {/* Bell Notification */}
         {user?.data && (
           <Dropdown
             overlay={notificationMenu}
@@ -180,8 +177,10 @@ const Header = () => {
           </Dropdown>
         )}
 
-        {/* Cart */}
-        <Link to={`shop-carts/${user?.data?.user_id}`}>
+        <Link
+          to={`shop-carts/${user?.data?.user_id}`}
+          style={{ textDecoration: "none", color: "black" }}
+        >
           <div className="carts flex flex-col justify-center items-center cursor-pointer">
             <div className="relative">
               <FontAwesomeIcon

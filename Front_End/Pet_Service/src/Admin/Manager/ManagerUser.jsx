@@ -25,9 +25,7 @@ const ManagerUser = () => {
   const [listUser, setListUser] = useState([]);
   const [userDelete, setUserDelete] = useState({});
   const [userUpdate, setUserUpdate] = useState({});
-  const [isSearch, setIsSearch] = useState(false);
   const [valueSearch, setValueSearch] = useState("");
-  const [listUserSearch, setListUserSearch] = useState([]);
 
   const handleShowUpdateModal = (user) => {
     setUserUpdate(user);
@@ -47,32 +45,34 @@ const ManagerUser = () => {
     }
   };
 
-  const fetchListUserSearch = async () => {
+  const handleSearch = async () => {
+    if (!valueSearch.trim()) {
+      getListUser();
+      return;
+    }
     const dataSearch = await findNameUser(valueSearch);
     if (dataSearch && dataSearch.errCode === 0) {
-      setListUserSearch(dataSearch.data);
-    }
-  };
-
-  const handleSearch = async () => {
-    setIsSearch(true);
-    const data = await getPaginateProduct({
-      listProduct: listUserSearch,
-      page: 1,
-      limit: 8,
-    });
-    if (data && data.errCode === 0) {
-      setListUser(data.data);
+      const listProduct = dataSearch.data;
+      const data = await getPaginateProduct({
+        listProduct: listProduct,
+        page: 1,
+        limit: 8,
+      });
+      if (data) {
+        setListUser(data.data);
+        setTotalItems(data.totalItems);
+        setTotalPages(data.totalPages);
+      }
     }
   };
 
   useEffect(() => {
-    if (isSearch === true) {
-      fetchListUserSearch();
-    } else {
+    if (valueSearch.trim() === "") {
       getListUser();
+    } else {
+      handleSearch();
     }
-  }, [currentPage, valueSearch, isSearch]);
+  }, [currentPage, valueSearch]);
 
   return (
     <div className="manager-user-container">

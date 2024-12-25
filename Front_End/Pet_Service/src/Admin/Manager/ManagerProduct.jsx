@@ -8,9 +8,13 @@ import ModalCreateProduct from "../Modal/ModalProduct/ModalCreateProduct";
 import ModalUpdateProduct from "../Modal/ModalProduct/ModalUpdateProduct";
 import ModalDeleteProduct from "../Modal/ModalProduct/ModalDeleteProduct";
 import TableProduct from "../Modal/ModalProduct/TableProduct";
-// import { getAllProduct } from "../../services/productServices";
 import { getPaginate } from "../../services/paginateServices";
 import { fetchAllCategory } from "../../services/categoryServices";
+import {
+  getPaginateProduct,
+  getPaginateProductSort,
+} from "../../services/paginateServices";
+import { getProductByName } from "../../services/productServices";
 
 const ManagerProduct = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -25,6 +29,7 @@ const ManagerProduct = () => {
   const [productDelete, setProductDelete] = useState({});
   const [productUpdate, setProductUpdate] = useState({});
   const [listCategory, setListCategory] = useState([]);
+  const [valueSearch, setValueSearch] = useState("");
 
   const handleShowUpdateModal = (product) => {
     setProductUpdate(product);
@@ -49,13 +54,56 @@ const ManagerProduct = () => {
     }
   };
 
+  const handleSearch = async () => {
+    if (!valueSearch.trim()) {
+      fetchAllProduct();
+      return;
+    }
+
+    const dataSearch = await getProductByName(valueSearch);
+    if (dataSearch && dataSearch.errCode === 0) {
+      const listProduct = dataSearch.data;
+      const data = await getPaginateProduct({
+        listProduct,
+        page: 1,
+        limit: 8,
+      });
+      if (data) {
+        setListProduct(data.data);
+        setTotalItems(data.totalItems);
+        setTotalPages(data.totalPages);
+      }
+    }
+  };
+
+  const handleSortByPrice = async (order) => {
+    const data = {
+      modelName,
+      page: 1,
+      limit: 8,
+      sortBy: "price",
+      order, // 'asc' hoặc 'desc'
+    };
+    const response = await getPaginateProductSort(data);
+    console.log("chek data fontend", response);
+    if (response) {
+      setListProduct(response.data);
+      setTotalItems(response.totalItems);
+      setTotalPages(response.totalPages);
+    }
+  };
+
   useEffect(() => {
     fetchCategory();
   }, []);
 
   useEffect(() => {
-    fetchAllProduct();
-  }, [currentPage]);
+    if (valueSearch.trim() === "") {
+      fetchAllProduct();
+    } else {
+      handleSearch();
+    }
+  }, [currentPage, valueSearch]);
 
   return (
     <div className="manager-user-container">
@@ -77,14 +125,31 @@ const ManagerProduct = () => {
               Add new product
             </button>
           </div>
+          <div className="sort-by-price" style={{ marginBottom: "20px" }}>
+            <Form.Select
+              aria-label="Sort by price"
+              onChange={(e) => handleSortByPrice(e.target.value)}
+            >
+              <option value="">Sort by Price</option>
+              <option value="asc">Price: Low to High</option>
+              <option value="desc">Price: High to Low</option>
+            </Form.Select>
+          </div>
+
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
                 placeholder="Enter your input"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
+                value={valueSearch}
+                onChange={(e) => setValueSearch(e.target.value)}
               />
-              <Button variant="primary" id="button-addon2">
+              <Button
+                variant="primary"
+                id="button-addon2"
+                onClick={handleSearch}
+              >
                 Search
               </Button>
             </InputGroup>
