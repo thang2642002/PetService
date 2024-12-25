@@ -107,9 +107,38 @@ const deleteOrderItem = async (req, res) => {
   }
 };
 
+const updateStockProductOrPet = async (req, res) => {
+  const { item_id, quantity } = req.body;
+  if (!item_id || !quantity || quantity <= 0) {
+    return res.status(400).json({ errCode: 1, message: "Invalid input data" });
+  }
+  try {
+    const setStock = await orderItemService.updateStockProductOrPet(
+      item_id,
+      quantity
+    );
+    if (setStock) {
+      return res
+        .status(200)
+        .json({ errCode: 0, message: "Update stock is the success" });
+    } else {
+      return res
+        .status(400)
+        .json({ errCode: 1, message: "Update stock is the fails" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: 0,
+      message: "Server error, Update stock is the success",
+    });
+  }
+};
+
 module.exports = {
   getAllOrderItem,
   createOrderItem,
   updateOrderItem,
   deleteOrderItem,
+  updateStockProductOrPet,
 };

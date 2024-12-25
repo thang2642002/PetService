@@ -73,6 +73,9 @@ const PetProductCartsItem = (props) => {
                 )}
             </div>
           </div>
+          <div className="text-black text-sm ml-2 text-[12px] mt-[5px] ">
+            Số lượng còn lại: {productPet?.stock}
+          </div>
           <button className="mt-3 w-full h-[40px] flex items-center justify-center relative group overflow-hidden p-2 border border-[#6b4433] rounded">
             <span className="absolute inset-0 bg-[#6b4433] transition-transform duration-300 ease-in-out transform -translate-x-[101%] group-hover:translate-x-0"></span>
             <span className="relative flex items-center space-x-2 text-blue-500 group-hover:text-white">

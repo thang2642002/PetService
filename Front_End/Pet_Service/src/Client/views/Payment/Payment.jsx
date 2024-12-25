@@ -12,6 +12,7 @@ import { createPayment } from "../../../services/vnPayServices";
 import { sendEmail } from "../../../services/sendEmailServices";
 import { createNotification } from "../../../services/notificationServices";
 import { createPayments } from "../../../services/paymentServices";
+import { updateStockProductOrPet } from "../../../services/orderItemServices";
 import { useSelector } from "react-redux";
 
 const Payment = () => {
@@ -37,17 +38,6 @@ const Payment = () => {
     fetchOrder();
   }, [order_id]);
 
-  // useEffect(() => {
-  //   const query = new URLSearchParams(window.location.search);
-  //   const vnp_ResponseCode = query.get("vnp_ResponseCode");
-  //   const vnp_TxnRef = query.get("vnp_TxnRef");
-
-  //   if (vnp_ResponseCode === "00" && vnp_TxnRef === String(order_id)) {
-  //     // Thanh toán thành công
-  //     handleVNPaySuccess();
-  //   }
-  // }, [order_id]);
-
   const handlePaymentSelection = (e) => {
     setPaymentMethod(e.target.value);
   };
@@ -57,18 +47,24 @@ const Payment = () => {
       const payment = await createPayments(
         order_id,
         "Thanh toán khi nhận hàng",
+        "pending",
         finalAmount
       );
       if (payment && payment.errCode === 0) {
         const response = await updateOrderPayment(order_id);
         if (response?.errCode === 0) {
           toast.success("Thanh toán thành công!");
+          for (const item of listOrderItem) {
+            const { item_id, quantity } = item;
+            await updateStockProductOrPet(item_id, quantity);
+          }
           navigate(`/order-details`, {
             state: { dataOrder: order, totalAmount: finalAmount },
           });
           await sendEmail(order?.user?.email, listOrderItem);
           await createNotification(
-            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi",
+            user?.data?.user_id
           );
         }
       }
@@ -84,6 +80,7 @@ const Payment = () => {
       const payment = await createPayments(
         order_id,
         "Thanh toán PayPal",
+        "completed",
         finalAmount
       );
       if (payment && payment.errCode === 0) {
@@ -95,7 +92,8 @@ const Payment = () => {
           });
           await sendEmail(order?.user?.email, listOrderItem);
           await createNotification(
-            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
+            "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi",
+            user?.data?.user_id
           );
         }
       }

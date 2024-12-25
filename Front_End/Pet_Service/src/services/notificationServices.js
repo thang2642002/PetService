@@ -6,7 +6,7 @@ const getAllNotification = () => {
 
 const createNotification = (message, user_id) => {
   const data = { message, user_id };
-  return axios.get("/notification/create-notification", data);
+  return axios.post("/notification/create-notification", data);
 };
 
 const getUserNotification = (user_id) => {

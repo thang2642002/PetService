@@ -27,6 +27,14 @@ const updateAppointment = (
   return axios.put(`/appointment/update-appointment/${appointment_id}`, data);
 };
 
+const updateAppointmentStatus = (appointment_id, status) => {
+  const data = { status };
+  return axios.put(
+    `/appointment/update-appointment-status/${appointment_id}`,
+    data
+  );
+};
+
 const deleteAppointment = (appointment_id) => {
   return axios.delete(`/appointment/delete-appointment/${appointment_id}`, {
     data: { appointment_id },
@@ -37,5 +45,6 @@ export {
   getAllAppointment,
   createAppointment,
   updateAppointment,
+  updateAppointmentStatus,
   deleteAppointment,
 };

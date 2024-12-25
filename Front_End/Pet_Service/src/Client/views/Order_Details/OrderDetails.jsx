@@ -3,12 +3,15 @@ import { Row, Col, Button } from "antd";
 import "./OrderDetails.scss";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { updateOrderPayment } from "../../../services/orderServices";
 import { getByOrder } from "../../../services/orderServices";
 import { sendEmail } from "../../../services/sendEmailServices";
 import { createNotification } from "../../../services/notificationServices";
+import { createPayments } from "../../../services/paymentServices";
 
 const OrderDetails = () => {
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const { dataOrder, totalAmount } = location.state || {};
   const [orderItems, setOrderItem] = useState([]);
@@ -29,20 +32,30 @@ const OrderDetails = () => {
       console.log("orderData", orderData);
       const paymentSuccess = orderData.get("vnp_ResponseCode");
       const orderInfo = orderData.get("vnp_OrderInfo");
+      const vnAmount = orderData.get("vnp_Amount");
       if (paymentSuccess === "00") {
-        const updateOrder = await updateOrderPayment(orderInfo);
-        if (updateOrder && updateOrder.errCode === 0) {
-          const fetchOrder = await getByOrder(orderInfo);
-          if (fetchOrder && fetchOrder.errCode === 0) {
-            setOrderItem(fetchOrder?.data?.orderItems);
-            setSumTotal(fetchOrder?.data?.total_amount + 30000);
-            await sendEmail(
-              fetchOrder?.data.user?.email,
-              fetchOrder?.data?.orderItems
-            );
-            await createNotification(
-              "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi"
-            );
+        const payment = await createPayments(
+          orderInfo,
+          "Thanh toán bằng vnPay",
+          "pending",
+          vnAmount
+        );
+        if (payment && payment.errCode === 0) {
+          const updateOrder = await updateOrderPayment(orderInfo);
+          if (updateOrder && updateOrder.errCode === 0) {
+            const fetchOrder = await getByOrder(orderInfo);
+            if (fetchOrder && fetchOrder.errCode === 0) {
+              setOrderItem(fetchOrder?.data?.orderItems);
+              setSumTotal(fetchOrder?.data?.total_amount + 30000);
+              await sendEmail(
+                fetchOrder?.data.user?.email,
+                fetchOrder?.data?.orderItems
+              );
+              await createNotification(
+                "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi",
+                user?.data?.user_id
+              );
+            }
           }
         }
         toast.success("Thanh toán VNPay thành công!");

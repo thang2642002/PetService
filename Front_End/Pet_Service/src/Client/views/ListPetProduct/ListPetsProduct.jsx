@@ -17,7 +17,7 @@ const ListPetsProduct = (props) => {
   const [currentIndex, setCurrentIndex] = useState(8); // Vị trí đến sản phẩm tiếp theo để lấy
   const [hasMore, setHasMore] = useState(true);
 
-  // Lấy dữ liệu ban đầu
+
   const fetchListPetProduct = async () => {
     try {
       let dataPet = [];

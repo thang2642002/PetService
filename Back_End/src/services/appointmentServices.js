@@ -13,6 +13,20 @@ const getAllAppointment = async () => {
   }
 };
 
+const getAllAppointmentById = async (id) => {
+  try {
+    const data = await db.Appointments.findByPk(id, {
+      include: [
+        { model: db.Services, as: "service" },
+        { model: db.UserPet, as: "user_pet" },
+      ],
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const createAppointment = async (
   appointment_date,
   time_date,
@@ -60,6 +74,21 @@ const updateAppointment = async (
   }
 };
 
+const updateAppointmentStatus = async (appointment_id, status) => {
+  try {
+    const updateAppointment = await db.Appointments.findByPk(appointment_id);
+    if (!updateAppointment) {
+      return null;
+    }
+    await updateAppointment.update({
+      status,
+    });
+    return updateAppointment;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const deleteAppointment = async (appointment_id) => {
   try {
     const deleteAppointment = await db.Appointments.destroy({
@@ -73,7 +102,9 @@ const deleteAppointment = async (appointment_id) => {
 
 module.exports = {
   getAllAppointment,
+  getAllAppointmentById,
   createAppointment,
   updateAppointment,
+  updateAppointmentStatus,
   deleteAppointment,
 };

@@ -70,6 +70,12 @@ const logoutUser = () => {
   return axios.post("/user/logout");
 };
 
+const findNameUser = (user_name) => {
+  return axios.get(`/user/find-by-name`, {
+    params: { user_name },
+  });
+};
+
 export {
   getAllUser,
   createUser,
@@ -80,4 +86,5 @@ export {
   registerUser,
   getUserById,
   logoutUser,
+  findNameUser,
 };

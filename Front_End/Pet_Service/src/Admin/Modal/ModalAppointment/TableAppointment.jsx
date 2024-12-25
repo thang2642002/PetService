@@ -1,4 +1,5 @@
 import ReactPaginate from "react-paginate";
+import { updateAppointmentStatus } from "../../../services/appointmentServices";
 const TableAppointment = (props) => {
   const {
     totalPages,
@@ -11,6 +12,18 @@ const TableAppointment = (props) => {
 
   const handlePageChange = (selectedItem) => {
     setCurrentPage(selectedItem.selected + 1);
+  };
+
+  console.log("chek list appoi", listAppointment);
+
+  const handleAccept = async (id) => {
+    const updateAppointmentStatus = await updateAppointmentStatus(
+      id,
+      "completed"
+    );
+    // if(updateAppointmentStatus && updateAppointmentStatus === 0){
+
+    // }
   };
 
   return (
@@ -41,13 +54,19 @@ const TableAppointment = (props) => {
                 <td>
                   <button className="btn btn-secondary">View</button>
                   <button
-                    className="btn btn-warning mx-3"
-                    onClick={() => handleShowUpdateModal(item)}
+                    className="btn btn-warning mx-2"
+                    onClick={() => handleAccept(item.appointment_id)}
                   >
-                    Update
+                    Accept
                   </button>
                   <button
-                    className="btn btn-danger"
+                    className="btn btn-danger mx-2"
+                    onClick={() => handleShowDeleteModal(item)}
+                  >
+                    Refuse
+                  </button>
+                  <button
+                    className="btn btn-danger mx-2"
                     onClick={() => handleShowDeleteModal(item)}
                   >
                     Delete

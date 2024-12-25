@@ -27,7 +27,6 @@ const Category_Product = () => {
   const [hasMore, setHasMore] = useState(true);
   const { type } = useParams();
 
-  // Lấy danh sách filter options
   const fetchFilterOptions = async () => {
     try {
       if (type === "pets") {
@@ -42,7 +41,6 @@ const Category_Product = () => {
     }
   };
 
-  // Lấy danh sách sản phẩm hoặc thú cưng
   const fetchListProduct = async () => {
     try {
       let data;

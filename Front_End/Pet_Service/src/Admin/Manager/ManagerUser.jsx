@@ -10,6 +10,8 @@ import ModalDeleteUser from "../Modal/ModalUser/ModalDeleteUser";
 import TableUser from "../Modal/ModalUser/TableUser";
 // import { getAllUser } from "../../services/userServices";
 import { getPaginate } from "../../services/paginateServices";
+import { findNameUser } from "../../services/userServices";
+import { getPaginateProduct } from "../../services/paginateServices";
 
 const ManagerUser = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -23,6 +25,9 @@ const ManagerUser = () => {
   const [listUser, setListUser] = useState([]);
   const [userDelete, setUserDelete] = useState({});
   const [userUpdate, setUserUpdate] = useState({});
+  const [isSearch, setIsSearch] = useState(false);
+  const [valueSearch, setValueSearch] = useState("");
+  const [listUserSearch, setListUserSearch] = useState([]);
 
   const handleShowUpdateModal = (user) => {
     setUserUpdate(user);
@@ -42,9 +47,32 @@ const ManagerUser = () => {
     }
   };
 
+  const fetchListUserSearch = async () => {
+    const dataSearch = await findNameUser(valueSearch);
+    if (dataSearch && dataSearch.errCode === 0) {
+      setListUserSearch(dataSearch.data);
+    }
+  };
+
+  const handleSearch = async () => {
+    setIsSearch(true);
+    const data = await getPaginateProduct({
+      listProduct: listUserSearch,
+      page: 1,
+      limit: 8,
+    });
+    if (data && data.errCode === 0) {
+      setListUser(data.data);
+    }
+  };
+
   useEffect(() => {
-    getListUser();
-  }, [currentPage]);
+    if (isSearch === true) {
+      fetchListUserSearch();
+    } else {
+      getListUser();
+    }
+  }, [currentPage, valueSearch, isSearch]);
 
   return (
     <div className="manager-user-container">
@@ -72,8 +100,14 @@ const ManagerUser = () => {
                 placeholder="Enter your input"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
+                value={valueSearch}
+                onChange={(e) => setValueSearch(e.target.value)}
               />
-              <Button variant="primary" id="button-addon2">
+              <Button
+                variant="primary"
+                id="button-addon2"
+                onClick={handleSearch}
+              >
                 Search
               </Button>
             </InputGroup>

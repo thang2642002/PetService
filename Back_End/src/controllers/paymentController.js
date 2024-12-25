@@ -26,10 +26,11 @@ const getAllPayment = async (req, res) => {
 
 const createPayment = async (req, res) => {
   try {
-    const { order_id, payment_method, amount_paid } = req.body;
+    const { order_id, payment_method, payment_status, amount_paid } = req.body;
     const createPayment = await paymentServices.createPayment(
       order_id,
       payment_method,
+      payment_status,
       amount_paid
     );
     if (createPayment) {

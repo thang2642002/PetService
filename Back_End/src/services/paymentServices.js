@@ -1,4 +1,3 @@
-import { DataTypes } from "sequelize";
 import db from "../models/index";
 
 const getAllPayment = async () => {
@@ -10,12 +9,17 @@ const getAllPayment = async () => {
   }
 };
 
-const createPayment = async (order_id, payment_method, amount_paid) => {
+const createPayment = async (
+  order_id,
+  payment_method,
+  payment_status,
+  amount_paid
+) => {
   try {
     const data = await db.Payments.create({
       order_id,
       payment_method,
-      payment_status: "pending",
+      payment_status,
       amount_paid,
       paid_at: new Date(),
     });

@@ -4,8 +4,13 @@ const getAllPayment = () => {
   return axios.get("/payment/get-all-payment");
 };
 
-const createPayments = (order_id, payment_method, amount_paid) => {
-  const data = { order_id, payment_method, amount_paid };
+const createPayments = (
+  order_id,
+  payment_method,
+  payment_status,
+  amount_paid
+) => {
+  const data = { order_id, payment_method, payment_status, amount_paid };
   return axios.post("/payment/create-payment", data);
 };
 

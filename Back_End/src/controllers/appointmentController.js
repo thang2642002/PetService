@@ -23,6 +23,31 @@ const getAllAppointment = async (req, res) => {
   }
 };
 
+const getAllAppointmentById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const getById = await appointmentService.getAllAppointmentById(id);
+    if (getById) {
+      return res.status(200).json({
+        message: "Get all appointment is the success",
+        errCode: 0,
+        data: getById,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get all appointment is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: "Server error, Get all appointment is the fails",
+      errCode: 1,
+    });
+  }
+};
+
 const createAppointment = async (req, res) => {
   try {
     const { appointment_date, time_date, status, service_id, user_pet_id } =
@@ -88,6 +113,34 @@ const updateAppointment = async (req, res) => {
   }
 };
 
+const updateAppointmentStatus = async (req, res) => {
+  try {
+    const appointment_id = req.params.id;
+    const { status } = req.body;
+    const updateAppointment = await appointmentService.updateAppointmentStatus(
+      appointment_id,
+      status
+    );
+    if (updateAppointment) {
+      return res.status(200).json({
+        message: "Update appointment is the success",
+        errCode: 0,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Update appointment is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: "Server error, Update appointment is the fails",
+      errCode: 1,
+    });
+  }
+};
+
 const deleteAppointment = async (req, res) => {
   try {
     const appointment_id = req.params.id;
@@ -116,7 +169,9 @@ const deleteAppointment = async (req, res) => {
 
 module.exports = {
   getAllAppointment,
+  getAllAppointmentById,
   createAppointment,
   updateAppointment,
+  updateAppointmentStatus,
   deleteAppointment,
 };

@@ -26,4 +26,15 @@ const deleteOrderItem = (order_item_id) => {
   });
 };
 
-export { getAllOrderItem, createOrderItem, updateOrderItem, deleteOrderItem };
+const updateStockProductOrPet = (item_id, quantity) => {
+  const data = { item_id, quantity };
+  return axios.post("/order-item/update-stock-productOrPet", data);
+};
+
+export {
+  getAllOrderItem,
+  createOrderItem,
+  updateOrderItem,
+  deleteOrderItem,
+  updateStockProductOrPet,
+};

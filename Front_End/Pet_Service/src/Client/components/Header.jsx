@@ -50,7 +50,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchAllNotification();
-  }, []);
+  }, [user]);
 
   const notificationMenu = (
     <div className="max-h-[300px] w-[250px] overflow-y-auto bg-white shadow-lg rounded-lg">
