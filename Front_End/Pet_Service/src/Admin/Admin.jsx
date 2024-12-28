@@ -20,7 +20,6 @@ const Admin = () => {
           <FaBars onClick={() => setCollapsed(!collapsed)} />
         </div>
         <div className="admin-main">
-          {/* <Statistical /> */}
           <Outlet />
         </div>
       </div>

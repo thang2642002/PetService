@@ -29,6 +29,7 @@ import ProfileUser from "../Client/views/ProfileUser/ProfileUser";
 import CategoryProduct from "../Client/views/Category_Product/Category_Product";
 import ListPost from "../Client/views/ListPost/ListPost";
 import Statistical from "../Client/views/Statistical/Statistical";
+import Post_Details from "../Client/views/Post_Details/Post_Details";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
@@ -97,6 +98,10 @@ export const routers = [
       { path: "category-product/:type", element: <CategoryProduct /> },
       { path: "contact", element: <Contact /> },
       { path: "post", element: <ListPost /> },
+      {
+        path: "post-detail/:id",
+        element: <Post_Details />,
+      },
     ],
   },
   // { path: "*", element: <NotFoundPage /> },

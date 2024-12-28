@@ -3,6 +3,7 @@ import postController from "../controllers/postController";
 import { upload } from "../config/cloudinaryConfig";
 const routes = express.Router();
 routes.get("/get-all-post", postController.getAllPost);
+routes.get("/get-post-by-id/:id", postController.getPostById);
 routes.post("/create-post", upload.single("image"), postController.createPost);
 routes.put(
   "/update-post/:id",

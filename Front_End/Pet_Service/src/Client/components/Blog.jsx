@@ -1,76 +1,69 @@
 import { Col, Row } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getPaginate } from "../../services/paginateServices";
+
 const Blog = () => {
+  const navigate = useNavigate();
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+  const modelName = "Post";
+  const [listPost, setListPost] = useState([]);
+
+  const fetchPost = async () => {
+    const data = await getPaginate(modelName, currentPage, pageSize);
+    if (data && data.errCode === 0) {
+      setListPost(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
+  };
+
+  const handleNavigationPostDetails = () => {
+    navigate("/post");
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, []);
+
   return (
     <>
       <div className="blog mt-5">
         <Row gutter={[16, 16]}>
-          <Col span={8}>
-            <div className="cart_blog flex align-items-center justify-center gap-3 mt-4">
-              <div className="img">
-                <img
-                  src="https://file.hstatic.net/200000263355/article/sua_tam_cho_cho-1_07b89bd79dcd47229a4458faa13a200a_small.png"
-                  alt="blog"
-                  className="h-full w-full"
-                />
-              </div>
-              <div className="">
-                <p className=" text-sm">
-                  Top 10 loại sữa tắm cho chó tốt nhất hiện nay dddd
-                </p>
-                <span className="text-gray-400">09/11/2024</span>
-              </div>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="cart_blog flex align-items-center justify-center gap-3 mt-4">
-              <div className="img h-full ">
-                <img
-                  src="https://file.hstatic.net/200000263355/article/sua_tam_cho_cho-1_07b89bd79dcd47229a4458faa13a200a_small.png"
-                  alt="blog"
-                />
-              </div>
-              <div className="">
-                <p className=" text-sm">
-                  Top 10 loại sữa tắm cho chó tốt nhất hiện nay dddd
-                </p>
-                <span className="text-gray-400">09/11/2024</span>
-              </div>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className="cart_blog flex align-items-center justify-center gap-3 mt-4">
-              <div className="img h-full ">
-                <img
-                  src="https://file.hstatic.net/200000263355/article/sua_tam_cho_cho-1_07b89bd79dcd47229a4458faa13a200a_small.png"
-                  alt="blog"
-                />
-              </div>
-              <div className="">
-                <p className=" text-sm">
-                  Top 10 loại sữa tắm cho chó tốt nhất hiện nay dddd
-                </p>
-                <span className="text-gray-400">09/11/2024</span>
-              </div>
-            </div>
-          </Col>
+          {listPost &&
+            listPost.length > 0 &&
+            listPost.map((post, index) => {
+              return (
+                <Col span={8} key={index}>
+                  <div className="cart_blog flex items-center gap-4 p-4">
+                    <div className="img w-[80px] h-[80px] flex-shrink-0">
+                      <img
+                        src={post.image}
+                        alt="blog"
+                        className="h-full w-full object-cover rounded"
+                      />
+                    </div>
 
-          <Col span={8}>
-            <div className="cart_blog flex align-items-center justify-center gap-3 mt-4">
-              <div className="img h-full ">
-                <img
-                  src="https://file.hstatic.net/200000263355/article/sua_tam_cho_cho-1_07b89bd79dcd47229a4458faa13a200a_small.png"
-                  alt="blog"
-                />
-              </div>
-              <div className="">
-                <p className=" text-sm">
-                  Top 10 loại sữa tắm cho chó tốt nhất hiện nay dddd
-                </p>
-                <span className="text-gray-400">09/11/2024</span>
-              </div>
-            </div>
-          </Col>
+                    <div className="content flex-1">
+                      <p className="text-sm font-semibold truncate">
+                        {post.title}
+                      </p>
+                      <span className="text-gray-400 text-xs">09/11/2024</span>
+                    </div>
+                  </div>
+                </Col>
+              );
+            })}
         </Row>
+      </div>
+      <div
+        className="flex justify-center mt-10 font-normal cursor-pointer"
+        onClick={handleNavigationPostDetails}
+      >
+        Xem thêm &gt;&gt;
       </div>
     </>
   );

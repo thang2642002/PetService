@@ -36,7 +36,7 @@ const ManagerOrderItem = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Order Item
+        Quản lý chi tiết đơn hàng
       </div>
       <div className="user-contents">
         <ModalViewOrderItem

@@ -76,7 +76,9 @@ const ManagerUser = () => {
 
   return (
     <div className="manager-user-container">
-      <div className="text-[30px] font-medium text-center">Manager User</div>
+      <div className="text-[30px] font-medium text-center">
+        Quản lý người dùng
+      </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="btn-add-new">
@@ -91,13 +93,13 @@ const ManagerUser = () => {
               onClick={() => setShowModalCreateUser(true)}
             >
               <FcPlus />
-              Add new user
+              Thêm mới người dùng
             </button>
           </div>
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
-                placeholder="Enter your input"
+                placeholder="Nhập thông tin"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
                 value={valueSearch}
@@ -108,7 +110,7 @@ const ManagerUser = () => {
                 id="button-addon2"
                 onClick={handleSearch}
               >
-                Search
+                Tìm kiếm
               </Button>
             </InputGroup>
           </div>

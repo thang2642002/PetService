@@ -31,6 +31,10 @@ const SideBar = (props) => {
         <SidebarHeader>
           <div
             style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
               padding: "24px",
               textTransform: "uppercase",
               fontWeight: "bold",
@@ -41,7 +45,14 @@ const SideBar = (props) => {
               whiteSpace: "nowrap",
             }}
           >
-            <DiReact size={"3em"} color={"00bfff"} />
+            {/* <DiReact size={"3em"} color={"00bfff"} /> */}
+            <div className="w-[40px] h-[40px]">
+              <img
+                src="https://theme.hstatic.net/200000263355/1001161916/14/logo.png?v=134"
+                alt="logo"
+                className="w-full h-full object-contain bg-transparent"
+              />
+            </div>
             <span>Mozzi</span>
           </div>
         </SidebarHeader>
@@ -50,46 +61,50 @@ const SideBar = (props) => {
           <Menu iconShape="circle">
             <MenuItem icon={<MdDashboard />}>
               <Link to="/admin" />
-              Dashboard
+              Quản Lý
             </MenuItem>
           </Menu>
           <Menu iconShape="circle">
-            <SubMenu icon={<FaGem />} title="Features">
+            <SubMenu icon={<FaGem />} title="Chức năng">
               <MenuItem>
                 <Link to="/admin/managerUsers" />
-                Manager Users
+                Quản lý người dùng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerCategory" />
-                Manager Category
+                Quản lý thể loại sản phẩm
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPetType" />
-                Manager Pet Type
-              </MenuItem>
-              <MenuItem>
-                <Link to="/admin/managerPets" />
-                Manager Pets
+                Quản lý thể loại thú cưng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerProduct" />
-                Manager Product
+                Quản lý sản phẩm
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerPets" />
+                Quản lý thú cưng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerService" />
-                Manager Service
+                Quản lý dịch vụ
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerAppointment" />
-                Manager Appointment
+                Quản lý đặt lịch
+              </MenuItem>
+              <MenuItem>
+                <Link to="/admin/managerCarts" />
+                Quản lý giỏ hàng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerOrder" />
-                Manager Order
+                Quản lý đơn hàng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerOrderItem" />
-                Manager Order Item
+                Quản lý chi tiết đơn hàng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPetScores" />
@@ -97,15 +112,15 @@ const SideBar = (props) => {
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerUserPet" />
-                Manager User Pet
+                Quản lý thú cưng của người dùng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerProductReview" />
-                Manager Product Review
+                Quản lý đánh giá sản phẩm
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPetReview" />
-                Manager Pet Review
+                Quản lý đánh giá thú cưng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerServiceReview" />
@@ -113,15 +128,11 @@ const SideBar = (props) => {
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPost" />
-                Manager Post
-              </MenuItem>
-              <MenuItem>
-                <Link to="/admin/managerCarts" />
-                Manager Cart
+                Quản lý bài đăng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/statistical" />
-                Statistical
+                Thống kê
               </MenuItem>
             </SubMenu>
           </Menu>

@@ -13,6 +13,9 @@ module.exports = (sequelize) => {
       title: {
         type: DataTypes.STRING,
       },
+      desc_title: {
+        type: DataTypes.STRING,
+      },
       content: {
         type: DataTypes.TEXT,
       },

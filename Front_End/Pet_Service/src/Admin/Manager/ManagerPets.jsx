@@ -9,10 +9,13 @@ import ModalDeletePet from "../Modal/ModalPets/ModalDeletePet";
 import TablePet from "../Modal/ModalPets/TablePet";
 import { useEffect, useState } from "react";
 // import { getAllPets } from "../../services/petServices";
-import { getPaginate } from "../../services/paginateServices";
 import { getAllPetType } from "../../services/petTypeServices";
 import { getByName } from "../../services/petServices";
-import { getPaginateProduct } from "../../services/paginateServices";
+import {
+  getPaginate,
+  getPaginateProduct,
+  getPaginateProductSort,
+} from "../../services/paginateServices";
 
 const ManagerPets = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -75,6 +78,22 @@ const ManagerPets = () => {
     }
   };
 
+  const handleSortByPrice = async (order) => {
+    const data = {
+      modelName,
+      page: 1,
+      limit: 8,
+      sortBy: "price",
+      order,
+    };
+    const response = await getPaginateProductSort(data);
+    if (response) {
+      setListPets(response.data);
+      setTotalItems(response.totalItems);
+      setTotalPages(response.totalPages);
+    }
+  };
+
   useEffect(() => {
     fetchListPetType();
   }, []);
@@ -89,7 +108,7 @@ const ManagerPets = () => {
 
   return (
     <div className="manager-user-container">
-      <div className="text-[30px] font-medium text-center">Manager Pets</div>
+      <div className="text-[30px] font-medium text-center">Quản lý thú cưng</div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="btn-add-new">
@@ -104,8 +123,18 @@ const ManagerPets = () => {
               onClick={() => setShowModalCreatePet(true)}
             >
               <FcPlus />
-              Add new pet
+              Thêm mới thú cưng
             </button>
+          </div>
+          <div className="sort-by-price" style={{ marginBottom: "20px" }}>
+            <Form.Select
+              aria-label="Sort by price"
+              onChange={(e) => handleSortByPrice(e.target.value)}
+            >
+              <option value="">Sort by Price</option>
+              <option value="asc">Price: Low to High</option>
+              <option value="desc">Price: High to Low</option>
+            </Form.Select>
           </div>
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">

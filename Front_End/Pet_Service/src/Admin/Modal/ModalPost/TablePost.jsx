@@ -22,6 +22,7 @@ const TablePost = (props) => {
             <td className="px-4 py-2 text-left">ID</td>
             <th className="px-4 py-2 text-left">Title</th>
             <th className="px-4 py-2 text-left">Content</th>
+            <th className="px-4 py-2 text-left"> Desc Title</th>
             <th className="px-4 py-2 text-left">Action</th>
           </tr>
         </thead>
@@ -31,8 +32,9 @@ const TablePost = (props) => {
             listPost.map((item, index) => (
               <tr key={index} className="border-b">
                 <td className="px-4 py-2">{item.post_id}</td>
-                <td className="px-4 py-2">{item.title}</td>
-                <td className="px-4 py-2 max-w-xl whitespace-normal">
+                <td className="px-4 py-2 w-[200px]">{item.title}</td>
+                <td className="px-4 py-2 w-[250px]">{item.desc_title}</td>
+                <td className="px-4 py-2 max-w-[500px] whitespace-normal">
                   <div
                     className="h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200"
                     dangerouslySetInnerHTML={{ __html: item.content }}

@@ -1,8 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Group_Menu from "../../components/Group_Menu";
 import { Col, Row } from "antd";
+import moment from "moment";
+import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
+import { getPaginate } from "../../../services/paginateServices";
 
 const ListPost = () => {
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+  const pageSizeSuggest = 4;
+  const modelName = "Post";
+  const [listPost, setListPost] = useState([]);
+  const [listPostSuggest, setListPostSuggest] = useState([]);
+
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1);
+  };
+
+  const formatDate = (dateString) => {
+    return moment(dateString).format("DD/MM/YYYY");
+  };
+
+  const fetchAllPost = async () => {
+    const data = await getPaginate(modelName, currentPage, pageSize);
+    if (data && data.errCode === 0) {
+      setListPost(data.data);
+      setTotalItems(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
+  };
+
+  console.log("check list post", listPost);
+
+  const fetchPostSuggest = async () => {
+    const data = await getPaginate(modelName, currentPage, pageSizeSuggest);
+    if (data && data.errCode === 0) {
+      setListPostSuggest(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllPost();
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchPostSuggest();
+  }, []);
   return (
     <>
       <Group_Menu />
@@ -13,71 +59,57 @@ const ListPost = () => {
         <div>
           <Row gutter={[16, 16]} wrap>
             <Col span={18}>
-              <div className="flex mt-4 pb-4 border-b-2">
-                <div>
-                  <img
-                    src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                    alt="hình ảnh"
-                    className="w-full h-auto max-w-[255px] max-h-[145px]"
-                  />
-                </div>
-                <div className="ml-5 px-3">
-                  <div className="flex flex-col justify-center">
-                    <div className="text-[20px] font-medium text-[#522f1f] mb-2 ">
-                      Những điều cần biết khi khắc thông tin lên bảng tên chó
-                      mèo
-                    </div>
-                    <div className="text-[16px] break-words">
-                      Bảng tên chó mèo không chỉ là một phụ kiện thời trang mà
-                      còn là một giải pháp thiết thực để bảo vệ thú cưng....
-                    </div>
-                    <div className="text-[14px] mt-2">01 Tháng 12, 2024</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex mt-4 pb-4 border-b-2">
-                <div>
-                  <img
-                    src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                    alt="hình ảnh"
-                    className="w-full h-auto max-w-[255px] max-h-[145px]"
-                  />
-                </div>
-                <div className="ml-5 px-3">
-                  <div className="flex flex-col justify-center">
-                    <div className="text-[20px] font-medium text-[#522f1f] mb-2 ">
-                      Những điều cần biết khi khắc thông tin lên bảng tên chó
-                      mèo
-                    </div>
-                    <div className="text-[16px] break-words">
-                      Bảng tên chó mèo không chỉ là một phụ kiện thời trang mà
-                      còn là một giải pháp thiết thực để bảo vệ thú cưng....
-                    </div>
-                    <div className="text-[14px] mt-2">01 Tháng 12, 2024</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex mt-4 pb-4 border-b-2">
-                <div>
-                  <img
-                    src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                    alt="hình ảnh"
-                    className="w-full h-auto max-w-[255px] max-h-[145px]"
-                  />
-                </div>
-                <div className="ml-5 px-3">
-                  <div className="flex flex-col justify-center">
-                    <div className="text-[20px] font-medium text-[#522f1f] mb-2 ">
-                      Những điều cần biết khi khắc thông tin lên bảng tên chó
-                      mèo
-                    </div>
-                    <div className="text-[16px] break-words">
-                      Bảng tên chó mèo không chỉ là một phụ kiện thời trang mà
-                      còn là một giải pháp thiết thực để bảo vệ thú cưng....
-                    </div>
-                    <div className="text-[14px] mt-2">01 Tháng 12, 2024</div>
-                  </div>
-                </div>
+              {listPost &&
+                listPost.length > 0 &&
+                listPost.map((post, index) => {
+                  return (
+                    <Link
+                      to={`/post-detail/${post.post_id}`}
+                      key={post.post_id}
+                    >
+                      <div className="flex mt-4 pb-4 border-b-2">
+                        <div>
+                          <img
+                            src={post.image}
+                            alt="hình ảnh"
+                            className="w-full h-auto max-w-[255px] max-h-[145px]"
+                          />
+                        </div>
+                        <div className="ml-5 px-3 flex flex-col mt-2">
+                          <div className="flex flex-col justify-center">
+                            <div className="text-[20px] font-medium text-[#522f1f] mb-2 ">
+                              {post.title}
+                            </div>
+                            <div className="text-[16px] break-words mt-2">
+                              {post.desc_title}
+                            </div>
+                            <div className="text-[14px] mt-4">
+                              {formatDate(post.updatedAt)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              <div className="flex justify-center mt-4">
+                <ReactPaginate
+                  previousLabel={"← Previous"}
+                  nextLabel={"Next →"}
+                  breakLabel={"..."}
+                  pageCount={totalPages}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={3}
+                  onPageChange={handlePageChange}
+                  containerClassName={"pagination"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
+                  previousClassName={"page-item"}
+                  previousLinkClassName={"page-link"}
+                  nextClassName={"page-item"}
+                  nextLinkClassName={"page-link"}
+                  activeClassName={"active"}
+                />
               </div>
             </Col>
             {/* Sidebar hoặc nội dung phụ */}
@@ -86,48 +118,28 @@ const ListPost = () => {
                 <div className="text-[20px] text-[#522f1f] font-medium mb-3">
                   Bài viết mới nhất
                 </div>
-                <div className="flex mt-3  border-t-2 pt-3">
-                  <div>
-                    <img
-                      src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                      alt="hình ảnh"
-                      className="w-full h-auto max-w-[100px] max-h-[80px]"
-                    />
-                  </div>
-                  <div>
-                    <div className="pl-2">
-                      Những điều cần biết khi khắc thông tin lên ...
-                    </div>
-                  </div>
-                </div>
-                <div className="flex mt-3  border-t-2 pt-3">
-                  <div>
-                    <img
-                      src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                      alt="hình ảnh"
-                      className="w-full h-auto max-w-[100px] max-h-[80px]"
-                    />
-                  </div>
-                  <div>
-                    <div className="pl-2">
-                      Những điều cần biết khi khắc thông tin lên ...
-                    </div>
-                  </div>
-                </div>
-                <div className="flex mt-3 border-t-2 pt-3">
-                  <div>
-                    <img
-                      src="https://file.hstatic.net/200000263355/article/bang_ten_cho_meo-3_1caac8d380aa4f4e83d515ff6bc477a6_large.png"
-                      alt="hình ảnh"
-                      className="w-full h-auto max-w-[100px] max-h-[80px]"
-                    />
-                  </div>
-                  <div>
-                    <div className="pl-2">
-                      Những điều cần biết khi khắc thông tin lên ...
-                    </div>
-                  </div>
-                </div>
+                {listPostSuggest &&
+                  listPostSuggest.length > 0 &&
+                  listPostSuggest.map((postSuggest, index) => {
+                    return (
+                      <div className="flex mt-3  border-t-2 pt-3" key={index}>
+                        <div>
+                          <img
+                            src={postSuggest.image}
+                            alt="hình ảnh"
+                            className="w-full h-auto max-w-[100px] max-h-[80px]"
+                          />
+                        </div>
+                        <div>
+                          <div className="pl-2">{postSuggest.title}</div>
+                          <div className="text-[14px] pl-2 mt-2">
+                            {" "}
+                            {formatDate(postSuggest.updatedAt)}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
               <div>
                 <div className="text-[20px] text-[#522f1f] font-medium mb-3 mt-[100px]">

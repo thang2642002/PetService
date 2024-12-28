@@ -27,6 +27,7 @@ const ManagerPost = () => {
     setPostUpdate(post);
     setShowModalUpdatePost(true);
   };
+
   const handleShowDeleteModal = (post) => {
     setPostDelete(post);
     setShowModalDeletePost(true);
@@ -45,7 +46,9 @@ const ManagerPost = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
-      <div className="text-[30px] font-medium text-center">Manager Post</div>
+      <div className="text-[30px] font-medium text-center">
+        Quản lý bài đăng
+      </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="btn-add-new">
@@ -60,13 +63,13 @@ const ManagerPost = () => {
               onClick={() => setShowModalCreatePost(true)}
             >
               <FcPlus />
-              Add new post
+              Thêm mới bài đăng
             </button>
           </div>
-          <div className="search" style={{ marginRight: "28px" }}>
+          {/* <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
-                placeholder="Enter your input"
+                placeholder="Mha"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
               />
@@ -74,7 +77,7 @@ const ManagerPost = () => {
                 Search
               </Button>
             </InputGroup>
-          </div>
+          </div> */}
         </div>
         <ModalCreatePost
           show={showModalCreatePost}

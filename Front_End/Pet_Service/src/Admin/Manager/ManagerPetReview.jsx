@@ -37,7 +37,7 @@ const ManagerPetReview = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Pet Review
+        Quản lý đánh giá thú cưng
       </div>
       <div className="user-contents">
         <ModalViewPetReview

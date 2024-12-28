@@ -48,7 +48,7 @@ const ManagerCategory = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Category
+        Quản lý thể loại sản phẩm
       </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -64,7 +64,7 @@ const ManagerCategory = () => {
               onClick={() => setShowModalCreateCategory(true)}
             >
               <FcPlus />
-              Add new category
+              Thêm mới thể loại
             </button>
           </div>
           {/* <div className="search" style={{ marginRight: "28px" }}>

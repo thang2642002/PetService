@@ -42,7 +42,6 @@ const Header = () => {
 
   const fetchAllNotification = async () => {
     const data = await getUserNotification(user?.data?.user_id);
-    console.log("chek data noti", data);
     if (data && data.errCode === 0) {
       setNotifications(data.data);
     }
@@ -92,7 +91,6 @@ const Header = () => {
         </Dropdown>
       </div>
 
-      {/* Logo */}
       <div className="logo cursor-pointer">
         <a href="/">
           <img

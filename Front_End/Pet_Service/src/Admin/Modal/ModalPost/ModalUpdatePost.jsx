@@ -4,8 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { updatePost } from "../../../services/postServices";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const ModalUpdatePost = (props) => {
   const { show, setShow, postUpdate } = props;
@@ -14,24 +14,20 @@ const ModalUpdatePost = (props) => {
     setShow(false);
     setTitle("");
     setContent("");
-    setCreateDate("");
+    setDesc_title();
     setImage(null);
     setPreviewImage("");
   };
 
-  useEffect(() => {
-    setTitle(postUpdate.title);
-    setContent(postUpdate.content);
-    setCreateDate(postUpdate.created_date);
-    setImage(null);
-    setPreviewImage(postUpdate.image || "");
-  }, [postUpdate]);
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [createDate, setCreateDate] = useState("");
+  const [desc_title, setDesc_title] = useState("");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
+
+  const handleContentChange = (value) => {
+    setContent(value);
+  };
 
   const handleUploadImage = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -41,25 +37,39 @@ const ModalUpdatePost = (props) => {
         setImage(file);
       } else {
         toast.error("Please upload a valid image file (jpg, png, etc.)");
+        e.target.value = ""; // Reset input
       }
     }
   };
-
   const handleSubmitUpdatePost = async () => {
+    if (!title || !content || !image) {
+      toast.error("Please fill out all fields.");
+      return;
+    }
     const data = await updatePost(
       postUpdate.post_id,
       title,
+      desc_title,
       content,
-      createDate
+      image
     );
+
     if (data && data.errCode === 0) {
       toast.success(data.message);
       handleClose();
     } else {
       toast.error(data.message);
-      handleClose();
     }
   };
+
+  useEffect(() => {
+    setTitle(postUpdate?.title);
+    setDesc_title(postUpdate?.desc_title);
+    setContent(postUpdate?.content);
+
+    setImage(null);
+    setPreviewImage(postUpdate.image || "");
+  }, [postUpdate]);
 
   return (
     <>
@@ -85,17 +95,49 @@ const ModalUpdatePost = (props) => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-
-            {/* Thêm CKEditor thay thế cho ô nhập Content */}
             <div className="col-12">
+              <label className="form-label">Desc Title</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Desc Title"
+                value={desc_title}
+                onChange={(e) => setDesc_title(e.target.value)}
+              />
+            </div>
+            <div className="col-12 mb-5">
               <label className="form-label">Content</label>
-              <CKEditor
-                editor={ClassicEditor}
-                data={content} // Data hiển thị trong CKEditor
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setContent(data); // Cập nhật state content với dữ liệu trong CKEditor
+              <ReactQuill
+                value={content}
+                onChange={handleContentChange}
+                modules={{
+                  toolbar: [
+                    [
+                      { header: "1" },
+                      { header: "2" },
+                      { header: "3" },
+                      { header: "4" },
+                    ],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                    ["link"],
+                    ["image"],
+                  ],
                 }}
+                formats={[
+                  "header",
+                  "font",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "list",
+                  "bullet",
+                  "align",
+                  "link",
+                  "image",
+                ]}
+                style={{ height: "150px" }}
               />
             </div>
 

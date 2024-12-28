@@ -44,7 +44,7 @@ const ManagerProductReview = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Product Review
+        Quản lý đánh giá sản phẩm
       </div>
       <div className="user-contents">
         <ModalViewProductReview

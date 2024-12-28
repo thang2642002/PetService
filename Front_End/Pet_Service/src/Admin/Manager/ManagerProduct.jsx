@@ -82,10 +82,9 @@ const ManagerProduct = () => {
       page: 1,
       limit: 8,
       sortBy: "price",
-      order, // 'asc' hoặc 'desc'
+      order,
     };
     const response = await getPaginateProductSort(data);
-    console.log("chek data fontend", response);
     if (response) {
       setListProduct(response.data);
       setTotalItems(response.totalItems);
@@ -107,7 +106,9 @@ const ManagerProduct = () => {
 
   return (
     <div className="manager-user-container">
-      <div className="text-[30px] font-medium text-center">Manager Product</div>
+      <div className="text-[30px] font-medium text-center">
+        Quản lý sản phẩm
+      </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div className="btn-add-new">
@@ -122,7 +123,7 @@ const ManagerProduct = () => {
               onClick={() => setShowModalCreateProduct(true)}
             >
               <FcPlus />
-              Add new product
+              Thêm mới sản phẩm
             </button>
           </div>
           <div className="sort-by-price" style={{ marginBottom: "20px" }}>
@@ -139,7 +140,7 @@ const ManagerProduct = () => {
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
-                placeholder="Enter your input"
+                placeholder="Nhập thông tin"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
                 value={valueSearch}
@@ -150,7 +151,7 @@ const ManagerProduct = () => {
                 id="button-addon2"
                 onClick={handleSearch}
               >
-                Search
+                Tìm kiếm
               </Button>
             </InputGroup>
           </div>

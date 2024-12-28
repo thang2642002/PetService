@@ -15,11 +15,13 @@ const ModalCreatePost = (props) => {
     setShow(false);
     setTitle("");
     setContent("");
+    setContent("");
     setImage("");
     setPreviewImage("");
   };
 
   const [title, setTitle] = useState("");
+  const [desc_title, setDesc_title] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
@@ -36,7 +38,7 @@ const ModalCreatePost = (props) => {
   };
 
   const handleSubmitCreatePost = async () => {
-    const data = await createPost(title, content, image);
+    const data = await createPost(title, desc_title, content, image);
     if (data && data.errCode === 0) {
       toast(data.message);
       await fetchAllPost();
@@ -69,6 +71,16 @@ const ModalCreatePost = (props) => {
                 placeholder="Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="col-12">
+              <label className="form-label">Desc Title</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Desc Title"
+                value={desc_title}
+                onChange={(e) => setDesc_title(e.target.value)}
               />
             </div>
 

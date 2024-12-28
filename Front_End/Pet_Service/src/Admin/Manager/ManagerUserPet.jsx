@@ -48,7 +48,7 @@ const ManagerUserPet = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager User Pet
+        Quản lý thú cưng của người dùng
       </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -64,18 +64,18 @@ const ManagerUserPet = () => {
               onClick={() => setShowModalCreateUserPet(true)}
             >
               <FcPlus />
-              Add new user pet
+              Thêm mới thú cưng
             </button>
           </div>
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control
-                placeholder="Enter your input"
+                placeholder="Nhập thông tin"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2"
               />
               <Button variant="primary" id="button-addon2">
-                Search
+                Tìm kiếm
               </Button>
             </InputGroup>
           </div>

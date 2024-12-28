@@ -9,10 +9,11 @@ const getAllPost = async () => {
   }
 };
 
-const createPost = async (title, content, image) => {
+const createPost = async (title, desc_title, content, image) => {
   try {
     const createPost = await db.Post.create({
       title,
+      desc_title,
       content,
       image,
       created_date: new Date().toISOString(),
@@ -23,24 +24,24 @@ const createPost = async (title, content, image) => {
   }
 };
 
-const updatePost = async (post_id, title, content, imageFile) => {
+const updatePost = async (post_id, title, desc_title, content, imageFile) => {
   try {
     const updatePost = await db.Post.findByPk(post_id);
-    console.log(updatePost.title);
     if (!updatePost) {
       return null;
     }
     updatePost.title = title;
+    updatePost.desc_title = desc_title;
     updatePost.content = content;
     updatePost.created_date = new Date().toISOString();
     if (imageFile) {
-      const result = await cloudinary.uploader.upload(avatarFile.path, {
+      const result = await cloudinary.uploader.upload(imageFile.path, {
         folder: "uploads_image",
       });
-      user.image = result.secure_url;
+      updatePost.image = result.secure_url;
     }
 
-    updatePost.save();
+    await updatePost.save();
     return updatePost;
   } catch (error) {
     console.log(error);
@@ -58,6 +59,17 @@ const deletePost = async (post_id) => {
   }
 };
 
+const getPostById = async (post_id) => {
+  try {
+    const getPostById = await db.Post.findOne({
+      where: { post_id: post_id },
+    });
+    return getPostById;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const countPost = async () => {
   try {
     const postCount = await db.Post.count();
@@ -67,4 +79,11 @@ const countPost = async () => {
   }
 };
 
-module.exports = { getAllPost, createPost, updatePost, deletePost, countPost };
+module.exports = {
+  getAllPost,
+  createPost,
+  updatePost,
+  deletePost,
+  countPost,
+  getPostById,
+};

@@ -26,9 +26,14 @@ const getAllPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { title, desc_title, content } = req.body;
     const image = req.file ? req.file.path : null;
-    const createPost = await postService.createPost(title, content, image);
+    const createPost = await postService.createPost(
+      title,
+      desc_title,
+      content,
+      image
+    );
     if (createPost) {
       return res.status(200).json({
         message: "Create post is the success",
@@ -52,11 +57,13 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
   try {
     const post_id = req.params.id;
-    const { title, content } = req.body;
+    const { title, desc_title, content } = req.body;
     const imageFile = req.file;
+    console.log("check imageFile:", imageFile);
     const updatePost = await postService.updatePost(
       post_id,
       title,
+      desc_title,
       content,
       imageFile
     );
@@ -104,6 +111,31 @@ const deletePost = async (req, res) => {
   }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const post_id = req.params.id;
+    const getPostById = await postService.getPostById(post_id);
+    if (getPostById) {
+      return res.status(200).json({
+        message: "Get post is the success",
+        errCode: 0,
+        data: getPostById,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get post is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Get post is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 const countPost = async (req, res) => {
   try {
     const countPost = await postService.countPost();
@@ -128,4 +160,11 @@ const countPost = async (req, res) => {
   }
 };
 
-module.exports = { getAllPost, createPost, updatePost, deletePost, countPost };
+module.exports = {
+  getAllPost,
+  createPost,
+  updatePost,
+  deletePost,
+  getPostById,
+  countPost,
+};

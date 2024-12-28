@@ -8,7 +8,6 @@ import ModalCreateServiceReview from "../Modal/ModalServiceReview/ModalCreateSer
 import ModalUpdateServiceReview from "../Modal/ModalServiceReview/ModalUpdateServiceReview";
 import ModalDeleteServiceReview from "../Modal/ModalServiceReview/ModalDeleteServiceReview";
 import TableServiceReview from "../Modal/ModalServiceReview/TableServiceReview";
-// import { getAllServiceReview } from "../../services/serviceReviewServices";
 import { getPaginate } from "../../services/paginateServices";
 
 const ManagerServiceReview = () => {
@@ -49,7 +48,7 @@ const ManagerServiceReview = () => {
   return (
     <div className="manager-user-container">
       <div className="text-[30px] font-medium text-center">
-        Manager Service Review
+        Quản lý đánh giá dịch vụ
       </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -76,7 +75,7 @@ const ManagerServiceReview = () => {
                 aria-describedby="basic-addon2"
               />
               <Button variant="primary" id="button-addon2">
-                Search
+                Tìm kiếm
               </Button>
             </InputGroup>
           </div>
