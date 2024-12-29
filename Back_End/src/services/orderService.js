@@ -75,7 +75,7 @@ const deleteOrder = async (order_id) => {
 
 const getOrderById = async (user_id) => {
   try {
-    const data = await db.Order.findOne({
+    const data = await db.Order.findAll({
       where: { user_id: user_id },
       include: [
         { model: db.User, as: "user" },

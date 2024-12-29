@@ -45,6 +45,7 @@ const ManagerAppointment = () => {
     }
   };
 
+
   useEffect(() => {
     fetchAllAppointment();
   }, [currentPage]);

@@ -7,6 +7,10 @@ const getAllOrder = () => {
 const getByOrder = (order_id) => {
   return axios.get(`/order/get-oder-by-order/${order_id}`);
 };
+
+const getByOrderUser = (user_id) => {
+  return axios.get(`/order/get-oder-by-id/${user_id}`);
+};
 const createOrder = (total_amount, user_id, cart_id) => {
   const data = { total_amount, user_id, cart_id };
   return axios.post("/order/create-order", data);
@@ -34,4 +38,5 @@ export {
   deleteOrder,
   getByOrder,
   updateOrderPayment,
+  getByOrderUser,
 };

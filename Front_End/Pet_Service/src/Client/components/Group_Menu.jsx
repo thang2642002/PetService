@@ -7,11 +7,15 @@ const Group_Menu = () => {
   const handleNavigation = (type) => {
     navigate(`/category-product/${type}`);
   };
+
+  const handleHome = () => {
+    navigate("/");
+  };
   return (
     <>
       <div className="group_menu">
         <div className="icon">
-          <FontAwesomeIcon icon={faHouse} />
+          <FontAwesomeIcon icon={faHouse} onClick={handleHome} />
         </div>
         <div className="group-carts">
           <div className="cart-item" onClick={() => handleNavigation("pets")}>

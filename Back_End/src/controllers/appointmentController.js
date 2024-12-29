@@ -117,6 +117,7 @@ const updateAppointmentStatus = async (req, res) => {
   try {
     const appointment_id = req.params.id;
     const { status } = req.body;
+    console.log("status 1", status);
     const updateAppointment = await appointmentService.updateAppointmentStatus(
       appointment_id,
       status

@@ -43,17 +43,14 @@ const ListPost = () => {
   return (
     <>
       <Group_Menu />
-      <div>
-        <div className="text-[28px] text-[#522f1f] font-bold py-3 ">
-          Tin tức
-        </div>
+      <div className="mt-5">
         <div>
           <Row gutter={[16, 16]} wrap>
             <Col span={18}>
               <div className="text-[16px] pr-20">
                 {post && post.title ? (
                   <div>
-                    <h3>
+                    <h3 className="text-[#522f1f]">
                       <strong>{post.title}</strong>
                     </h3>
                     <div className="mb-2">

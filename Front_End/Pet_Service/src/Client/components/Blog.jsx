@@ -21,7 +21,11 @@ const Blog = () => {
     }
   };
 
-  const handleNavigationPostDetails = () => {
+  const handleNavigationPostDetail = (id) => {
+    navigate(`/post-detail/${id}`);
+  };
+
+  const handleNavigationPost = () => {
     navigate("/post");
   };
 
@@ -38,7 +42,10 @@ const Blog = () => {
             listPost.map((post, index) => {
               return (
                 <Col span={8} key={index}>
-                  <div className="cart_blog flex items-center gap-4 p-4">
+                  <div
+                    className="cart_blog flex items-center gap-4 p-4 cursor-pointer"
+                    onClick={() => handleNavigationPostDetail(post.post_id)}
+                  >
                     <div className="img w-[80px] h-[80px] flex-shrink-0">
                       <img
                         src={post.image}
@@ -61,7 +68,7 @@ const Blog = () => {
       </div>
       <div
         className="flex justify-center mt-10 font-normal cursor-pointer"
-        onClick={handleNavigationPostDetails}
+        onClick={handleNavigationPost}
       >
         Xem thêm &gt;&gt;
       </div>

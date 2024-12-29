@@ -33,7 +33,6 @@ const ListPost = () => {
     }
   };
 
-  console.log("check list post", listPost);
 
   const fetchPostSuggest = async () => {
     const data = await getPaginate(modelName, currentPage, pageSizeSuggest);
@@ -66,6 +65,7 @@ const ListPost = () => {
                     <Link
                       to={`/post-detail/${post.post_id}`}
                       key={post.post_id}
+                      style={{ textDecoration: "none" }}
                     >
                       <div className="flex mt-4 pb-4 border-b-2">
                         <div>
@@ -80,10 +80,10 @@ const ListPost = () => {
                             <div className="text-[20px] font-medium text-[#522f1f] mb-2 ">
                               {post.title}
                             </div>
-                            <div className="text-[16px] break-words mt-2">
+                            <div className="text-[16px] break-words mt-2 text-black">
                               {post.desc_title}
                             </div>
-                            <div className="text-[14px] mt-4">
+                            <div className="text-[14px] mt-4 text-black">
                               {formatDate(post.updatedAt)}
                             </div>
                           </div>

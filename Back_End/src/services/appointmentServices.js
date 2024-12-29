@@ -75,6 +75,7 @@ const updateAppointment = async (
 };
 
 const updateAppointmentStatus = async (appointment_id, status) => {
+  console.log("status", status);
   try {
     const updateAppointment = await db.Appointments.findByPk(appointment_id);
     if (!updateAppointment) {

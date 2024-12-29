@@ -4,6 +4,10 @@ const getAllAppointment = () => {
   return axios.get("/appointment/get-all-appointment");
 };
 
+const getAppointmentById = (appointment_id) => {
+  return axios.get(`/appointment/get-by-id-appointment/${appointment_id}`);
+};
+
 const createAppointment = (
   appointment_date,
   time_date,
@@ -47,4 +51,5 @@ export {
   updateAppointment,
   updateAppointmentStatus,
   deleteAppointment,
+  getAppointmentById,
 };

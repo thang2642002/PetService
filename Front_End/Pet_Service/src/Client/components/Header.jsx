@@ -123,7 +123,10 @@ const Header = () => {
                     label: <a href="/profile-user">Thông tin tài khoản</a>,
                     key: "1",
                   },
-                  { label: <a href="/orders">Xem đơn hàng</a>, key: "2" },
+                  {
+                    label: <a href="/order-history">Xem đơn hàng</a>,
+                    key: "2",
+                  },
                   user?.data?.role === "manager" && {
                     label: <a href="/admin">Quản lý trang</a>,
                     key: "3",

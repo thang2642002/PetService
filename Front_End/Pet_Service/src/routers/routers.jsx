@@ -30,6 +30,7 @@ import CategoryProduct from "../Client/views/Category_Product/Category_Product";
 import ListPost from "../Client/views/ListPost/ListPost";
 import Statistical from "../Client/views/Statistical/Statistical";
 import Post_Details from "../Client/views/Post_Details/Post_Details";
+import OrderHistory from "../Client/views/OrderHistory/OrderHistory";
 
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
@@ -101,6 +102,10 @@ export const routers = [
       {
         path: "post-detail/:id",
         element: <Post_Details />,
+      },
+      {
+        path: "order-history",
+        element: <OrderHistory />,
       },
     ],
   },
