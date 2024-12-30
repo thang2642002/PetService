@@ -5,6 +5,7 @@ const getAllOrder = async () => {
       include: [
         { model: db.User, as: "user" },
         { model: db.Carts, as: "cart" },
+        { model: db.Payments, as: "payments" },
         {
           model: db.OrderItem,
           as: "orderItems",
@@ -80,6 +81,7 @@ const getOrderById = async (user_id) => {
       include: [
         { model: db.User, as: "user" },
         { model: db.Carts, as: "cart" },
+        { model: db.Payments, as: "payments" },
         {
           model: db.OrderItem,
           as: "orderItems",
@@ -102,6 +104,7 @@ const getOrderByOrder = async (order_id) => {
       include: [
         { model: db.User, as: "user" },
         { model: db.Carts, as: "cart" },
+        { model: db.Payments, as: "payments" },
         {
           model: db.OrderItem,
           as: "orderItems",

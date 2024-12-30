@@ -58,8 +58,12 @@ const Payment = () => {
             const { item_id, quantity } = item;
             await updateStockProductOrPet(item_id, quantity);
           }
+          const updatedOrderPayment = await getByOrder(order_id);
           navigate(`/order-details`, {
-            state: { dataOrder: order, totalAmount: finalAmount },
+            state: {
+              dataOrder: updatedOrderPayment.data,
+              totalAmount: finalAmount,
+            },
           });
           await sendEmail(order?.user?.email, listOrderItem);
           await createNotification(
@@ -87,8 +91,16 @@ const Payment = () => {
         const response = await updateOrderPayment(order_id);
         if (response?.errCode === 0) {
           toast.success("Thanh toán qua PayPal thành công!");
+          for (const item of listOrderItem) {
+            const { item_id, quantity } = item;
+            await updateStockProductOrPet(item_id, quantity);
+          }
+          const updatedOrderPayment = await getByOrder(order_id);
           navigate(`/order-details`, {
-            state: { dataOrder: order, totalAmount: finalAmount },
+            state: {
+              dataOrder: updatedOrderPayment.data,
+              totalAmount: finalAmount,
+            },
           });
           await sendEmail(order?.user?.email, listOrderItem);
           await createNotification(

@@ -61,9 +61,11 @@ module.exports = (sequelize, DataTypes) => {
       as: "orderItems",
     });
 
-    Order.hasMany(models.Payments, {
+    Order.hasOne(models.Payments, {
       foreignKey: "order_id",
       as: "payments",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     });
   };
 

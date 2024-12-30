@@ -9,6 +9,7 @@ import { getByOrder } from "../../../services/orderServices";
 import { sendEmail } from "../../../services/sendEmailServices";
 import { createNotification } from "../../../services/notificationServices";
 import { createPayments } from "../../../services/paymentServices";
+import { updateStockProductOrPet } from "../../../services/orderItemServices";
 
 const OrderDetails = () => {
   const { user } = useSelector((state) => state.user);
@@ -16,6 +17,8 @@ const OrderDetails = () => {
   const { dataOrder, totalAmount } = location.state || {};
   const [orderItems, setOrderItem] = useState([]);
   const [sumTotal, setSumTotal] = useState(0);
+  const [statusPayment, setStatusPayment] = useState("");
+  const [methodPayment, setMethodPayment] = useState("");
 
   useEffect(() => {
     if (totalAmount) {
@@ -23,47 +26,103 @@ const OrderDetails = () => {
     }
     if (dataOrder) {
       setOrderItem(dataOrder.orderItems);
+      setStatusPayment(dataOrder.payments.payment_status);
+      setMethodPayment(dataOrder.payments.payment_method);
     }
   }, [dataOrder, totalAmount]);
+
+  // const handleVNPaySuccess = async () => {
+  //   try {
+  //     const orderData = new URLSearchParams(window.location.search);
+  //     const paymentSuccess = orderData.get("vnp_ResponseCode");
+  //     const orderInfo = orderData.get("vnp_OrderInfo");
+  //     const vnAmount = orderData.get("vnp_Amount");
+  //     if (paymentSuccess === "00") {
+  //       const payment = await createPayments(
+  //         orderInfo,
+  //         "Thanh toán bằng vnPay",
+  //         "pending",
+  //         vnAmount
+  //       );
+  //       if (payment && payment.errCode === 0) {
+  //         const updateOrder = await updateOrderPayment(orderInfo);
+  //         if (updateOrder && updateOrder.errCode === 0) {
+  //           const fetchOrder = await getByOrder(orderInfo);
+  //           if (fetchOrder && fetchOrder.errCode === 0) {
+  //             setOrderItem(fetchOrder?.data?.orderItems);
+  //             setSumTotal(fetchOrder?.data?.total_amount + 30000);
+  //             await sendEmail(
+  //               fetchOrder?.data.user?.email,
+  //               fetchOrder?.data?.orderItems
+  //             );
+  //             await createNotification(
+  //               "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi",
+  //               user?.data?.user_id
+  //             );
+  //           }
+  //         }
+  //       }
+  //       toast.success("Thanh toán VNPay thành công!");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Có lỗi trong việc xác nhận thanh toán VNPay.");
+  //   }
+  // };
 
   const handleVNPaySuccess = async () => {
     try {
       const orderData = new URLSearchParams(window.location.search);
-      console.log("orderData", orderData);
       const paymentSuccess = orderData.get("vnp_ResponseCode");
       const orderInfo = orderData.get("vnp_OrderInfo");
       const vnAmount = orderData.get("vnp_Amount");
+
       if (paymentSuccess === "00") {
         const payment = await createPayments(
           orderInfo,
           "Thanh toán bằng vnPay",
-          "pending",
+          "completed",
           vnAmount
         );
+
         if (payment && payment.errCode === 0) {
           const updateOrder = await updateOrderPayment(orderInfo);
+
           if (updateOrder && updateOrder.errCode === 0) {
             const fetchOrder = await getByOrder(orderInfo);
+
             if (fetchOrder && fetchOrder.errCode === 0) {
-              setOrderItem(fetchOrder?.data?.orderItems);
+              const orderItems = fetchOrder?.data?.orderItems;
+              for (const item of orderItems) {
+                const { item_id, quantity } = item;
+                await updateStockProductOrPet(item_id, quantity);
+              }
+              setStatusPayment(fetchOrder.data.payments.payment_status);
+              setMethodPayment(fetchOrder.data.payments.payment_method);
+              setOrderItem(orderItems);
               setSumTotal(fetchOrder?.data?.total_amount + 30000);
+
               await sendEmail(
                 fetchOrder?.data.user?.email,
                 fetchOrder?.data?.orderItems
               );
+
               await createNotification(
                 "Cảm ơn quý khách đã mua sản phẩm bên chúng tôi",
                 user?.data?.user_id
               );
+
+              toast.success("Thanh toán VNPay thành công!");
             }
           }
         }
-        toast.success("Thanh toán VNPay thành công!");
       }
     } catch (error) {
       toast.error("Có lỗi trong việc xác nhận thanh toán VNPay.");
     }
   };
+
+  console.log("statusPayment", statusPayment);
+  console.log("methodPayment", methodPayment);
 
   useEffect(() => {
     handleVNPaySuccess();
@@ -81,7 +140,17 @@ const OrderDetails = () => {
               <div className="name-details-order">Chi Tiết Đơn Hàng</div>
               <div className="transaction">
                 <span className="order-success">Đặt Hàng Thành Công</span>
-                <span className="warning-order">Chờ Giao Hàng</span>
+                <span className="text-green-500 border-r-2 border-gray-400 px-6 font-medium">
+                  {statusPayment === "completed"
+                    ? "Đã thanh toán"
+                    : "Chưa thanh toán"}
+                </span>
+                <span className="text-blue-500 border-r-2 border-gray-400 px-6 font-medium">
+                  {methodPayment}
+                </span>
+                <span className="text-red-500 px-6 font-medium">
+                  Chờ Giao Hàng
+                </span>
               </div>
             </div>
             <div className="mt-4">

@@ -61,6 +61,7 @@ const Shopping_Cart = () => {
         order.data.order_id,
         itemsForOrder
       );
+
       navigate(`/payment`, { state: { order_id: order.data.order_id } });
     } catch (error) {
       console.error("Failed to process payment:", error);
@@ -105,13 +106,13 @@ const Shopping_Cart = () => {
     let sumTotal = 0;
     listCartItem.forEach((item, index) => {
       if (check[index]) {
-        const isProduct = !!item?.product_item; // Kiểm tra nếu là sản phẩm
+        const isProduct = !!item?.product_item;
         const price = isProduct
           ? (item?.product_item?.price || 0) *
             (1 - (item?.product_item?.discount || 0) / 100)
-          : item.pet_item?.price || 0; // Nếu không phải sản phẩm, lấy giá thú cưng
+          : item.pet_item?.price || 0;
 
-        sumTotal += price * (item?.quantity || 1); // Tính tổng số tiền
+        sumTotal += price * (item?.quantity || 1);
       }
     });
     return sumTotal;
@@ -126,7 +127,7 @@ const Shopping_Cart = () => {
     let newTotalAmount = 0;
     if (newCheckState) {
       newTotalAmount = listCartItem.reduce((sum, item) => {
-        const isProduct = !!item.product_item; // Kiểm tra loại
+        const isProduct = !!item.product_item;
         const price = isProduct
           ? (item.product_item.price || 0) *
             (1 - (item.product_item.discount || 0) / 100)

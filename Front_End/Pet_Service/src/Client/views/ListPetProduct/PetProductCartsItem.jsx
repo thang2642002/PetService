@@ -73,9 +73,13 @@ const PetProductCartsItem = (props) => {
                 )}
             </div>
           </div>
-          {productPet?.stock && (
+          {productPet?.stock ? (
             <div className="text-black text-sm ml-2 text-[12px] mt-[5px] ">
               Số lượng còn lại: {productPet?.stock}
+            </div>
+          ) : (
+            <div className="text-black text-sm ml-2 text-[12px] mt-[5px] ">
+              Số lượng còn lại: 0
             </div>
           )}
           <button className="mt-3 w-full h-[40px] flex items-center justify-center relative group overflow-hidden p-2 border border-[#6b4433] rounded">

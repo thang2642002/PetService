@@ -12,6 +12,7 @@ module.exports = {
       order_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
           model: "Orders", // Tên bảng liên kết
           key: "order_id", // Khóa chính của bảng liên kết
