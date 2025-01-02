@@ -11,6 +11,8 @@ import moment from "moment";
 import { useLocation } from "react-router-dom";
 import { createAppointment } from "../../services/appointmentServices";
 import { getAllServices } from "../../services/serviceServices";
+import Rating from "../../Client/views/ReviewServices/Rating/Rating";
+import Comment from "../../Client/views/ReviewServices/Comment/Comment";
 
 const { Option } = Select;
 
@@ -95,66 +97,70 @@ const AppointmentForm = () => {
   }, []);
 
   return (
-    <div className="p-4 max-w-xl mx-auto bg-white shadow-md rounded-md">
-      <h2 className="text-lg font-bold mb-4">Đặt lịch khám thú cưng</h2>
+    <>
+      <div className="p-4 max-w-xl mx-auto bg-white shadow-md rounded-md">
+        <h2 className="text-lg font-bold mb-4">Đặt lịch khám thú cưng</h2>
 
-      <div className="space-y-4">
-        {/* Date Picker */}
-        <div>
-          <p className="text-sm">Chọn ngày</p>
-          <DatePicker
-            className="w-full"
-            onChange={handleDateChange}
-            placeholder="Chọn ngày"
-          />
-        </div>
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm">Chọn ngày</p>
+            <DatePicker
+              className="w-full"
+              onChange={handleDateChange}
+              placeholder="Chọn ngày"
+            />
+          </div>
 
-        {/* Time Picker */}
-        <div>
-          <p className="text-sm">Chọn giờ</p>
-          <TimePicker
-            className="w-full"
-            format="HH:mm"
-            onChange={handleTimeChange}
-            placeholder="Chọn giờ"
-          />
-        </div>
+          <div>
+            <p className="text-sm">Chọn giờ</p>
+            <TimePicker
+              className="w-full"
+              format="HH:mm"
+              onChange={handleTimeChange}
+              placeholder="Chọn giờ"
+            />
+          </div>
 
-        <div>
-          <p className="text-sm">Chọn dịch vụ</p>
-          <Select
-            className="w-full"
-            value={serviceId}
-            onChange={handleServiceChange}
-            placeholder="Chọn dịch vụ"
-          >
-            <option value="">Select a service</option>
-            {listServices &&
-              listServices.map((item, index) => {
-                return (
-                  <Option value={item.service_id} key={item.service_id}>
-                    {item.name} - {item.price.toLocaleString()}đ
-                  </Option>
-                );
-              })}
-          </Select>
-        </div>
-        <div>
-          <p className="text-sm">Mô tả thêm</p>
-          <Input.TextArea
-            rows={4}
-            placeholder="Mô tả thêm về yêu cầu đặt lịch"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+          <div>
+            <p className="text-sm">Chọn dịch vụ</p>
+            <Select
+              className="w-full"
+              value={serviceId}
+              onChange={handleServiceChange}
+              placeholder="Chọn dịch vụ"
+            >
+              <option value="">Select a service</option>
+              {listServices &&
+                listServices.map((item, index) => {
+                  return (
+                    <Option value={item.service_id} key={item.service_id}>
+                      {item.name} - {item.price.toLocaleString()}đ
+                    </Option>
+                  );
+                })}
+            </Select>
+          </div>
+          <div>
+            <p className="text-sm">Mô tả thêm</p>
+            <Input.TextArea
+              rows={4}
+              placeholder="Mô tả thêm về yêu cầu đặt lịch"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-        {/* Submit Button */}
-        <Button type="primary" block className="mt-4" onClick={handleSubmit}>
-          Đặt lịch
-        </Button>
+          {/* Submit Button */}
+          <Button type="primary" block className="mt-4" onClick={handleSubmit}>
+            Đặt lịch
+          </Button>
+        </div>
       </div>
-    </div>
+      <div>
+        <Rating />
+        <Comment />
+      </div>
+    </>
   );
 };
 
