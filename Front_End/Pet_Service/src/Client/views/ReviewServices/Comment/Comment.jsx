@@ -79,7 +79,7 @@ const ServiceComments = () => {
 
   useEffect(() => {
     fetchReviews();
-    fetchServices(); // Lấy danh sách dịch vụ khi component được mount
+    fetchServices(); 
   }, []);
 
   return (
