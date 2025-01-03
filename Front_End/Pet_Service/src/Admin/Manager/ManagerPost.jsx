@@ -10,6 +10,7 @@ import ModalDeletePost from "../Modal/ModalPost/ModalDeletePost";
 import TablePost from "../Modal/ModalPost/TablePost";
 // import { getAllPost } from "../../services/postServices";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerPost = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -46,6 +47,9 @@ const ManagerPost = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý bài đăng</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý bài đăng
       </div>

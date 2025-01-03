@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ModalViewPetReview from "../Modal/ModalPetReview/ModalViewPetReview";
 import TablePetReview from "../Modal/ModalPetReview/TablePetReview";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerPetReview = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -36,6 +37,9 @@ const ManagerPetReview = () => {
 
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý đánh giá thú cưng</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý đánh giá thú cưng
       </div>

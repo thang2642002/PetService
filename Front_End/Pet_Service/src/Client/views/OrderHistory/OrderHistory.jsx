@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getByOrderUser } from "../../../services/orderServices";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const OrderHistory = () => {
   const { user } = useSelector((state) => state.user);
@@ -21,6 +22,9 @@ const OrderHistory = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <Helmet>
+        <title>Lịch sử mua hàng</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-6">Lịch Sử Đơn Hàng</h1>
       {listOrder &&
         listOrder.map((order, index) => {
@@ -36,7 +40,7 @@ const OrderHistory = () => {
                 <p>
                   Ngày đặt hàng: {new Date(order.createdAt).toLocaleString()}
                 </p>
-                <p>Tổng tiền: {order.total_amount.toLocaleString()} VND</p>
+                <p>Tổng tiền: {order.total_amount.toLocaleString()} đ</p>
                 <p>
                   Trạng thái:{" "}
                   <span
@@ -85,7 +89,7 @@ const OrderHistory = () => {
                               item.product_item?.price || item.pet_item?.price
                             ) || 0
                           ).toLocaleString()}{" "}
-                          VND
+                          đ
                         </div>
 
                         <div className="text-center">
@@ -93,7 +97,7 @@ const OrderHistory = () => {
                         </div>
 
                         <div className="text-center">
-                          Tổng tiền: {item.total_price.toLocaleString()} VND
+                          Tổng tiền: {item.total_price.toLocaleString()} đ
                         </div>
                       </div>
                     );

@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { getPaginate } from "../../services/paginateServices";
 
 const Blog = () => {

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { getPaginate } from "../../services/paginateServices";
 import TableCart from "../Modal/ModalCarts/TableCategory";
 import { FcPlus } from "react-icons/fc";
+import { Helmet } from "react-helmet";
 
 const ManagerCarts = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -42,6 +43,9 @@ const ManagerCarts = () => {
 
   return (
     <div className="manager-user-container">
+       <Helmet>
+        <title>Quản lý giỏ hàng</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">Quản lý giỏ hàng</div>
       <div className="user-contents">
         <ModalViewCart

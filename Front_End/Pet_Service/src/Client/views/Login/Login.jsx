@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { loginUser, getUserById } from "../../../services/userServices";
 import { login } from "../../../redux/Slices/userSlices";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,9 @@ const Login = () => {
   return (
     <>
       <div className="signin-container">
+        <Helmet>
+          <title>Trang đăng nhập</title>
+        </Helmet>
         <div className="content-signin">
           <Row>
             <Col lg={7}>

@@ -1,6 +1,7 @@
 import { Button, Dropdown, Space, Checkbox } from "antd";
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import "./Category_Product.scss";
 import Product_Carts from "../../components/Product_Carts";
 import ButtonSeeMore from "../../components/ButtonSeeMore";
@@ -270,6 +271,9 @@ const Category_Product = () => {
 
   return (
     <div className="container my-10">
+      <Helmet>
+        <title>Danh mục</title>
+      </Helmet>
       <div>
         <h3 className="text-[#522f1f] ml-3">
           {type === "pets" ? "Mua thú cưng" : "Mua đồ dùng cho thú cưng"}
@@ -297,28 +301,6 @@ const Category_Product = () => {
           <span>Bộ lọc</span>
         </div>
         <div>
-          {/* <Space direction="vertical">
-            <Space wrap>
-              <Dropdown
-                menu={{ items: brandItems }}
-                placement="bottomLeft"
-                trigger={["hover"]}
-              >
-                <Button className="mr-12 pr-[100px] py-[20px] rounded-none font-medium text-sm">
-                  {type === "pets" ? "Lọc loại thú cưng" : "Lọc danh mục"}
-                </Button>
-              </Dropdown>
-              <Dropdown
-                menu={{ items: priceItems }}
-                placement="bottomLeft"
-                trigger={["hover"]}
-              >
-                <Button className="mr-4 pr-[150px] py-[20px] rounded-none font-medium text-sm">
-                  Lọc giá
-                </Button>
-              </Dropdown>
-            </Space>
-          </Space> */}
           <Space direction="vertical">
             <Space wrap>
               <Dropdown
@@ -339,7 +321,6 @@ const Category_Product = () => {
                   Lọc giá
                 </Button>
               </Dropdown>
-              {/* Dropdown cho breeds */}
               {type === "pets" && (
                 <Dropdown
                   menu={{ items: breedItems }}

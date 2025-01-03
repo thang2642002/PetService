@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Button } from "antd";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 import { createUserPet } from "../../services/userPetServices";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
@@ -61,6 +62,9 @@ const PetInfoForm = () => {
 
   return (
     <div className="p-4 max-w-xl mx-auto bg-white shadow-md rounded-md">
+      <Helmet>
+        <title>Dịch vụ</title>
+      </Helmet>
       <h2 className="text-lg font-bold mb-4">Thông tin thú cưng</h2>
       <div className="space-y-3">
         <Input

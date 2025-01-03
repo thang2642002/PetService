@@ -8,6 +8,7 @@ import ModalViewProductReview from "../Modal/ModalProductReview/ModalViewProduct
 import TableProductReview from "../Modal/ModalProductReview/TableProductReview";
 // import { getAllProductReview } from "../../services/productReviewServices";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerProductReview = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -35,14 +36,15 @@ const ManagerProductReview = () => {
     }
   };
 
-  console.log("chek listProductReview", listProductReview);
-
   useEffect(() => {
     fetchAllProductReview();
   }, [currentPage]);
 
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý đánh giá sản phẩm </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý đánh giá sản phẩm
       </div>

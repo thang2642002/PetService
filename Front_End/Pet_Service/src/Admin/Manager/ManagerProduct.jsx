@@ -4,6 +4,9 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FcPlus } from "react-icons/fc";
 import { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { toast } from "react-toastify";
 import ModalCreateProduct from "../Modal/ModalProduct/ModalCreateProduct";
 import ModalUpdateProduct from "../Modal/ModalProduct/ModalUpdateProduct";
 import ModalDeleteProduct from "../Modal/ModalProduct/ModalDeleteProduct";
@@ -14,7 +17,11 @@ import {
   getPaginateProduct,
   getPaginateProductSort,
 } from "../../services/paginateServices";
-import { getProductByName } from "../../services/productServices";
+import {
+  getProductByName,
+  getAllProduct,
+} from "../../services/productServices";
+import { Helmet } from "react-helmet";
 
 const ManagerProduct = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -30,6 +37,7 @@ const ManagerProduct = () => {
   const [productUpdate, setProductUpdate] = useState({});
   const [listCategory, setListCategory] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
+  const [allProduct, setAllProduct] = useState([]);
 
   const handleShowUpdateModal = (product) => {
     setProductUpdate(product);
@@ -45,6 +53,13 @@ const ManagerProduct = () => {
     setListProduct(data.data);
     setTotalItems(data.totalItems);
     setTotalPages(data.totalPages);
+  };
+
+  const getAllProductExportExcel = async () => {
+    const data = await getAllProduct();
+    if (data && data.errCode === 0) {
+      setAllProduct(data.data);
+    }
   };
 
   const fetchCategory = async () => {
@@ -92,8 +107,40 @@ const ManagerProduct = () => {
     }
   };
 
+  const handleExportExcel = () => {
+    if (allProduct.length === 0) {
+      toast.error("Danh sách sản phẩm trống!");
+      return;
+    }
+
+    const dataToExport = allProduct.map((product) => ({
+      ID: product.product_id,
+      "Tên sản phẩm": product.name,
+      "Giá sản phẩm": product.price,
+      "Thể loại": product.category.name,
+      "Số lượng": product.stock,
+      "Giảm giá": product.discount,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách sản phẩm");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "DanhSachSanPham.xlsx");
+
+    toast.success("Xuất Excel thành công!");
+  };
+
+  console.log("allProduct", allProduct);
+
   useEffect(() => {
     fetchCategory();
+    getAllProductExportExcel();
   }, []);
 
   useEffect(() => {
@@ -106,12 +153,15 @@ const ManagerProduct = () => {
 
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý sản phẩm </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý sản phẩm
       </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="btn-add-new">
+          <div className="btn-add-new h-[37px] flex gap-8">
             <button
               className="btn btn-primary"
               style={{
@@ -124,6 +174,13 @@ const ManagerProduct = () => {
             >
               <FcPlus />
               Thêm mới sản phẩm
+            </button>
+            <button
+              className="btn btn-success"
+              style={{ marginRight: "28px" }}
+              onClick={handleExportExcel}
+            >
+              Xuất Excel
             </button>
           </div>
           <div className="sort-by-price" style={{ marginBottom: "20px" }}>

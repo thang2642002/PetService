@@ -19,10 +19,10 @@ const sendEmail = (email, order) => {
           <tr>
             <td>${pet.name || "Không có tên thú cưng"}</td>
             <td>${item.quantity || 0}</td>
-            <td>${pet.price.toLocaleString()} VND</td>
+            <td>${pet.price.toLocaleString()} đ</td>
             <td>0%</td>
-            <td>${pet.price.toLocaleString()} VND</td>
-            <td>${item.total_price.toLocaleString()} VND</td>
+            <td>${pet.price.toLocaleString()} đ</td>
+            <td>${item.total_price.toLocaleString()} đ</td>
           </tr>
         `;
       } else if (item.product_item) {
@@ -33,10 +33,10 @@ const sendEmail = (email, order) => {
           <tr>
             <td>${product.name || "Không có tên sản phẩm"}</td>
             <td>${item.quantity || 0}</td>
-            <td>${product.price.toLocaleString()} VND</td>
+            <td>${product.price.toLocaleString()} đ</td>
             <td>${product.discount || 0}%</td>
-            <td>${discountedPrice.toLocaleString()} VND</td>
-            <td>${item.total_price.toLocaleString()} VND</td>
+            <td>${discountedPrice.toLocaleString()} đ</td>
+            <td>${item.total_price.toLocaleString()} đ</td>
           </tr>
         `;
       } else {
@@ -44,15 +44,15 @@ const sendEmail = (email, order) => {
           <tr>
             <td>Không xác định</td>
             <td>${item.quantity || 0}</td>
-            <td>0 VND</td>
+            <td>0 đ</td>
             <td>0%</td>
-            <td>0 VND</td>
-            <td>${item.total_price.toLocaleString()} VND</td>
+            <td>0 đ</td>
+            <td>${item.total_price.toLocaleString()} đ</td>
           </tr>
         `;
       }
     })
-    .join(""); // Nối các dòng HTML thành một chuỗi
+    .join(""); 
 
   // Nội dung email
   const mailOptions = {

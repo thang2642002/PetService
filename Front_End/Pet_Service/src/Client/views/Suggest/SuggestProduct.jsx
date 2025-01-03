@@ -32,14 +32,14 @@ const SuggestProduct = (props) => {
         style={{ textDecoration: "none" }}
       >
         <div
-          className="cart_item cursor-pointer relative group"
+          className="cart_item cursor-pointer relative group  h-[450px] flex flex-col justify-between"
           style={{ marginTop: "30px" }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {!Number.isNaN(discountPrice) && discountPrice !== 0 && (
-            <div className="absolute bg-red-500 top-[10px] right-[10px] text-white p-2">
-              {discountPercentage}%
+          {discountPercentage > 0 && (
+            <div className=" absolute bg-red-500 top-[10px] right-[10px] text-white p-2">
+              {discountPercentage || 0}%
             </div>
           )}
 
@@ -56,17 +56,21 @@ const SuggestProduct = (props) => {
           <div className="pl-2 flex justify-between text-sm text-black font-medium">
             <div
               className={`${
-                !Number.isNaN(discountPrice) && discountPrice !== 0
+                !Number.isNaN(discountPrice) &&
+                discountPrice !== 0 &&
+                product.price !== discountPrice
                   ? "line-through text-gray-400"
                   : ""
               }`}
             >
               {product.price.toLocaleString()} đ
             </div>
-            <div className="text-red-400">
-              {!Number.isNaN(discountPrice) && discountPrice !== 0 && (
-                <div>{discountPrice.toLocaleString()} đ</div>
-              )}
+            <div className="text-red-500">
+              {!Number.isNaN(discountPrice) &&
+                discountPrice !== 0 &&
+                discountPrice !== product.price && (
+                  <div>{discountPrice.toLocaleString()} đ</div>
+                )}
             </div>
           </div>
           <button className="mt-3 w-full h-[40px] flex items-center justify-center relative group overflow-hidden p-2 border border-[#6b4433] rounded">

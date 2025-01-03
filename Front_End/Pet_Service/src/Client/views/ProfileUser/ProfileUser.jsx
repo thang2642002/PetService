@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UpdateProfileUser from "./UpdateProfileUser";
+import { Helmet } from "react-helmet";
 
 const ProfileUser = () => {
   const user = useSelector((state) => state.user);
@@ -11,6 +12,9 @@ const ProfileUser = () => {
   return (
     <div>
       <>
+        <Helmet>
+          <title>Thông tin</title>
+        </Helmet>
         <div className="content-info-user flex justify-center gap-[400px]">
           <div className="content-left">
             <div className="title_info py-2">Thông tin cá nhân</div>

@@ -10,6 +10,7 @@ import ModalDeleteUserPet from "../Modal/ModalUserPet/ModalDeleteUserPet";
 import TableUserPet from "../Modal/ModalUserPet/TableUserPet";
 // import { getAllUserPet } from "../../services/userPetServices";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerUserPet = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -47,6 +48,9 @@ const ManagerUserPet = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý thú cưng người dùng </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý thú cưng của người dùng
       </div>

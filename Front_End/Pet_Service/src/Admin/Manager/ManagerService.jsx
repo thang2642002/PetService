@@ -12,6 +12,7 @@ import TableService from "../Modal/ModalService/TableService";
 import { getPaginate } from "../../services/paginateServices";
 import { getByNameServices } from "../../services/serviceServices";
 import { getPaginateProduct } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerService = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -76,6 +77,9 @@ const ManagerService = () => {
 
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý dịch vụ</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">Quản lý dịch vụ</div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>

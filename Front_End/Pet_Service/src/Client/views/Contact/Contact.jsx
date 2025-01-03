@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "antd";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 import { createContact } from "../../../services/contactServices";
 
 const Contact = () => {
@@ -42,6 +43,9 @@ const Contact = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Liên hệ</title>
+      </Helmet>
       <Group_Menu />
       <div className="mt-4">
         <div style={{ width: "100%", height: "450px" }}>

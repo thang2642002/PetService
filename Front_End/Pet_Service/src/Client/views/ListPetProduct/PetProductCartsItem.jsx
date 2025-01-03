@@ -32,7 +32,7 @@ const PetProductCartsItem = (props) => {
         style={{ textDecoration: "none" }}
       >
         <div
-          className="cart_item cursor-pointer relative group"
+          className="cart_item cursor-pointer relative group w-[300px] h-[450px] flex flex-col justify-between"
           style={{ marginTop: "30px" }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

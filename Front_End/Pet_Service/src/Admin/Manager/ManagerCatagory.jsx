@@ -10,6 +10,7 @@ import ModalDeleteCategory from "../Modal/ModalCategory/ModalDeleteCategory";
 import TableCategory from "../Modal/ModalCategory/TableCategory";
 // import { fetchAllCategory } from "../../services/categoryServices";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerCategory = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -47,6 +48,9 @@ const ManagerCategory = () => {
   };
   return (
     <div className="manager-user-container">
+       <Helmet>
+        <title>Quản lý thể loại sản phẩm</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý thể loại sản phẩm
       </div>

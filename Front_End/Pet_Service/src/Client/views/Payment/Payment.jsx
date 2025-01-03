@@ -14,6 +14,7 @@ import { createNotification } from "../../../services/notificationServices";
 import { createPayments } from "../../../services/paymentServices";
 import { updateStockProductOrPet } from "../../../services/orderItemServices";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const Payment = () => {
   const { user } = useSelector((state) => state.user);
@@ -127,6 +128,9 @@ const Payment = () => {
 
   return (
     <div className="bg-gray-50 flex items-center justify-center">
+      <Helmet>
+        <title>Thanh toán</title>
+      </Helmet>
       <div className="bg-white shadow-lg rounded-md p-6 w-full">
         <div className="mb-6">
           <div className="text-lg font-semibold text-gray-800 mb-2">

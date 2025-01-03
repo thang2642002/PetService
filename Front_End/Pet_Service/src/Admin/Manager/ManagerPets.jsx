@@ -3,6 +3,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FcPlus } from "react-icons/fc";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { toast } from "react-toastify";
 import ModalCreatePet from "../Modal/ModalPets/ModalCreatePet";
 import ModalUpdatePet from "../Modal/ModalPets/ModalUpdatePet";
 import ModalDeletePet from "../Modal/ModalPets/ModalDeletePet";
@@ -10,12 +13,13 @@ import TablePet from "../Modal/ModalPets/TablePet";
 import { useEffect, useState } from "react";
 // import { getAllPets } from "../../services/petServices";
 import { getAllPetType } from "../../services/petTypeServices";
-import { getByName } from "../../services/petServices";
+import { getByName, getAllPets } from "../../services/petServices";
 import {
   getPaginate,
   getPaginateProduct,
   getPaginateProductSort,
 } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerPets = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -31,6 +35,7 @@ const ManagerPets = () => {
   const [petUpdate, setPetUpdate] = useState({});
   const [listPetType, setListPetType] = useState([]);
   const [valueSearch, setValueSearch] = useState("");
+  const [allPet, setAllPet] = useState([]);
 
   const handleShowUpdateModal = (pet) => {
     setPetUpdate(pet);
@@ -94,8 +99,50 @@ const ManagerPets = () => {
     }
   };
 
+  const getAllProductExportExcel = async () => {
+    const data = await getAllPets();
+    if (data && data.errCode === 0) {
+      setAllPet(data.data);
+    }
+  };
+
+  const handleExportExcel = () => {
+    if (allPet.length === 0) {
+      toast.error("Danh sách thú cưng trống!");
+      return;
+    }
+
+    const dataToExport = allPet.map((pet) => ({
+      ID: pet.pet_id,
+      "Tên thú cưng": pet.name,
+      "Giá thú cưng": pet.price,
+      "Thể loại": pet.petType.type_name,
+      "Màu lông": pet.coat_color,
+      "Chiều cao": pet.height,
+      "Cân nặng": pet.weight,
+      "Số lượng": pet.stock,
+      "Giống loài": pet.breed,
+      "Tiêm Chuẩn":
+        pet.available === true ? "Đã tiêm chuẩn" : "Chưa tiêm chuẩn",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách thú cưng");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "DanhSachThuCung.xlsx");
+
+    toast.success("Xuất Excel thành công!");
+  };
+
   useEffect(() => {
     fetchListPetType();
+    getAllProductExportExcel();
   }, []);
 
   useEffect(() => {
@@ -108,10 +155,15 @@ const ManagerPets = () => {
 
   return (
     <div className="manager-user-container">
-      <div className="text-[30px] font-medium text-center">Quản lý thú cưng</div>
+      <Helmet>
+        <title>Quản lý thú cưng </title>
+      </Helmet>
+      <div className="text-[30px] font-medium text-center">
+        Quản lý thú cưng
+      </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="btn-add-new">
+          <div className="btn-add-new h-[37px] flex gap-8">
             <button
               className="btn btn-primary"
               style={{
@@ -124,6 +176,13 @@ const ManagerPets = () => {
             >
               <FcPlus />
               Thêm mới thú cưng
+            </button>
+            <button
+              className="btn btn-success"
+              style={{ marginRight: "28px" }}
+              onClick={handleExportExcel}
+            >
+              Xuất Excel
             </button>
           </div>
           <div className="sort-by-price" style={{ marginBottom: "20px" }}>

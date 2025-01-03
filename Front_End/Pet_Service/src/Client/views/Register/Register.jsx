@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../../services/userServices";
+import { Helmet } from "react-helmet";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
@@ -91,6 +92,9 @@ const Register = () => {
   return (
     <>
       <div className="signup-container">
+        <Helmet>
+          <title>Trang đăng ký</title>
+        </Helmet>
         <div className="content-signup">
           <Row>
             <Col lg={7}>

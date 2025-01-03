@@ -6,7 +6,7 @@ import "./ChatBox.scss";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([
-    { user: "Bot", text: "Hello! How can I help you?" },
+    { user: "Bot", text: "Xin chào bạn cần tôi giúp gì" },
   ]);
   const [messageText, setMessageText] = useState("");
 
@@ -26,7 +26,7 @@ const ChatBox = () => {
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: "Bot", text: "I received your message!" },
+        { user: "Bot", text: "Vui lòng liên hệ Admin tại trang liên hệ" },
       ]);
     }, 1000);
 

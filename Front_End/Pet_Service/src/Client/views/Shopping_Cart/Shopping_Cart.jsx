@@ -15,6 +15,7 @@ import {
 } from "../../../services/cartItemServices";
 import { createOrder } from "../../../services/orderServices";
 import { createOrderItem } from "../../../services/orderItemServices";
+import { Helmet } from "react-helmet";
 
 const Shopping_Cart = () => {
   const dispatch = useDispatch();
@@ -180,6 +181,9 @@ const Shopping_Cart = () => {
 
   return (
     <div className="contents-carts-container container">
+      <Helmet>
+        <title>Giỏ hàng</title>
+      </Helmet>
       <div className="title-carts">Giỏ hàng</div>
       <div className="content-carts">
         <Container>

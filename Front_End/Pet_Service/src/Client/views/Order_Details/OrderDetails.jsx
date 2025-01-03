@@ -10,6 +10,7 @@ import { sendEmail } from "../../../services/sendEmailServices";
 import { createNotification } from "../../../services/notificationServices";
 import { createPayments } from "../../../services/paymentServices";
 import { updateStockProductOrPet } from "../../../services/orderItemServices";
+import { Helmet } from "react-helmet";
 
 const OrderDetails = () => {
   const { user } = useSelector((state) => state.user);
@@ -131,6 +132,9 @@ const OrderDetails = () => {
   return (
     <>
       <div className="container">
+        <Helmet>
+          <title>Chi tiết đơn hàng</title>
+        </Helmet>
         <div className="order-container">
           <div className="hearder-order">
             <div className="title">Tất cả</div>

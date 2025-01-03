@@ -4,6 +4,7 @@ import ModalViewOrderItem from "../Modal/ModalOrderItem/ModalViewOrderItem";
 import TableOrderItem from "../Modal/ModalOrderItem/TableOrderItem";
 import { getPaginate } from "../../services/paginateServices";
 import { FcPlus } from "react-icons/fc";
+import { Helmet } from "react-helmet";
 
 const ManagerOrderItem = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -35,6 +36,9 @@ const ManagerOrderItem = () => {
 
   return (
     <div className="manager-user-container">
+       <Helmet>
+        <title>Quản lý chi tiết đơn hàng</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý chi tiết đơn hàng
       </div>

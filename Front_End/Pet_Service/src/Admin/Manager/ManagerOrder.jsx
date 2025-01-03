@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ModalViewOrder from "../Modal/ModalOrder/ModalViewOrder";
 import TableOrder from "../Modal/ModalOrder/TableOrder";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerOrder = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -32,6 +33,9 @@ const ManagerOrder = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+       <Helmet>
+        <title>Quản lý đơn đặt hàng</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý đơn hàng
       </div>

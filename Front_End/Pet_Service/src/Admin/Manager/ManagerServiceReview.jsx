@@ -9,6 +9,7 @@ import ModalUpdateServiceReview from "../Modal/ModalServiceReview/ModalUpdateSer
 import ModalDeleteServiceReview from "../Modal/ModalServiceReview/ModalDeleteServiceReview";
 import TableServiceReview from "../Modal/ModalServiceReview/TableServiceReview";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerServiceReview = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -47,6 +48,9 @@ const ManagerServiceReview = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý đánh giá dịch vụ </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý đánh giá dịch vụ
       </div>

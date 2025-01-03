@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import { getPaginate } from "../../../services/paginateServices";
 import { useParams } from "react-router-dom";
 import { getPostById } from "../../../services/postServices";
+import { Helmet } from "react-helmet";
 
 const ListPost = () => {
   const { id } = useParams();
@@ -42,6 +43,9 @@ const ListPost = () => {
   }, []);
   return (
     <>
+      <Helmet>
+        <title>Chi tiết bài đăng</title>
+      </Helmet>
       <Group_Menu />
       <div className="mt-5">
         <div>

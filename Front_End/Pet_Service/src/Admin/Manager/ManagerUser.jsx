@@ -4,6 +4,9 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useState, useEffect } from "react";
 import { FcPlus } from "react-icons/fc";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { toast } from "react-toastify";
 import ModalCreateUser from "../Modal/ModalUser/ModalCreateUser";
 import ModalUpdateUser from "../Modal/ModalUser/ModalUpdateUser";
 import ModalDeleteUser from "../Modal/ModalUser/ModalDeleteUser";
@@ -12,6 +15,7 @@ import TableUser from "../Modal/ModalUser/TableUser";
 import { getPaginate } from "../../services/paginateServices";
 import { findNameUser } from "../../services/userServices";
 import { getPaginateProduct } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerUser = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -66,6 +70,35 @@ const ManagerUser = () => {
     }
   };
 
+  const handleExportExcel = () => {
+    if (listUser.length === 0) {
+      toast.error("Danh sách người dùng trống!");
+      return;
+    }
+
+    const dataToExport = listUser.map((user) => ({
+      ID: user.user_id,
+      "Họ và Tên": user.user_name,
+      Email: user.email,
+      "Số điện thoại": user.phone,
+      "Địa chỉ": user.address,
+      Quyền: user.role === "manager" ? "Quản lý" : "Khách hàng",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách người dùng");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "DanhSachNguoiDung.xlsx");
+
+    toast.success("Xuất Excel thành công!");
+  };
+
   useEffect(() => {
     if (valueSearch.trim() === "") {
       getListUser();
@@ -76,12 +109,15 @@ const ManagerUser = () => {
 
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý người dùng </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý người dùng
       </div>
       <div className="user-contents">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="btn-add-new">
+          <div className="btn-add-new h-[37px] flex gap-8">
             <button
               className="btn btn-primary"
               style={{
@@ -95,7 +131,15 @@ const ManagerUser = () => {
               <FcPlus />
               Thêm mới người dùng
             </button>
+            <button
+              className="btn btn-success"
+              style={{ marginRight: "28px" }}
+              onClick={handleExportExcel}
+            >
+              Xuất Excel
+            </button>
           </div>
+
           <div className="search" style={{ marginRight: "28px" }}>
             <InputGroup className="mb-3" size="md">
               <Form.Control

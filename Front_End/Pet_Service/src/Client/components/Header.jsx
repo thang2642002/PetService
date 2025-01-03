@@ -13,6 +13,7 @@ import { logout } from "../../redux/Slices/userSlices";
 import { logoutUser } from "../../services/userServices";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import moment from "moment";
 import { getUserNotification } from "../../services/notificationServices";
 
 const Header = () => {
@@ -47,20 +48,29 @@ const Header = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    return moment(dateString).format("DD/MM/YYYY");
+  };
+
   useEffect(() => {
     fetchAllNotification();
   }, [user]);
 
   const notificationMenu = (
-    <div className="max-h-[300px] w-[250px] overflow-y-auto bg-white shadow-lg rounded-lg">
+    <div className="max-h-[300px] w-[300px] overflow-y-auto bg-white shadow-lg rounded-lg">
       {notifications && notifications.length > 0 ? (
         notifications.map((item) => (
-          <div
-            key={item.notification_id}
-            className="p-2 border-b hover:bg-gray-100 cursor-pointer"
-          >
-            {item.message}
-          </div>
+          <>
+            <div
+              key={item.notification_id}
+              className="p-2 border-b hover:bg-gray-100 cursor-pointer flex flex-col"
+            >
+              <div> {item.message}</div>
+              <div className="text-[12px] flex justify-end text-blue-300">
+                {formatDate(item.updatedAt)}
+              </div>
+            </div>
+          </>
         ))
       ) : (
         <div className="p-2 text-gray-500">Không có thông báo nào</div>
@@ -70,7 +80,6 @@ const Header = () => {
 
   return (
     <div className="header flex justify-between items-center p-4 bg-white">
-      {/* Menu */}
       <div className="menu">
         <Dropdown
           overlay={

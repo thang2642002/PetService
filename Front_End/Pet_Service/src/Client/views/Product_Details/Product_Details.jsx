@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { addItemToCart } from "../../../redux/Slices/cartSlices";
 import Rating from "../ReviewProducts/Rating/Rating";
 import Comment from "../ReviewProducts/Comment/Comment";
+import { Helmet } from "react-helmet";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -167,6 +168,9 @@ const ProductDetails = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Helmet>
+        <title>Chi tiết sản phẩm</title>
+      </Helmet>
       <Row className="gy-4">
         <Col md={6} className="d-flex flex-column flex-md-row gap-3">
           <div className="d-flex flex-column gap-3">
@@ -212,7 +216,7 @@ const ProductDetails = () => {
               <p className="ml-5">Thương hiệu: Royal Canin</p>
             </div>
 
-            <div className="flex gap-x-24">
+            <div className="flex gap-x-[140px]">
               <div>
                 <h3
                   className={`${
@@ -221,7 +225,7 @@ const ProductDetails = () => {
                       : "text-danger"
                   } mb-3`}
                 >
-                  {product?.price.toLocaleString()} VND
+                  {product?.price.toLocaleString()} đ
                 </h3>
               </div>
               {product.discount > 0 && (
@@ -230,8 +234,8 @@ const ProductDetails = () => {
                     {(
                       product?.price -
                       (product?.price * product.discount) / 100
-                    ).toLocaleString()}{" "}
-                    VND
+                    ).toLocaleString()}
+                    đ
                   </h3>
                 </div>
               )}

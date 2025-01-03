@@ -10,6 +10,7 @@ import ModalDeletePetType from "../Modal/ModalPetType/ModalDeletePetType";
 import TablePetType from "../Modal/ModalPetType/TablePetType";
 // import { getAllPetType } from "../../services/petTypeServices";
 import { getPaginate } from "../../services/paginateServices";
+import { Helmet } from "react-helmet";
 
 const ManagerPetType = () => {
   const [totalItems, setTotalItems] = useState(0);
@@ -47,6 +48,9 @@ const ManagerPetType = () => {
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý thể loại thú cưng </title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý thể loại thú cưng
       </div>

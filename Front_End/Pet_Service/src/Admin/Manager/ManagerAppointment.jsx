@@ -8,7 +8,7 @@ import ModalUpdateAppointment from "../Modal/ModalAppointment/ModalUpdateAppoint
 import ModalDeleteAppointment from "../Modal/ModalAppointment/ModalDeleteAppointment";
 import TableAppointment from "../Modal/ModalAppointment/TableAppointment";
 import { getPaginate } from "../../services/paginateServices";
-
+import { Helmet } from "react-helmet";
 import { FcPlus } from "react-icons/fc";
 
 const ManagerAppointment = () => {
@@ -45,12 +45,14 @@ const ManagerAppointment = () => {
     }
   };
 
-
   useEffect(() => {
     fetchAllAppointment();
   }, [currentPage]);
   return (
     <div className="manager-user-container">
+      <Helmet>
+        <title>Quản lý đặt lịch</title>
+      </Helmet>
       <div className="text-[30px] font-medium text-center">
         Quản lý đặt lịch
       </div>

@@ -20,6 +20,7 @@ import {
   updateCart,
 } from "../../../services/cartService";
 import { createCartItem } from "../../../services/cartItemServices";
+import { Helmet } from "react-helmet";
 
 const Pet_Details = () => {
   const { id } = useParams();
@@ -122,6 +123,9 @@ const Pet_Details = () => {
   return (
     <div>
       <div className="container mx-auto p-4">
+        <Helmet>
+          <title>Chi tiết thú cưng</title>
+        </Helmet>
         <Row className="gy-4">
           <Col md={6} className="d-flex flex-column flex-md-row gap-3">
             <div className="d-flex flex-column gap-3">
@@ -195,7 +199,7 @@ const Pet_Details = () => {
                 </p>
               </div>
               <h3 className="text-danger mb-3">
-                {pet?.price?.toLocaleString()} VND
+                {pet?.price?.toLocaleString()} đ
               </h3>
               <div className="d-flex justify-content-between align-items-center gap-3 mt-5">
                 <div
