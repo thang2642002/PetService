@@ -22,7 +22,6 @@ const ManagerPetReview = () => {
   const fetchAllPetReview = async () => {
     const data = await getPaginate(modelName, currentPage, pageSize);
     if (data && data.errCode === 0) {
-      console.log("data", data);
       setListPetReview(data.data);
       setTotalItems(data.totalItems);
       setTotalPages(data.totalPages);
