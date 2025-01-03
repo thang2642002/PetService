@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     "Products",
     {
       product_id: {
-        type: DataTypes.UUID, // Chuyển thành UUID
+        type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
-        defaultValue: DataTypes.UUIDV4, // Tự động sinh UUID
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: DataTypes.STRING,
@@ -32,12 +32,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       discount: {
-        type: DataTypes.FLOAT, // Lưu giảm giá theo phần trăm (ví dụ: 20%)
+        type: DataTypes.FLOAT, 
         allowNull: true,
-        defaultValue: 0, // Mặc định không có giảm giá
+        defaultValue: 0, 
       },
       images: {
-        type: DataTypes.JSON, // Dùng JSON để lưu danh sách URL ảnh
+        type: DataTypes.JSON, 
         allowNull: true,
       },
       createdAt: {
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Products", // Tên bảng trong DB
+      tableName: "Products", 
       timestamps: true,
     }
   );

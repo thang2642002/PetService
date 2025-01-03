@@ -4,7 +4,7 @@ import { useParams, useLocation } from "react-router-dom";
 import "./Category_Product.scss";
 import Product_Carts from "../../components/Product_Carts";
 import ButtonSeeMore from "../../components/ButtonSeeMore";
-import { getAllPets } from "../../../services/petServices";
+import { getAllPets, getAllBreed } from "../../../services/petServices";
 import {
   getAllProduct,
   findByCategory,
@@ -21,11 +21,14 @@ const Category_Product = () => {
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [listProduct, setListProduct] = useState([]);
-  const [filterOptions, setFilterOptions] = useState([]); // Chứa category hoặc pet_type
+  const [filterOptions, setFilterOptions] = useState([]);
   const [paginatedProducts, setPaginatedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { type } = useParams();
+  const [selectedBreeds, setSelectedBreeds] = useState([]);
+  const [breedOptions, setBreedOptions] = useState([]);
+  const [selectedSort, setSelectedSort] = useState("asc");
 
   const fetchFilterOptions = async () => {
     try {
@@ -38,6 +41,15 @@ const Category_Product = () => {
       }
     } catch (error) {
       console.error("Error fetching filter options:", error);
+    }
+  };
+
+  const fetchBreedOptions = async () => {
+    try {
+      const data = await getAllBreed();
+      setBreedOptions(data.data);
+    } catch (error) {
+      console.error("Error fetching breed options:", error);
     }
   };
 
@@ -66,6 +78,7 @@ const Category_Product = () => {
 
       let productList = data?.data || [];
 
+      // Lọc theo price
       if (selectedPrices.length > 0) {
         productList = productList.filter((product) => {
           return selectedPrices.some((priceRange) => {
@@ -87,12 +100,27 @@ const Category_Product = () => {
         });
       }
 
+      // Lọc theo brand
       if (selectedBrands.length > 0) {
         productList = productList.filter((product) =>
           selectedBrands.includes(
             String(type === "pets" ? product.pet_type_id : product.category_id)
           )
         );
+      }
+
+      // Lọc theo breed
+      if (selectedBreeds.length > 0 && type === "pets") {
+        productList = productList.filter((product) =>
+          selectedBreeds.includes(product.breed)
+        );
+      }
+
+      // Sắp xếp sản phẩm theo tên (A-Z hoặc Z-A)
+      if (selectedSort === "asc") {
+        productList.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (selectedSort === "desc") {
+        productList.sort((a, b) => b.name.localeCompare(a.name));
       }
 
       setListProduct(productList);
@@ -114,7 +142,15 @@ const Category_Product = () => {
   useEffect(() => {
     fetchFilterOptions();
     fetchListProduct();
-  }, [type, inputSearch, selectedPrices, selectedBrands]);
+    fetchBreedOptions();
+  }, [
+    type,
+    inputSearch,
+    selectedPrices,
+    selectedBrands,
+    selectedBreeds,
+    selectedSort,
+  ]);
 
   const priceOptions = [
     { label: "Dưới 20.000đ", value: "under_20000" },
@@ -124,9 +160,44 @@ const Category_Product = () => {
     { label: "Trên 200.000đ", value: "above_200000" },
   ];
 
+  const sortOptions = [
+    { label: "Sắp xếp từ A-Z", value: "asc" },
+    { label: "Sắp xếp từ Z-A", value: "desc" },
+  ];
+
+  const sortItems = sortOptions.map((option) => ({
+    key: option.value,
+    label: (
+      <Checkbox
+        checked={selectedSort === option.value}
+        value={option.value}
+        onChange={() => handleSortChange(option.value)}
+      >
+        {option.label}
+      </Checkbox>
+    ),
+  }));
+
+  const handleSortChange = (value) => {
+    setSelectedSort(value);
+  };
+
   const brandOptions = filterOptions.map((option) => ({
     label: type === "pets" ? option.type_name : option.name,
     value: String(type === "pets" ? option.pet_type_id : option.category_id),
+  }));
+
+  const breedItems = breedOptions.map((breed) => ({
+    key: breed,
+    label: (
+      <Checkbox
+        checked={selectedBreeds.includes(breed)}
+        value={breed}
+        onChange={() => handleCheckboxChange(breed, "breed")}
+      >
+        {breed}
+      </Checkbox>
+    ),
   }));
 
   const handleCheckboxChange = (value, type) => {
@@ -138,6 +209,12 @@ const Category_Product = () => {
       );
     } else if (type === "brand") {
       setSelectedBrands((prev) =>
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
+      );
+    } else if (type === "breed") {
+      setSelectedBreeds((prev) =>
         prev.includes(value)
           ? prev.filter((item) => item !== value)
           : [...prev, value]
@@ -220,6 +297,28 @@ const Category_Product = () => {
           <span>Bộ lọc</span>
         </div>
         <div>
+          {/* <Space direction="vertical">
+            <Space wrap>
+              <Dropdown
+                menu={{ items: brandItems }}
+                placement="bottomLeft"
+                trigger={["hover"]}
+              >
+                <Button className="mr-12 pr-[100px] py-[20px] rounded-none font-medium text-sm">
+                  {type === "pets" ? "Lọc loại thú cưng" : "Lọc danh mục"}
+                </Button>
+              </Dropdown>
+              <Dropdown
+                menu={{ items: priceItems }}
+                placement="bottomLeft"
+                trigger={["hover"]}
+              >
+                <Button className="mr-4 pr-[150px] py-[20px] rounded-none font-medium text-sm">
+                  Lọc giá
+                </Button>
+              </Dropdown>
+            </Space>
+          </Space> */}
           <Space direction="vertical">
             <Space wrap>
               <Dropdown
@@ -238,6 +337,29 @@ const Category_Product = () => {
               >
                 <Button className="mr-4 pr-[150px] py-[20px] rounded-none font-medium text-sm">
                   Lọc giá
+                </Button>
+              </Dropdown>
+              {/* Dropdown cho breeds */}
+              {type === "pets" && (
+                <Dropdown
+                  menu={{ items: breedItems }}
+                  placement="bottomLeft"
+                  trigger={["hover"]}
+                  className="ml-8"
+                >
+                  <Button className="mr-4 pr-[150px] py-[20px] rounded-none font-medium text-sm">
+                    Lọc giống thú cưng
+                  </Button>
+                </Dropdown>
+              )}
+              <Dropdown
+                menu={{ items: sortItems }}
+                placement="bottomLeft"
+                trigger={["hover"]}
+                className="ml-8"
+              >
+                <Button className="mr-4 pr-[150px] py-[20px] rounded-none font-medium text-sm">
+                  Sắp xếp theo tên
                 </Button>
               </Dropdown>
             </Space>

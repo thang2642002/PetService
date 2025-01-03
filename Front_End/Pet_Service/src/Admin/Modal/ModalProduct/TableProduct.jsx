@@ -39,11 +39,7 @@ const TableProduct = (props) => {
             Array.isArray(listProduct) &&
             listProduct.map((item, index) => (
               <tr key={index}>
-                <td
-                // className="customTd"
-                >
-                  {item.product_id}
-                </td>
+                <td className="customTd">{item.product_id}</td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
                 <td>{item.category_id}</td>

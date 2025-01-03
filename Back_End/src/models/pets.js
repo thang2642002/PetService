@@ -6,9 +6,9 @@ module.exports = (sequelize) => {
   Pets.init(
     {
       pet_id: {
-        type: DataTypes.UUID, // Chuyển thành UUID
+        type: DataTypes.UUID, 
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4, // Tự động sinh UUID
+        defaultValue: DataTypes.UUIDV4, 
       },
       name: {
         type: DataTypes.STRING,

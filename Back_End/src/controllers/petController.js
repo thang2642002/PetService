@@ -1,3 +1,4 @@
+import e from "express";
 import petService from "../services/petService";
 
 const getAllPet = async (req, res) => {
@@ -220,6 +221,55 @@ const countPet = async (req, res) => {
   }
 };
 
+const getPetsByBreed = async (req, res) => {
+  try {
+    const { breed } = req.query;
+    const pets = await petService.getPetsByBreed(breed);
+    if (pets) {
+      return res.status(200).json({
+        message: "Get pet is the success",
+        errCode: 0,
+        data: pets,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get pet is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Get pet is the fails",
+      errCode: -1,
+    });
+  }
+};
+
+const getAllBreed = async (req, res) => {
+  try {
+    const breed = await petService.getAllBreed();
+    if (breed) {
+      return res.status(200).json({
+        message: "Get pet is the success",
+        errCode: 0,
+        data: breed,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Get pet is the fails",
+        errCode: 0,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server error, Get pet is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllPet,
   createPet,
@@ -228,4 +278,6 @@ module.exports = {
   findByName,
   findById,
   countPet,
+  getPetsByBreed,
+  getAllBreed,
 };

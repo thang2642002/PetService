@@ -183,6 +183,32 @@ const countPet = async () => {
   }
 };
 
+const getPetsByBreed = async (breed) => {
+  try {
+    const pets = await db.Pets.findAll({
+      where: {
+        breed: breed,
+      },
+    });
+    return pets;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllBreed = async () => {
+  try {
+    const breeds = await db.Pets.findAll({
+      attributes: ["breed"],
+      group: ["breed"],
+    });
+
+    // Trả về danh sách các breed
+    return breeds.map((breed) => breed.breed);
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   getAllPet,
   createPet,
@@ -191,4 +217,6 @@ module.exports = {
   findByName,
   findById,
   countPet,
+  getPetsByBreed,
+  getAllBreed,
 };

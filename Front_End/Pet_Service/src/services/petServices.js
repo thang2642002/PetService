@@ -81,6 +81,14 @@ const getCountPet = () => {
 const deletePet = (pet_id) => {
   return axios.delete(`/pet/delete-pet/${pet_id}`, { data: { pet_id } });
 };
+
+const getAllBreed = () => {
+  return axios.get("/pet/get-all-breed-pet");
+};
+
+const getPetsByBreed = (breed) => {
+  return axios.get(`/pet/get-breed-pet?breed=${breed}`);
+};
 export {
   getAllPets,
   getByName,
@@ -89,4 +97,6 @@ export {
   deletePet,
   getPetById,
   getCountPet,
+  getPetsByBreed,
+  getAllBreed,
 };

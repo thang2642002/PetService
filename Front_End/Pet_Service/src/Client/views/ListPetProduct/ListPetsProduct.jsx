@@ -12,11 +12,10 @@ import ButtonSeeMore from "../../components/ButtonSeeMore";
 
 const ListPetsProduct = (props) => {
   const { type } = props;
-  const [listPetProduct, setListPetProduct] = useState([]); // Tất cả sản phẩm
-  const [displayedProducts, setDisplayedProducts] = useState([]); // Các sản phẩm đang hiển thị
-  const [currentIndex, setCurrentIndex] = useState(8); // Vị trí đến sản phẩm tiếp theo để lấy
+  const [listPetProduct, setListPetProduct] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(8);
   const [hasMore, setHasMore] = useState(true);
-
 
   const fetchListPetProduct = async () => {
     try {
@@ -28,7 +27,7 @@ const ListPetsProduct = (props) => {
         const response = await getAllProduct();
         dataPet = response.data || [];
       } else if (type === "pettags") {
-        const response = await findByCategory(2);
+        const response = await findByCategory(4);
         dataPet = response.data || [];
       } else if (type === "discount") {
         const response = await findDiscount();
