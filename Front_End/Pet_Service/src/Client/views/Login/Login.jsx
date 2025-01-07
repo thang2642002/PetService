@@ -88,6 +88,10 @@ const Login = () => {
     }
   };
 
+  const handleForgetPassword = () => {
+    navigate("/forget-password");
+  };
+
   return (
     <>
       <div className="signin-container">
@@ -159,7 +163,12 @@ const Login = () => {
                   </button>
                 </form>
                 <div className="info-account">
-                  <div className="forget-password">Quên mật khẩu?</div>
+                  <div
+                    className="forget-password"
+                    onClick={handleForgetPassword}
+                  >
+                    Quên mật khẩu?
+                  </div>
                   <div>
                     Chưa có tài khoản
                     <span

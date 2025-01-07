@@ -1,11 +1,13 @@
 import "./Header.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   faBars,
   faUser,
   faCartShopping,
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import { Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,7 +16,10 @@ import { logoutUser } from "../../services/userServices";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { getUserNotification } from "../../services/notificationServices";
+import {
+  getUserNotification,
+  deleteNotification,
+} from "../../services/notificationServices";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -52,6 +57,20 @@ const Header = () => {
     return moment(dateString).format("DD/MM/YYYY");
   };
 
+  const handleDeleteNotification = async (id) => {
+    try {
+      const notificationDelete = await deleteNotification(id);
+      if (notificationDelete && notificationDelete.errCode === 0) {
+        toast.success("Xóa thông báo thành công");
+        fetchAllNotification();
+      } else {
+        toast.success("Xóa thông báo thất bại");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchAllNotification();
   }, [user]);
@@ -65,7 +84,17 @@ const Header = () => {
               key={item.notification_id}
               className="p-2 border-b hover:bg-gray-100 cursor-pointer flex flex-col"
             >
-              <div> {item.message}</div>
+              <div className="flex justify-between">
+                <div> {item.message}</div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    onClick={() =>
+                      handleDeleteNotification(item.notification_id)
+                    }
+                  />
+                </div>
+              </div>
               <div className="text-[12px] flex justify-end text-blue-300">
                 {formatDate(item.updatedAt)}
               </div>
@@ -110,7 +139,6 @@ const Header = () => {
         </a>
       </div>
 
-      {/* Search */}
       <div className="search mx-4 w-[400px]">
         <input
           type="text"

@@ -8,13 +8,10 @@ const sendEmail = (email, order) => {
     throw new Error("Order is not defined or invalid.");
   }
 
-  // Lặp qua danh sách order để tạo nội dung bảng HTML
   const orderDetails = order
     .map((item) => {
-      // Kiểm tra loại sản phẩm (pet_item hoặc product_item)
       if (item.pet_item) {
         const pet = item.pet_item;
-
         return `
           <tr>
             <td>${pet.name || "Không có tên thú cưng"}</td>
@@ -52,9 +49,8 @@ const sendEmail = (email, order) => {
         `;
       }
     })
-    .join(""); 
+    .join("");
 
-  // Nội dung email
   const mailOptions = {
     from: "tranthang0369@gmail.com",
     to: email,
@@ -83,4 +79,21 @@ const sendEmail = (email, order) => {
   return transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendEmail };
+const sendEmailForgetPass = (email, token) => {
+  const mailOptions = {
+    from: "tranthang0369@gmail.com",
+    to: email,
+    subject: "Thay đổi mật khẩu!",
+    html: `
+      <p>Nhấn vào đường link phía dưới để thay đổi mật khẩu:</p>
+      <a href="http://localhost:5173/create-password/${token}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">
+        Thay đổi mật khẩu
+      </a>
+      <p style="margin-top: 20px;">Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email này.</p>
+    `,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+module.exports = { sendEmail, sendEmailForgetPass };

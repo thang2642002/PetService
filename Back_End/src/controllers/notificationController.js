@@ -77,8 +77,35 @@ const getUserNotification = async (req, res) => {
     });
   }
 };
+
+const deleteNotification = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteNotification = await notificationServices.deleteNotification(
+      id
+    );
+    if (deleteNotification) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Delete is the success",
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Delete is the fails",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: -1,
+      message: "Server error, Delete is the fails",
+    });
+  }
+};
 module.exports = {
   getAllNotification,
   createNotification,
   getUserNotification,
+  deleteNotification,
 };

@@ -34,10 +34,20 @@ const getUserNotification = async (id) => {
   }
 };
 
-
+const deleteNotification = async (id) => {
+  try {
+    const deleteNotification = await db.Notification.destroy({
+      where: { notification_id: id },
+    });
+    return deleteNotification;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   getAllNotification,
   createNotification,
   getUserNotification,
+  deleteNotification,
 };

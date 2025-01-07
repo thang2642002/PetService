@@ -4,6 +4,7 @@ import { cloudinary } from "../config/cloudinaryConfig";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { jwtDecode } from "jwt-decode";
+import { sendEmailForgetPass } from "../services/sendEmailServices";
 require("dotenv").config();
 
 const accessTokenSecret = process.env.ACCESS_TOKENS;
@@ -162,6 +163,7 @@ const handleLogin = async (email, password) => {
     }
 
     const isPasswordValid = bcrypt.compareSync(password, login.password);
+    const key = "agsusniidkkkkklkslskshgaikkdlkfldkdsjsmsnbjdsmfdkfd";
 
     if (!isPasswordValid) {
       return {
@@ -179,6 +181,7 @@ const handleLogin = async (email, password) => {
     const refreshToken = jwt.sign(
       { id: login.user_id, role: login.role },
       refreshTokenSecret,
+
       { expiresIn: "7d" }
     );
 
@@ -206,6 +209,44 @@ const countUser = async () => {
   }
 };
 
+const forgetPassword = async (email) => {
+  try {
+    const forgetPass = await db.User.findOne({
+      where: { email: email },
+    });
+    const token = jwt.sign(
+      { id: forgetPass.user_id, email: forgetPass.email },
+      accessTokenSecret,
+      { expiresIn: "5m" }
+    );
+    await sendEmailForgetPass(email, token);
+    return { forgetPass, token };
+  } catch (error) {}
+};
+
+const getToken = (token) => {
+  try {
+    const getToken = jwt.verify(token, accessTokenSecret);
+    return getToken;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const UpdatePassword = async (password, token) => {
+  const getToken = jwt.verify(token, accessTokenSecret);
+  let updatePass = null;
+  if (getToken && getToken.id) {
+    const user = await db.User.findByPk(getToken.id);
+    var salt = bcrypt.genSaltSync(10);
+    var hashPass = bcrypt.hashSync(password, salt);
+    updatePass = await user.update({
+      password: hashPass,
+    });
+  }
+  return updatePass;
+};
+
 module.exports = {
   getAllUser,
   createUser,
@@ -216,4 +257,7 @@ module.exports = {
   countUser,
   handleRegister,
   handleLogin,
+  forgetPassword,
+  getToken,
+  UpdatePassword,
 };

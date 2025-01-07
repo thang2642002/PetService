@@ -307,6 +307,82 @@ const countUser = async (req, res) => {
   }
 };
 
+const handleForgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("email", email);
+    const forgetPass = await UserService.forgetPassword(email);
+    if (forgetPass) {
+      return res.status(200).json({
+        message: "Vui lòng kiểm tra email để lấy lại mật khẩu",
+        errCode: 0,
+        data: forgetPass,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Email chưa được đăng ký",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Forget Password is the fails",
+      errCode: -1,
+    });
+  }
+};
+
+const handleGetToken = async (req, res) => {
+  try {
+    const { token } = req.query;
+    const getToken = await UserService.getToken(token);
+    if (getToken) {
+      return res.status(200).json({
+        message: "Thành công",
+        errCode: 0,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Token hết hạn",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({
+      message: "Lỗi token",
+      errCode: -1,
+    });
+  }
+};
+
+const handleUpdatePassword = async (req, res) => {
+  try {
+    const { password, token } = req.body;
+    console.log("password", password);
+    console.log("token", token);
+    const updatePass = await UserService.UpdatePassword(password, token);
+    if (updatePass) {
+      return res.status(200).json({
+        message: "Update is the success",
+        errCode: 0,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Update is the fails",
+        errCode: 1,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({
+      message: "Server error, Update is the fails",
+      errCode: -1,
+    });
+  }
+};
+
 module.exports = {
   getAllUser,
   createUser,
@@ -318,4 +394,7 @@ module.exports = {
   handleRegister,
   handleLogin,
   handleLogout,
+  handleForgetPassword,
+  handleGetToken,
+  handleUpdatePassword,
 };

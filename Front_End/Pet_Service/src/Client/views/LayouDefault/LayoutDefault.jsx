@@ -2,10 +2,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/footer";
 import Small_Slice from "../../components/Small_Slice";
 import { Outlet } from "react-router-dom";
-import ChatBox from "../ChatBox/ChatBox";
-import { useState } from "react";
-import { Button } from "antd";
-import { MessageOutlined, MinusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import "./LayouDefault.scss";
 
 const LayoutDefault = () => {
@@ -15,41 +12,33 @@ const LayoutDefault = () => {
     setIsChatOpen(!isChatOpen);
   };
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <>
       <div className="container">
         <Small_Slice />
         <Header />
         <Outlet />
-        <Footer />
-        {/* Button to toggle chat visibility */}
-        <div
-          className={`fixed bottom-10 right-10 ${
-            isChatOpen ? "hidden" : "block"
-          }`}
-        >
-          <Button
-            shape="circle"
-            icon={<MessageOutlined style={{ fontSize: "28px" }} />}
-            size="large"
-            onClick={toggleChat}
-            className="bg-blue-500 text-white transition-colors duration-300"
-            classNames="btn-icon-chat"
-          />
+        <div>
+          <df-messenger
+            intent="WELCOME"
+            chat-title="Shop"
+            agent-id="3f37525c-df7a-42a3-848d-8c19dd66d233"
+            language-code="en"
+          ></df-messenger>
         </div>
-        {/* ChatBox visible when isChatOpen is true */}
-        {isChatOpen && (
-          <div className="fixed bottom-10 right-10 z-50">
-            <ChatBox />
-            <Button
-              shape="circle"
-              icon={<MinusOutlined />}
-              size="large"
-              onClick={toggleChat}
-              className="bg-transparent text-red-500 hover:text-red-700 text-xl absolute top-0 right-0 transition-colors duration-300 border-none rounded-none"
-            />
-          </div>
-        )}
+        <Footer />
       </div>
     </>
   );

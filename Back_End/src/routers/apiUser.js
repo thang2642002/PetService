@@ -17,5 +17,8 @@ routes.get("/count-user", userController.countUser);
 routes.post("/register", userController.handleRegister);
 routes.post("/login", userController.handleLogin);
 routes.post("/logout", userController.handleLogout);
+routes.post("/forget-password", userController.handleForgetPassword);
+routes.get("/get-token", userController.handleGetToken);
+routes.put("/update-password", userController.handleUpdatePassword);
 
 export default routes;

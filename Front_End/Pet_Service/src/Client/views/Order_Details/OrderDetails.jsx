@@ -122,9 +122,6 @@ const OrderDetails = () => {
     }
   };
 
-  console.log("statusPayment", statusPayment);
-  console.log("methodPayment", methodPayment);
-
   useEffect(() => {
     handleVNPaySuccess();
   }, []);

@@ -76,6 +76,21 @@ const findNameUser = (user_name) => {
   });
 };
 
+const forgetPassword = (email) => {
+  return axios.post("/user/forget-password", { email: email });
+};
+
+const getToken = (token) => {
+  return axios.get(`/user/get-token?token=${token}`);
+};
+
+const updatePassword = (password, token) => {
+  const data = { password, token };
+  console.log("chek data", data);
+  return axios.put("/user/update-password", data);
+};
+
+
 export {
   getAllUser,
   createUser,
@@ -87,4 +102,7 @@ export {
   getUserById,
   logoutUser,
   findNameUser,
+  forgetPassword,
+  getToken,
+  updatePassword,
 };

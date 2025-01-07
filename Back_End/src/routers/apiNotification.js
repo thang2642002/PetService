@@ -9,4 +9,9 @@ routes.get(
   notificationController.getUserNotification
 );
 
+routes.delete(
+  "/delete-notification/:id",
+  notificationController.deleteNotification
+);
+
 export default routes;

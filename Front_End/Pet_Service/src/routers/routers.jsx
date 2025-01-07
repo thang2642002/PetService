@@ -35,6 +35,8 @@ import OrderHistory from "../Client/views/OrderHistory/OrderHistory";
 import Register from "../Client/views/Register/Register";
 import Login from "../Client/views/Login/Login";
 import Contact from "../Client/views/Contact/Contact";
+import ForgetPassword from "../Client/views/ForgetPassword/ForgetPassword";
+import CreatePassword from "../Client/views/ForgetPassword/CreatePassword";
 
 export const routers = [
   {
@@ -112,4 +114,6 @@ export const routers = [
   // { path: "*", element: <NotFoundPage /> },
   { path: "/register", element: <Register /> },
   { path: "/login", element: <Login /> },
+  { path: "/forget-password", element: <ForgetPassword /> },
+  { path: "/create-password/:token", element: <CreatePassword /> },
 ];

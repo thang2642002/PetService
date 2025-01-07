@@ -13,4 +13,13 @@ const getUserNotification = (user_id) => {
   return axios.get(`/notification/get-user-notification/${user_id}`);
 };
 
-export { getAllNotification, createNotification, getUserNotification };
+const deleteNotification = (id) => {
+  return axios.delete(`/notification/delete-notification/${id}`);
+};
+
+export {
+  getAllNotification,
+  createNotification,
+  getUserNotification,
+  deleteNotification,
+};
