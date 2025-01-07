@@ -6,9 +6,9 @@ module.exports = (sequelize) => {
   Pets.init(
     {
       pet_id: {
-        type: DataTypes.UUID, 
+        type: DataTypes.UUID,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4, 
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: DataTypes.STRING,
@@ -44,6 +44,14 @@ module.exports = (sequelize) => {
           model: "Pet_Type",
           key: "pet_type_id",
         },
+      },
+      stock: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      sex: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       images: {
         type: DataTypes.JSON, // Dùng JSON để lưu danh sách URL ảnh

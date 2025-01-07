@@ -176,18 +176,21 @@ const Pet_Details = () => {
               </div>
               <div className="flex justify-between">
                 <p>
+                  Giống: <strong>{pet?.sex}</strong>
+                </p>
+                <p>
                   Tuổi: <strong>{pet?.age} tuổi</strong>
                 </p>
+                <p>
+                  Màu lông: <strong>{pet?.coat_color}</strong>
+                </p>
+              </div>
+              <div className="flex justify-between">
                 <p>
                   Chiều cao: <strong>{pet?.height} cm</strong>
                 </p>
                 <p>
                   Cân nặng: <strong>{pet?.weight} kg</strong>
-                </p>
-              </div>
-              <div className="flex gap-28">
-                <p>
-                  Màu lông: <strong>{pet?.coat_color}</strong>
                 </p>
                 <p>
                   Phòng vecxin:{" "}

@@ -53,6 +53,14 @@ module.exports = {
         },
         allowNull: true,
       },
+      stock: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      sex: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       images: {
         type: Sequelize.JSON, // Dùng JSON để lưu danh sách URL ảnh
         allowNull: true,

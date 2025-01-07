@@ -38,6 +38,8 @@ const createPet = async (req, res) => {
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
     } = req.body;
     const images = req.files;
     const createPet = await petService.createPet(
@@ -51,6 +53,8 @@ const createPet = async (req, res) => {
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
       images ? images.map((file) => file.path) : []
     );
     if (createPet) {
@@ -87,6 +91,8 @@ const updatePet = async (req, res) => {
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
     } = req.body;
     const images = req.files;
     const updatePet = await petService.updatePet(
@@ -101,6 +107,8 @@ const updatePet = async (req, res) => {
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
       images ? images.map((file) => file.path) : []
     );
     if (updatePet) {

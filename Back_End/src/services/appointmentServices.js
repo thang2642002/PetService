@@ -1,4 +1,6 @@
+import { where } from "sequelize";
 import db from "../models/index";
+const crypto = require("crypto");
 const getAllAppointment = async () => {
   try {
     const getAllAppointment = await db.Appointments.findAll({
@@ -29,18 +31,25 @@ const getAllAppointmentById = async (id) => {
 
 const createAppointment = async (
   appointment_date,
+  end_date_appointment,
   time_date,
   status,
   service_id,
   user_pet_id
 ) => {
   try {
+    const appointment_code = crypto
+      .randomBytes(4)
+      .toString("hex")
+      .toUpperCase();
     const createAppointment = await db.Appointments.create({
       appointment_date,
+      end_date_appointment,
       time_date,
       status,
       service_id,
       user_pet_id,
+      appointment_code,
     });
     return createAppointment;
   } catch (error) {
@@ -101,6 +110,23 @@ const deleteAppointment = async (appointment_id) => {
   }
 };
 
+const getUserPetAppointment = async (code) => {
+  try {
+    const userPet = await db.Appointments.findOne({
+      where: {
+        appointment_code: code,
+      },
+      include: [
+        { model: db.Services, as: "service" },
+        { model: db.UserPet, as: "user_pet" },
+      ],
+    });
+    return userPet;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllAppointment,
   getAllAppointmentById,
@@ -108,4 +134,5 @@ module.exports = {
   updateAppointment,
   updateAppointmentStatus,
   deleteAppointment,
+  getUserPetAppointment,
 };

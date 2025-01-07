@@ -50,10 +50,17 @@ const getAllAppointmentById = async (req, res) => {
 
 const createAppointment = async (req, res) => {
   try {
-    const { appointment_date, time_date, status, service_id, user_pet_id } =
-      req.body;
+    const {
+      appointment_date,
+      end_date_appointment,
+      time_date,
+      status,
+      service_id,
+      user_pet_id,
+    } = req.body;
     const createAppointment = await appointmentService.createAppointment(
       appointment_date,
+      end_date_appointment,
       time_date,
       status,
       service_id,
@@ -117,7 +124,6 @@ const updateAppointmentStatus = async (req, res) => {
   try {
     const appointment_id = req.params.id;
     const { status } = req.body;
-    console.log("status 1", status);
     const updateAppointment = await appointmentService.updateAppointmentStatus(
       appointment_id,
       status
@@ -168,6 +174,31 @@ const deleteAppointment = async (req, res) => {
   }
 };
 
+const getUserPetAppointment = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const getUserPet = await appointmentService.getUserPetAppointment(code);
+    if (getUserPet) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Find user pet is the success",
+        data: getUserPet,
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Find user pet is the fails",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: -1,
+      message: "Find user pet is the fails",
+    });
+  }
+};
+
 module.exports = {
   getAllAppointment,
   getAllAppointmentById,
@@ -175,4 +206,5 @@ module.exports = {
   updateAppointment,
   updateAppointmentStatus,
   deleteAppointment,
+  getUserPetAppointment,
 };

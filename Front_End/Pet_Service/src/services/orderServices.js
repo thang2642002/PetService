@@ -31,6 +31,14 @@ const updateOrderPayment = (order_id) => {
   return axios.put(`/order/update-order-payment/${order_id}`);
 };
 
+const getRevenueStats = (year, month) => {
+  const params = {};
+  if (year) params.year = year;
+  if (month) params.month = month;
+
+  return axios.get("/order/revenue", { params });
+};
+
 export {
   getAllOrder,
   createOrder,
@@ -39,4 +47,5 @@ export {
   getByOrder,
   updateOrderPayment,
   getByOrderUser,
+  getRevenueStats,
 };

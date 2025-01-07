@@ -112,6 +112,7 @@ const ManagerAppointment = () => {
           handleShowUpdateModal={handleShowUpdateModal}
           handleShowDeleteModal={handleShowDeleteModal}
           listAppointment={listAppointment}
+          fetchAllAppointment={fetchAllAppointment}
         />
         <div
           className="custom-pagination"

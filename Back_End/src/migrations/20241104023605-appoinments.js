@@ -13,9 +13,13 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      end_date_appointment: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       time_date: {
         type: Sequelize.TIME,
-        allowNull: true, 
+        allowNull: true,
       },
       status: {
         type: Sequelize.ENUM("pending", "completed", "cancelled"),
@@ -40,6 +44,11 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+      },
+      appointment_code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true, // Đảm bảo mã này là duy nhất
       },
       createdAt: {
         type: Sequelize.DATE,

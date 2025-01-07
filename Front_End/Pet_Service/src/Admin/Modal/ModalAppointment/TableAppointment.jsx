@@ -33,8 +33,9 @@ const TableAppointment = (props) => {
         if (appointment && appointment.errCode === 0) {
           const appointmentUser = appointment?.data?.user_pet?.user_id;
           const servicesName = appointment?.data?.service?.name;
+          const appointment_code = appointment?.data?.appointment_code;
           await createNotification(
-            `Quý khách đã đăng ký thành công lịch ${servicesName} hãy nhớ đến đúng giờ`,
+            `Quý khách đã đăng ký thành công lịch ${servicesName}.Mã dịch vụ của quý khách dùng để kiểm tra thông tin thú cưng: ${appointment_code}`,
             appointmentUser
           );
         }

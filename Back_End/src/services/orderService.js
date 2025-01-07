@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op, fn, col } = require("sequelize");
 const getAllOrder = async () => {
   try {
     const getAllOrder = await db.Order.findAll({
@@ -136,6 +137,54 @@ const updateOrderPayment = async (order_id) => {
   }
 };
 
+const getRevenueStatsService = async (filters) => {
+  const { year, month } = filters;
+  const whereCondition = {};
+
+  if (year) {
+    whereCondition.createdAt = {
+      [Op.gte]: new Date(`${year}-01-01`),
+      [Op.lt]: new Date(`${parseInt(year) + 1}-01-01`),
+    };
+  }
+
+  if (year && month) {
+    const startOfMonth = new Date(`${year}-${month}-01`);
+    const endOfMonth = new Date(startOfMonth);
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+    whereCondition.createdAt = {
+      [Op.gte]: startOfMonth,
+      [Op.lt]: endOfMonth,
+    };
+  } else if (month) {
+    const startOfMonth = new Date(
+      `${year || new Date().getFullYear()}-${month}-01`
+    );
+    const endOfMonth = new Date(startOfMonth);
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+    whereCondition.createdAt = {
+      [Op.gte]: startOfMonth,
+      [Op.lt]: endOfMonth,
+    };
+  }
+
+  const revenueStats = await db.Order.findAll({
+    attributes: [
+      [fn("YEAR", col("createdAt")), "year"],
+      [fn("MONTH", col("createdAt")), "month"],
+      [fn("SUM", col("total_amount")), "totalRevenue"],
+    ],
+    where: whereCondition,
+    group: [fn("YEAR", col("createdAt")), fn("MONTH", col("createdAt"))],
+    order: [
+      [fn("YEAR", col("createdAt")), "ASC"],
+      [fn("MONTH", col("createdAt")), "ASC"],
+    ],
+  });
+
+  return revenueStats;
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
@@ -144,4 +193,5 @@ module.exports = {
   getOrderById,
   getOrderByOrder,
   updateOrderPayment,
+  getRevenueStatsService,
 };

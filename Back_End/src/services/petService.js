@@ -42,6 +42,8 @@ const createPet = async (
   price,
   available,
   pet_type_id,
+  stock,
+  sex,
   images
 ) => {
   try {
@@ -56,6 +58,8 @@ const createPet = async (
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
     });
     const imageUrls = [];
     if (images && images.length > 0) {
@@ -89,6 +93,8 @@ const updatePet = async (
   price,
   available,
   pet_type_id,
+  stock,
+  sex,
   images
 ) => {
   try {
@@ -107,6 +113,8 @@ const updatePet = async (
       price,
       available,
       pet_type_id,
+      stock,
+      sex,
     });
     if (images && images.length > 0) {
       await db.Pet_Image.destroy({ where: { pet_id: pet_id } });

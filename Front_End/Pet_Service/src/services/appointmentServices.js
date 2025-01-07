@@ -10,12 +10,20 @@ const getAppointmentById = (appointment_id) => {
 
 const createAppointment = (
   appointment_date,
+  end_date_appointment,
   time_date,
   status,
   service_id,
   user_pet_id
 ) => {
-  const data = { appointment_date, time_date, status, service_id, user_pet_id };
+  const data = {
+    appointment_date,
+    end_date_appointment,
+    time_date,
+    status,
+    service_id,
+    user_pet_id,
+  };
   return axios.post("/appointment/create-appointment", data);
 };
 
@@ -45,6 +53,10 @@ const deleteAppointment = (appointment_id) => {
   });
 };
 
+const findUserPetAppoint = (appointment_code) => {
+  return axios.get(`/appointment/get-user-pet-appointment/${appointment_code}`);
+};
+
 export {
   getAllAppointment,
   createAppointment,
@@ -52,4 +64,5 @@ export {
   updateAppointmentStatus,
   deleteAppointment,
   getAppointmentById,
+  findUserPetAppoint,
 };

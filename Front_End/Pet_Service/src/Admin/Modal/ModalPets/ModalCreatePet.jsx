@@ -13,7 +13,7 @@ Size.whitelist = ["small", "normal", "large", "huge"]; // Thêm kích cỡ tùy 
 Quill.register(Size, true);
 
 const Header = Quill.import("formats/header");
-Header.whitelist = [1, 2, 3, 4]; // Hỗ trợ h1 -> h4
+Header.whitelist = [1, 2, 3, 4];
 Quill.register(Header, true);
 
 const ModalCreatePet = (props) => {
@@ -35,6 +35,7 @@ const ModalCreatePet = (props) => {
     setPrice("");
     setAvailable("true");
     setPetTypeId("");
+    setStock("");
     setImages([]);
   };
 
@@ -48,6 +49,8 @@ const ModalCreatePet = (props) => {
   const [price, setPrice] = useState("");
   const [available, setAvailable] = useState("true");
   const [petTypeId, setPetTypeId] = useState("");
+  const [stock, setStock] = useState("");
+  const [sex, setSex] = useState("");
   const [images, setImages] = useState([]);
 
   const handleFileChange = (e) => {
@@ -64,7 +67,7 @@ const ModalCreatePet = (props) => {
   };
 
   const handleSave = async () => {
-    if (!name || !petTypeId || !price || images.length === 0) {
+    if (!name || !petTypeId || !price || images.length === 0 || !stock) {
       toast("Chưa nhập đủ dữ liệu");
       return;
     }
@@ -82,6 +85,8 @@ const ModalCreatePet = (props) => {
         price,
         availableBoolean,
         petTypeId,
+        stock,
+        sex,
         images
       );
 
@@ -111,7 +116,7 @@ const ModalCreatePet = (props) => {
       </Modal.Header>
       <Modal.Body>
         <form className="row g-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label">Name</label>
             <input
               type="text"
@@ -121,7 +126,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label">Pet Type</label>
             <select
               className="form-control"
@@ -136,6 +141,16 @@ const ModalCreatePet = (props) => {
                   </option>
                 ))}
             </select>
+          </div>
+          <div className="col-md-4">
+            <label className="form-label">Sex</label>
+            <input
+              type="text"
+              className="form-control"
+              value={sex}
+              placeholder="Sex"
+              onChange={(e) => setSex(e.target.value)}
+            />
           </div>
           <div className="col-3">
             <label className="form-label">Age</label>
@@ -177,7 +192,7 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setCoatColor(e.target.value)}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Breed</label>
             <input
               type="text"
@@ -187,25 +202,35 @@ const ModalCreatePet = (props) => {
               onChange={(e) => setBreed(e.target.value)}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <label className="form-label">Price</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               placeholder="Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
+            <label className="form-label">Stock</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Stock"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+            />
+          </div>
+          <div className="col-md-3">
             <label className="form-label">Available</label>
             <select
               className="form-control"
               value={available}
               onChange={(e) => setAvailable(e.target.value)}
             >
-              <option value="true">Available</option>
-              <option value="false">Not Available</option>
+              <option value="true">Đã tiêm ngừa</option>
+              <option value="false">Chưa tiêm ngừa</option>
             </select>
           </div>
           <div className="col-md-12 mb-5">

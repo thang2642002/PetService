@@ -24,6 +24,8 @@ const ModalUpdatePet = ({
   const [price, setPrice] = useState("");
   const [available, setAvailable] = useState("true");
   const [petTypeId, setPetTypeId] = useState("");
+  const [stock, setStock] = useState("");
+  const [sex, setSex] = useState("");
   const [images, setImages] = useState([]);
 
   const handleClose = () => {
@@ -42,6 +44,8 @@ const ModalUpdatePet = ({
     setPrice("");
     setAvailable("true");
     setPetTypeId("");
+    setStock("");
+    setSex("");
     setImages([]);
   };
 
@@ -59,6 +63,8 @@ const ModalUpdatePet = ({
           petUpdate.available === true || petUpdate.available === "true"
         ),
         setPetTypeId(petUpdate.pet_type_id || ""),
+        setStock(petUpdate.stock || ""),
+        setSex(petUpdate.sex || ""),
         setImages([]);
     }
   }, [petUpdate]);
@@ -86,7 +92,7 @@ const ModalUpdatePet = ({
   };
 
   const handleSubmitUpdatePet = async () => {
-    if (!name || !age || !price || !petTypeId) {
+    if (!name || !age || !price || !petTypeId || !stock) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -103,6 +109,8 @@ const ModalUpdatePet = ({
       price,
       available,
       petTypeId,
+      stock,
+      sex,
       images
     );
 
@@ -129,7 +137,7 @@ const ModalUpdatePet = ({
       </Modal.Header>
       <Modal.Body>
         <form className="row g-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label">Name</label>
             <input
               type="text"
@@ -140,7 +148,7 @@ const ModalUpdatePet = ({
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label">Pet Type</label>
             <select
               className="form-control"
@@ -155,6 +163,17 @@ const ModalUpdatePet = ({
                   </option>
                 ))}
             </select>
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label">Sex</label>
+            <input
+              type="text"
+              className="form-control"
+              value={sex}
+              placeholder="Sex"
+              onChange={(e) => setSex(e.target.value)}
+            />
           </div>
 
           <div className="col-3">
@@ -223,7 +242,18 @@ const ModalUpdatePet = ({
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-3">
+            <label className="form-label">Stock</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Stock"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+            />
+          </div>
+
+          <div className="col-md-3">
             <label className="form-label">Available</label>
             <select
               className="form-control"

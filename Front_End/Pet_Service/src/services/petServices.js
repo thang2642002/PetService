@@ -19,6 +19,8 @@ const createPets = (
   price,
   available,
   pet_type_id,
+  stock,
+  sex,
   images
 ) => {
   const dataPet = new FormData();
@@ -32,6 +34,8 @@ const createPets = (
   dataPet.append("price", price);
   dataPet.append("available", available);
   dataPet.append("pet_type_id", pet_type_id);
+  dataPet.append("stock", stock);
+  dataPet.append("sex", sex);
   images.forEach((image) => {
     dataPet.append("images", image);
   });
@@ -51,6 +55,8 @@ const updatePet = (
   price,
   available,
   pet_type_id,
+  stock,
+  sex,
   images
 ) => {
   const dataPet = new FormData();
@@ -64,6 +70,8 @@ const updatePet = (
   dataPet.append("price", price);
   dataPet.append("available", available);
   dataPet.append("pet_type_id", pet_type_id);
+  dataPet.append("stock", stock);
+  dataPet.append("sex", sex);
   images.forEach((image) => {
     dataPet.append("images", image);
   });

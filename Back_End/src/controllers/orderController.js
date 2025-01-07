@@ -181,6 +181,28 @@ const updateOrderPayment = async (req, res) => {
     });
   }
 };
+
+const getRevenueStats = async (req, res) => {
+  try {
+    const { year, month } = req.query;
+
+    const revenueStats = await orderService.getRevenueStatsService({
+      year,
+      month,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: revenueStats,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Lỗi khi lấy thống kê doanh thu",
+    });
+  }
+};
 module.exports = {
   getAllOrder,
   createOrder,
@@ -189,4 +211,5 @@ module.exports = {
   getOrderById,
   getOrderByOrder,
   updateOrderPayment,
+  getRevenueStats,
 };

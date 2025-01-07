@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      end_date_appointment: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       time_date: {
         type: DataTypes.TIME,
         allowNull: true,
@@ -29,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       user_pet_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+      },
+      appointment_code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true, // Đảm bảo mã này là duy nhất
       },
       createdAt: {
         type: DataTypes.DATE,
