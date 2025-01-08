@@ -9,5 +9,6 @@ routes.put("/update-order/:id", orderController.updateOrder);
 routes.put("/update-order-payment/:id", orderController.updateOrderPayment);
 routes.delete("/delete-order/:id", orderController.deleteOrder);
 routes.get("/revenue", orderController.getRevenueStats);
+routes.get("/order-stats", orderController.getOrderStatsByMonth);
 
 export default routes;

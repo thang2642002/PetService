@@ -65,7 +65,7 @@ const Category_Product = () => {
           data = await getAllProduct();
           break;
         case "pettags":
-          data = await findByCategory(2);
+          data = await findByCategory(4);
           break;
         case "discount":
           data = await findDiscount();

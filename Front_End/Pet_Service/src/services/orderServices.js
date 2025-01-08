@@ -39,6 +39,14 @@ const getRevenueStats = (year, month) => {
   return axios.get("/order/revenue", { params });
 };
 
+const getOrderStatsByMonth = (year, month) => {
+  const params = {};
+  if (year) params.year = year;
+  if (month) params.month = month;
+
+  return axios.get("/order/order-stats", { params });
+};
+
 export {
   getAllOrder,
   createOrder,
@@ -48,4 +56,5 @@ export {
   updateOrderPayment,
   getByOrderUser,
   getRevenueStats,
+  getOrderStatsByMonth,
 };

@@ -19,6 +19,7 @@
 // import { getCountUser } from "../../../services/userServices";
 // import { getCountService } from "../../../services/serviceServices";
 // import { getCountPost } from "../../../services/postServices";
+// import { getRevenueStats } from "../../../services/orderServices";
 
 // ChartJS.register(
 //   CategoryScale,
@@ -47,9 +48,70 @@
 //     ],
 //   });
 
+//   // Biến cho biểu đồ doanh thu
+//   const [revenueData, setRevenueData] = useState({
+//     labels: [],
+//     datasets: [
+//       {
+//         label: "Doanh thu ($)",
+//         data: [],
+//         backgroundColor: "rgba(59, 130, 246, 0.7)", // Tailwind's blue-500
+//         borderColor: "rgba(59, 130, 246, 1)",
+//         borderWidth: 1,
+//       },
+//     ],
+//   });
+
+//   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+//   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+
+//   const revenueOptions = {
+//     responsive: true,
+//     plugins: {
+//       legend: {
+//         display: true,
+//         position: "top",
+//       },
+//       title: {
+//         display: true,
+//         text: "Doanh thu theo tháng",
+//       },
+//     },
+//   };
+
+//   // Hàm lấy doanh thu theo năm và tháng
+//   const fetchRevenueData = async () => {
+//     try {
+//       const data = await getRevenueStats(selectedYear, selectedMonth);
+//       console.log("data thông kê", data);
+
+//       if (data && data.success === true) {
+//         // Chỉ có một đối tượng trong mảng `data` trả về, bạn có thể lấy doanh thu từ đó
+//         const revenue = data.data[0].totalRevenue;
+
+//         setRevenueData({
+//           labels: [`Tháng ${selectedMonth}/${selectedYear}`], // Hiển thị tháng/năm
+//           datasets: [
+//             {
+//               label: `Doanh thu tháng ${selectedMonth}/${selectedYear}`,
+//               data: [parseFloat(revenue)], // Doanh thu của tháng này
+//               backgroundColor: "rgba(59, 130, 246, 0.7)",
+//               borderColor: "rgba(59, 130, 246, 1)",
+//               borderWidth: 1,
+//             },
+//           ],
+//         });
+//       } else {
+//         console.log("Error fetching revenue data:", data.message);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching revenue data:", error);
+//     }
+//   };
+
+//   // Các API khác
 //   const fetchCountProduct = async () => {
 //     const data = await getCountProduct();
-//     console.log("check data", data);
 //     if (data && data.errCode === 0) {
 //       setCountProduct(data.data);
 //     }
@@ -65,7 +127,6 @@
 //   const fetchCountUser = async () => {
 //     const data = await getCountUser();
 //     if (data && data.errCode === 0) {
-//       console.log(data);
 //       setCountUser(data.data);
 //     }
 //   };
@@ -107,14 +168,13 @@
 //             },
 //           ],
 //         });
-//       } else {
-//         console.log("No data available or API error:", data.message);
 //       }
 //     } catch (error) {
 //       console.log("Error fetching category data:", error);
 //     }
 //   };
 
+//   // Sử dụng useEffect để gọi API khi trang được load hoặc khi năm/tháng thay đổi
 //   useEffect(() => {
 //     fetchCountProduct();
 //     fetchCountPet();
@@ -122,8 +182,10 @@
 //     fetchCountService();
 //     fetchCountPost();
 //     fetchProductStatisticsByCategory();
-//   }, []);
+//     fetchRevenueData(); // Gọi dữ liệu doanh thu khi lần đầu render hoặc khi năm/tháng thay đổi
+//   }, [selectedYear, selectedMonth]); // Re-fetch doanh thu khi year/month thay đổi
 
+//   // Danh sách các thẻ thống kê
 //   const stats = [
 //     {
 //       label: "Products",
@@ -152,42 +214,6 @@
 //     },
 //   ];
 
-//   // Mock data for revenue chart
-//   const revenueData = {
-//     labels: [
-//       "Monday",
-//       "Tuesday",
-//       "Wednesday",
-//       "Thursday",
-//       "Friday",
-//       "Saturday",
-//       "Sunday",
-//     ],
-//     datasets: [
-//       {
-//         label: "Revenue ($)",
-//         data: [500, 700, 800, 600, 900, 1000, 750],
-//         backgroundColor: "rgba(59, 130, 246, 0.7)", // Tailwind's blue-500
-//         borderColor: "rgba(59, 130, 246, 1)",
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
-
-//   const revenueOptions = {
-//     responsive: true,
-//     plugins: {
-//       legend: {
-//         display: true,
-//         position: "top",
-//       },
-//       title: {
-//         display: true,
-//         text: "Weekly Revenue",
-//       },
-//     },
-//   };
-
 //   return (
 //     <div className="px-4">
 //       <div className="space-y-5">
@@ -197,6 +223,33 @@
 //             Dashboard Overview
 //           </h1>
 //           <p className="text-gray-500">Summary of your business activity</p>
+//         </div>
+
+//         {/* Year and Month Selector */}
+//         <div className="flex justify-center items-center space-x-4">
+//           <select
+//             value={selectedYear}
+//             onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+//             className="p-2 border rounded-md"
+//           >
+//             {[2022, 2023, 2024, 2025].map((year) => (
+//               <option key={year} value={year}>
+//                 {year}
+//               </option>
+//             ))}
+//           </select>
+
+//           <select
+//             value={selectedMonth}
+//             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+//             className="p-2 border rounded-md"
+//           >
+//             {[...Array(12).keys()].map((index) => (
+//               <option key={index} value={index + 1}>
+//                 Tháng {index + 1}
+//               </option>
+//             ))}
+//           </select>
 //         </div>
 
 //         {/* Statistics Cards */}
@@ -262,7 +315,10 @@ import { getCountPet } from "../../../services/petServices";
 import { getCountUser } from "../../../services/userServices";
 import { getCountService } from "../../../services/serviceServices";
 import { getCountPost } from "../../../services/postServices";
-import { getRevenueStats } from "../../../services/orderServices"; // Đảm bảo bạn đã có API này
+import {
+  getRevenueStats,
+  getOrderStatsByMonth,
+} from "../../../services/orderServices";
 
 ChartJS.register(
   CategoryScale,
@@ -305,6 +361,13 @@ const Dashboard = () => {
     ],
   });
 
+  // Biến cho biểu đồ order statistics
+  const [orderStats, setOrderStats] = useState({
+    deliveredOrders: 0,
+    cancelledOrders: 0,
+    pendingOrders: 0,
+  });
+
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
@@ -318,6 +381,20 @@ const Dashboard = () => {
       title: {
         display: true,
         text: "Doanh thu theo tháng",
+      },
+    },
+  };
+
+  const orderStatsOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Order Statistics",
       },
     },
   };
@@ -349,6 +426,24 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching revenue data:", error);
+    }
+  };
+
+  // Hàm lấy order statistics theo năm và tháng
+  const fetchOrderStats = async () => {
+    try {
+      const data = await getOrderStatsByMonth(selectedYear, selectedMonth);
+      if (data && data.success === true) {
+        setOrderStats({
+          deliveredOrders: data.data.deliveredOrders,
+          cancelledOrders: data.data.cancelledOrders,
+          pendingOrders: data.data.pendingOrders,
+        });
+      } else {
+        console.log("Error fetching order statistics:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching order statistics:", error);
     }
   };
 
@@ -426,7 +521,8 @@ const Dashboard = () => {
     fetchCountPost();
     fetchProductStatisticsByCategory();
     fetchRevenueData(); // Gọi dữ liệu doanh thu khi lần đầu render hoặc khi năm/tháng thay đổi
-  }, [selectedYear, selectedMonth]); // Re-fetch doanh thu khi year/month thay đổi
+    fetchOrderStats(); // Gọi dữ liệu thống kê đơn hàng khi năm/tháng thay đổi
+  }, [selectedYear, selectedMonth]); // Re-fetch doanh thu và order stats khi year/month thay đổi
 
   // Danh sách các thẻ thống kê
   const stats = [
@@ -518,16 +614,43 @@ const Dashboard = () => {
             <Bar data={revenueData} options={revenueOptions} />
           </div>
 
-          {/* Product Category Pie Chart */}
+          {/* Order Statistics Bar Chart */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold text-gray-700 mb-4">
-              Product Distribution by Category
+              Order Statistics
             </h2>
-            {pieData ? (
-              <Pie data={pieData} />
-            ) : (
-              <p className="text-gray-500">Loading data...</p>
-            )}
+            <Bar
+              data={{
+                labels: [`Tháng ${selectedMonth}/${selectedYear}`],
+                datasets: [
+                  {
+                    label: "Delivered Orders",
+                    data: [orderStats.deliveredOrders],
+                    backgroundColor: "rgba(34, 197, 94, 0.7)",
+                    borderColor: "rgba(34, 197, 94, 1)",
+                    borderWidth: 1,
+                  },
+                  {
+                    label: "Cancelled Orders",
+                    data: [orderStats.cancelledOrders],
+                    backgroundColor: "rgba(244, 63, 94, 0.7)",
+                    borderColor: "rgba(244, 63, 94, 1)",
+                    borderWidth: 1,
+                  },
+                  {
+                    label: "Pending Orders",
+                    data: [orderStats.pendingOrders],
+                    backgroundColor: "rgba(251, 146, 60, 0.7)",
+                    borderColor: "rgba(251, 146, 60, 1)",
+                    borderWidth: 1,
+                  },
+                ],
+              }}
+              options={orderStatsOptions}
+            />
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
+            <Pie data={pieData} />
           </div>
         </div>
       </div>

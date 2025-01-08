@@ -203,6 +203,37 @@ const getRevenueStats = async (req, res) => {
     });
   }
 };
+
+const getOrderStatsByMonth = async (req, res) => {
+  try {
+    const { year, month } = req.query;
+    // Kiểm tra nếu year và month chưa được cung cấp
+    if (!year || !month) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Year and Month are required" });
+    }
+
+    // Gọi service để lấy dữ liệu thống kê
+    const stats = await orderService.getOrderStatsByMonth(year, month);
+
+    // Trả kết quả thống kê
+    res.status(200).json({
+      success: true,
+      data: {
+        ...stats,
+        year,
+        month,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching order stats:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching order stats" });
+  }
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
@@ -212,4 +243,5 @@ module.exports = {
   getOrderByOrder,
   updateOrderPayment,
   getRevenueStats,
+  getOrderStatsByMonth,
 };

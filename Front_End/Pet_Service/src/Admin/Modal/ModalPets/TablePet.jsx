@@ -38,7 +38,7 @@ const TablePet = (props) => {
             listPets.map((item, index) => (
               <tr key={index}>
                 <td className="customTd">{item.pet_id}</td>
-                <td>{item.name}</td>
+                <td className="customTdNamePet">{item.name}</td>
                 <td>{item.pet_type_id}</td>
                 <td>{item.age}</td>
                 <td>{item.height}</td>

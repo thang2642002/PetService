@@ -18,6 +18,13 @@
   max-width: 300px;
 }
 
+.customTdNamePet {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
 .customTdDescription {
   white-space: nowrap; /* Không cho xuống dòng */
   overflow: hidden; /* Cắt bớt nội dung nếu quá dài */

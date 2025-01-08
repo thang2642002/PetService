@@ -78,10 +78,10 @@ const Header = () => {
   const notificationMenu = (
     <div className="max-h-[300px] w-[300px] overflow-y-auto bg-white shadow-lg rounded-lg">
       {notifications && notifications.length > 0 ? (
-        notifications.map((item) => (
+        notifications.map((item, index) => (
           <>
             <div
-              key={item.notification_id}
+              key={`${index} + ${item.notification_id}`}
               className="p-2 border-b hover:bg-gray-100 cursor-pointer flex flex-col"
             >
               <div className="flex justify-between">

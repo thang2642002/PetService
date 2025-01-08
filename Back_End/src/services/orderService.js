@@ -185,6 +185,51 @@ const getRevenueStatsService = async (filters) => {
   return revenueStats;
 };
 
+const getOrderStatsByMonth = async (year, month) => {
+  try {
+    // Thống kê số đơn hàng đã giao thành công (status = "completed")
+    const deliveredOrders = await db.Order.count({
+      where: {
+        status: "completed",
+        createdAt: {
+          [Op.gte]: new Date(`${year}-${month}-01`), // Ngày đầu tháng
+          [Op.lt]: new Date(`${year}-${parseInt(month) + 1}-01`), // Ngày đầu tháng tiếp theo
+        },
+      },
+    });
+
+    // Thống kê số đơn hàng bị hủy (status = "cancelled")
+    const cancelledOrders = await db.Order.count({
+      where: {
+        status: "cancelled",
+        createdAt: {
+          [Op.gte]: new Date(`${year}-${month}-01`),
+          [Op.lt]: new Date(`${year}-${parseInt(month) + 1}-01`),
+        },
+      },
+    });
+
+    // Thống kê số đơn hàng đang chờ xử lý (status = "pending")
+    const pendingOrders = await db.Order.count({
+      where: {
+        status: "pending",
+        createdAt: {
+          [Op.gte]: new Date(`${year}-${month}-01`),
+          [Op.lt]: new Date(`${year}-${parseInt(month) + 1}-01`),
+        },
+      },
+    });
+
+    return {
+      deliveredOrders,
+      cancelledOrders,
+      pendingOrders,
+    };
+  } catch (error) {
+    throw new Error("Error fetching order stats from service");
+  }
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
@@ -194,4 +239,5 @@ module.exports = {
   getOrderByOrder,
   updateOrderPayment,
   getRevenueStatsService,
+  getOrderStatsByMonth,
 };
