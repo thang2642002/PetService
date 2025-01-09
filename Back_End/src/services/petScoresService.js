@@ -1,33 +1,20 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 const getAllPetScores = async () => {
   try {
-    const getAllPetScores = await db.PetScore.findAll({
-      include: [{ model: db.UserPet, as: "user_pet" }],
-    });
+    const getAllPetScores = await db.PetScore.findAll();
     return getAllPetScores;
   } catch (error) {
     console.log(error);
   }
 };
 
-const createPetScores = async (
-  // score_date,
-  health_score,
-  diet,
-  height,
-  weight,
-  note,
-  user_pet_id
-) => {
+const createPetScores = async (symptoms, disease_name, care_suggestions) => {
   try {
     const createPetScores = await db.PetScore.create({
-      // score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id,
+      symptoms,
+      disease_name,
+      care_suggestions,
     });
     return createPetScores;
   } catch (error) {
@@ -37,13 +24,9 @@ const createPetScores = async (
 
 const updatePetScores = async (
   score_id,
-  score_date,
-  health_score,
-  diet,
-  height,
-  weight,
-  note,
-  user_pet_id
+  symptoms,
+  disease_name,
+  care_suggestions
 ) => {
   try {
     const updatePetScores = await db.PetScore.findByPk(score_id);
@@ -51,13 +34,9 @@ const updatePetScores = async (
       return null;
     }
     await updatePetScores.update({
-      score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id,
+      symptoms,
+      disease_name,
+      care_suggestions,
     });
     return updatePetScores;
   } catch (error) {
@@ -76,9 +55,29 @@ const deletePetScores = async (score_id) => {
   }
 };
 
+const checkPetHealth = async (symptoms) => {
+  if (!symptoms) {
+    throw new Error("Hãy nhập triệu chứng!");
+  }
+
+  const matchingScores = await db.PetScore.findAll({
+    where: { symptoms: { [Op.like]: `%${symptoms}%` } },
+  });
+
+  if (matchingScores.length === 0) {
+    throw new Error("Không tìm thấy kết quả phù hợp!");
+  }
+
+  return matchingScores.map((score) => ({
+    disease_name: score.disease_name,
+    care_suggestions: score.care_suggestions,
+  }));
+};
+
 module.exports = {
   getAllPetScores,
   createPetScores,
   updatePetScores,
   deletePetScores,
+  checkPetHealth,
 };

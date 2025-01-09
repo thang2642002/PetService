@@ -76,12 +76,12 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     // Mối quan hệ với PetScore
-    UserPet.hasMany(models.PetScore, {
-      foreignKey: "user_pet_id",
-      as: "scores", // Tên cho mối quan hệ này
-      onDelete: "CASCADE", // Khi user_pet bị xóa, các PetScore liên quan sẽ bị xóa
-      onUpdate: "CASCADE", // Khi user_pet được cập nhật, các PetScore liên quan sẽ được cập nhật theo
-    });
+    // UserPet.hasMany(models.PetScore, {
+    //   foreignKey: "user_pet_id",
+    //   as: "scores", // Tên cho mối quan hệ này
+    //   onDelete: "CASCADE", // Khi user_pet bị xóa, các PetScore liên quan sẽ bị xóa
+    //   onUpdate: "CASCADE", // Khi user_pet được cập nhật, các PetScore liên quan sẽ được cập nhật theo
+    // });
   };
 
   return UserPet;

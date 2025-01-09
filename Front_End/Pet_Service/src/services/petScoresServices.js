@@ -4,28 +4,18 @@ const getAllPetScores = () => {
   return axios.get("/pet-scores/get-all-pet-scores");
 };
 
-const createPetScores = (
-  health_score,
-  diet,
-  height,
-  weight,
-  note,
-  user_pet_id
-) => {
-  const data = { health_score, diet, height, weight, note, user_pet_id };
+const createPetScores = (symptoms, disease_name, care_suggestions) => {
+  const data = { symptoms, disease_name, care_suggestions };
   return axios.post("/pet-scores/create-pet-scores", data);
 };
 
 const updatePetScores = (
   score_id,
-  health_score,
-  diet,
-  height,
-  weight,
-  note,
-  user_pet_id
+  symptoms,
+  disease_name,
+  care_suggestions
 ) => {
-  const data = { health_score, diet, height, weight, note, user_pet_id };
+  const data = { symptoms, disease_name, care_suggestions };
   return axios.put(`/pet-scores/update-pet-scores/${score_id}`, data);
 };
 
@@ -35,4 +25,14 @@ const deletePetScores = (score_id) => {
   });
 };
 
-export { getAllPetScores, createPetScores, updatePetScores, deletePetScores };
+const checkHealth = (symptoms) => {
+  return axios.post("/pet-scores/check-health", { symptoms });
+};
+
+export {
+  getAllPetScores,
+  createPetScores,
+  updatePetScores,
+  deletePetScores,
+  checkHealth,
+};

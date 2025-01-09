@@ -1,4 +1,3 @@
-// models/PetScore.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const PetScore = sequelize.define(
@@ -10,34 +9,26 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      score_date: {
-        type: DataTypes.DATE,
-        allowNull: true,
+      symptoms: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true, // Không cho phép chuỗi rỗng
+        },
       },
-      health_score: {
-        type: DataTypes.STRING(50),
-        allowNull: true,
+      disease_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
-      diet: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      height: {
-        // Note: 'height' thay vì 'hight'
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      weight: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      note: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      user_pet_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
+      care_suggestions: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -57,13 +48,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   PetScore.associate = function (models) {
-    // Mối quan hệ giữa PetScore và UserPet
-    PetScore.belongsTo(models.UserPet, {
-      foreignKey: "user_pet_id",
-      as: "user_pet", // Tên cho mối quan hệ này
-      onDelete: "SET NULL", // Khi user_pet bị xóa, user_pet_id trong PetScore sẽ được đặt thành NULL
-      onUpdate: "CASCADE", // Khi user_pet được cập nhật, các PetScore liên quan sẽ được cập nhật theo
-    });
+    // Ví dụ: Nếu có bảng UserPet liên quan
+    // PetScore.belongsTo(models.UserPet, { foreignKey: "user_pet_id" });
   };
 
   return PetScore;

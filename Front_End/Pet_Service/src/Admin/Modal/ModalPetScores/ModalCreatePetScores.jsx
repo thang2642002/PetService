@@ -8,37 +8,22 @@ const ModalCreatePetScores = (props) => {
   const { show, setShow, fetchAllPetScores } = props;
   const handleClose = () => {
     setShow(false);
-    setScoresDate("");
-    setHealthScores("");
-    setDiet("");
-    setHeight("");
-    setWeight("");
-    setNote("");
-    setUserPetId("");
+    setSymptoms("");
+    setDiseaseName("");
+    setCareSuggestions("");
   };
-  const [scoresDate, setScoresDate] = useState("");
-  const [healthScores, setHealthScores] = useState("");
-  const [diet, setDiet] = useState("");
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
-  const [note, setNote] = useState("");
-  const [userPetId, setUserPetId] = useState("");
+  const [symptoms, setSymptoms] = useState("");
+  const [diseaseName, setDiseaseName] = useState("");
+  const [careSuggestions, setCareSuggestions] = useState("");
 
   const handleSubmitCreatePetScores = async () => {
-    const data = await createPetScores(
-      healthScores,
-      diet,
-      height,
-      weight,
-      note,
-      userPetId
-    );
+    const data = await createPetScores(symptoms, diseaseName, careSuggestions);
     if (data && data.errCode === 0) {
-      toast.success(data.message);
+      toast.success("Thêm thành công");
       await fetchAllPetScores();
       handleClose();
     } else {
-      toast.error(data.message);
+      toast.error("Thêm thất bại");
       handleClose();
     }
   };
@@ -58,73 +43,33 @@ const ModalCreatePetScores = (props) => {
         <Modal.Body>
           <form className="row g-3">
             <div className="col-md-4">
-              <label className="form-label">Date Scores</label>
+              <label className="form-label">Symptoms</label>
               <input
                 type="text"
                 className="form-control"
-                value={scoresDate}
-                placeholder="Date Scores"
-                onChange={(e) => setScoresDate(e.target.value)}
+                value={symptoms}
+                placeholder="Symptoms"
+                onChange={(e) => setSymptoms(e.target.value)}
               />
             </div>
             <div className="col-md-4">
-              <label className="form-label">Health</label>
+              <label className="form-label">Disease Name</label>
               <input
                 type="text"
                 className="form-control"
-                value={healthScores}
-                placeholder="Health"
-                onChange={(e) => setHealthScores(e.target.value)}
+                value={diseaseName}
+                placeholder="Disease Name"
+                onChange={(e) => setDiseaseName(e.target.value)}
               />
             </div>
             <div className="col-4">
-              <label className="form-label">Height</label>
+              <label className="form-label">careSuggestions</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Height"
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-              />
-            </div>
-            <div className="col-4">
-              <label className="form-label">Weight</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Weight"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">Diet</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Diet"
-                value={diet}
-                onChange={(e) => setDiet(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">User Pet ID</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="User Pet ID"
-                value={userPetId}
-                onChange={(e) => setUserPetId(e.target.value)}
-              />
-            </div>
-            <div className="col-md-12">
-              <label className="form-label">Note</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Note"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
+                placeholder="careSuggestions"
+                value={careSuggestions}
+                onChange={(e) => setCareSuggestions(e.target.value)}
               />
             </div>
           </form>

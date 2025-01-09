@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import { createUserPet } from "../../services/userPetServices";
 import { useNavigate } from "react-router-dom";
 import { findUserPetAppoint } from "../../services/appointmentServices";
+import PetHealthCheck from "../components/PetHealthCheck";
 
 const PetInfoForm = () => {
   const { user } = useSelector((state) => state.user);
@@ -149,10 +150,11 @@ const PetInfoForm = () => {
         </Button>
       </div>
       {/*  */}
-      <div className="flex flex-col items-center justify-center bg-gray-100 p-4 mt-4">
+      <PetHealthCheck />
+      <div className="flex flex-col items-center justify-center bg-gray-100 p-4 mt-[100px]">
         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Tra cứu đặt lịch
+            Tra cứu thông tin thú cưng tại cửa hàng
           </h2>
 
           <div className="mb-4">
@@ -165,7 +167,7 @@ const PetInfoForm = () => {
             <input
               type="text"
               id="appointmentCode"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none text-black"
               value={appointmentCode}
               onChange={(e) => setAppointmentCode(e.target.value)}
             />
@@ -199,27 +201,27 @@ const PetInfoForm = () => {
                 </p>
                 <ul className="mt-2 text-gray-700 list-disc list-inside">
                   <li>
-                    <span className="font-medium">Tên:</span>{" "}
+                    <span className="font-medium">Tên:</span>
                     {appointmentData.user_pet.name_pet}
                   </li>
                   <li>
-                    <span className="font-medium">Tuổi:</span>{" "}
+                    <span className="font-medium">Tuổi:</span>
                     {appointmentData.user_pet.age}
                   </li>
                   <li>
-                    <span className="font-medium">Chiều cao:</span>{" "}
+                    <span className="font-medium">Chiều cao:</span>
                     {appointmentData.user_pet.height} cm
                   </li>
                   <li>
-                    <span className="font-medium">Cân nặng:</span>{" "}
+                    <span className="font-medium">Cân nặng:</span>
                     {appointmentData.user_pet.weight} kg
                   </li>
                   <li>
-                    <span className="font-medium">Màu lông:</span>{" "}
+                    <span className="font-medium">Màu lông:</span>
                     {appointmentData.user_pet.coat_color}
                   </li>
                   <li>
-                    <span className="font-medium">Giống:</span>{" "}
+                    <span className="font-medium">Giống:</span>
                     {appointmentData.user_pet.breed}
                   </li>
                 </ul>

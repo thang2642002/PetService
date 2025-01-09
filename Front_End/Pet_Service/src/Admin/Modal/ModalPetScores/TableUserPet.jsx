@@ -1,4 +1,5 @@
 import ReactPaginate from "react-paginate";
+import "../../../App.css";
 const TablePetScores = (props) => {
   const {
     totalPages,
@@ -19,13 +20,9 @@ const TablePetScores = (props) => {
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Date Scores</th>
-            <th scope="col">Health Scores</th>
-            <th scope="col">Height</th>
-            <th scope="col">Weight</th>
-            <th scope="col">Diet</th>
-            <th scope="col">User Pet ID</th>
-            <th scope="col">Note</th>
+            <th scope="col">Symptoms</th>
+            <th scope="col">Disease Name</th>
+            <th scope="col">Care Suggestions</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -35,13 +32,9 @@ const TablePetScores = (props) => {
             listPetScores.map((item, index) => (
               <tr key={index}>
                 <td>{item.score_id}</td>
-                <td>{item.score_date}</td>
-                <td>{item.health_score}</td>
-                <td>{item.height}</td>
-                <td>{item.weight}</td>
-                <td>{item.diet}</td>
-                <td>{item.user_pet_id}</td>
-                <td>{item.note}</td>
+                <td className="customTdHealthPet">{item.symptoms}</td>
+                <td className="customTdHealthPet">{item.disease_name}</td>
+                <td className="customTdHealthPet">{item.care_suggestions}</td>
                 <td>
                   <button className="btn btn-secondary">View</button>
                   <button

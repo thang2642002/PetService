@@ -5,5 +5,6 @@ routes.get("/get-all-pet-scores", petScoresController.getAllPetScores);
 routes.post("/create-pet-scores", petScoresController.createPetScores);
 routes.put("/update-pet-scores/:id", petScoresController.updatePetScores);
 routes.delete("/delete-pet-scores/:id", petScoresController.deletePetScores);
+routes.post("/check-health", petScoresController.checkHealth);
 
 export default routes;

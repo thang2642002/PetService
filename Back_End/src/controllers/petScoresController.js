@@ -26,23 +26,11 @@ const getAllPetScores = async (req, res) => {
 
 const createPetScores = async (req, res) => {
   try {
-    const {
-      // score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id,
-    } = req.body;
+    const { symptoms, disease_name, care_suggestions } = req.body;
     const createPetScores = await petScoresService.createPetScores(
-      // score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id
+      symptoms,
+      disease_name,
+      care_suggestions
     );
     if (createPetScores) {
       return res.status(200).json({
@@ -67,24 +55,12 @@ const createPetScores = async (req, res) => {
 const updatePetScores = async (req, res) => {
   try {
     const score_id = req.params.id;
-    const {
-      score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id,
-    } = req.body;
+    const { symptoms, disease_name, care_suggestions } = req.body;
     const updatePetScores = await petScoresService.updatePetScores(
       score_id,
-      score_date,
-      health_score,
-      diet,
-      height,
-      weight,
-      note,
-      user_pet_id
+      symptoms,
+      disease_name,
+      care_suggestions
     );
     if (updatePetScores) {
       return res.status(200).json({
@@ -130,9 +106,38 @@ const deletePetScores = async (req, res) => {
   }
 };
 
+const checkHealth = async (req, res) => {
+  try {
+    const { symptoms } = req.body;
+    const result = await petScoresService.checkPetHealth(symptoms);
+    console.log("result", result);
+    if (result) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Gợi ý chẩn đoán và chăm sóc",
+        data: result,
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Sai dữ liệu",
+        data: result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: -1,
+      message: "Lỗi server",
+      data: result,
+    });
+  }
+};
+
 module.exports = {
   getAllPetScores,
   createPetScores,
   updatePetScores,
   deletePetScores,
+  checkHealth,
 };

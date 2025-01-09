@@ -25,6 +25,13 @@
   max-width: 300px;
 }
 
+.customTdHealthPet {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
 .customTdDescription {
   white-space: nowrap; /* Không cho xuống dòng */
   overflow: hidden; /* Cắt bớt nội dung nếu quá dài */

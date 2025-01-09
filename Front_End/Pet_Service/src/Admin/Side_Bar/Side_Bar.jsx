@@ -108,7 +108,7 @@ const SideBar = (props) => {
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPetScores" />
-                Manager Pet Scores
+                Quản lý kiểm tra sức khỏe thú cưng
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerUserPet" />
