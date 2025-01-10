@@ -88,7 +88,7 @@ const ProductDetails = () => {
       const addCartResponse = await createCart(user?.data?.user_id, 0);
 
       if (addCartResponse?.errCode !== 0) {
-        toast.error("Không thể tạo giỏ hàng. Vui lòng thử lại!");
+        toast.error("Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
         return;
       }
 
@@ -216,13 +216,22 @@ const ProductDetails = () => {
               <p className="ml-5">Thương hiệu: Royal Canin</p>
             </div>
 
-            <div className="flex gap-x-[140px]">
+            <div className="flex gap-6">
+              <div>
+                {product?.discount > 0 ? (
+                  <div className="align-items-center p-2 bg-[#f2f5fa] text-red-500 font-medium">
+                    {product?.discount} %
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
               <div>
                 <h3
                   className={`${
                     product?.discount > 0
-                      ? "text-gray-400 line-through"
-                      : "text-danger"
+                      ? "text-gray-400 line-through align-items-center"
+                      : "text-danger align-items-center"
                   } mb-3`}
                 >
                   {product?.price.toLocaleString()} đ
@@ -230,7 +239,7 @@ const ProductDetails = () => {
               </div>
               {product.discount > 0 && (
                 <div>
-                  <h3 className="text-danger mb-3">
+                  <h3 className="text-danger mb-3 align-items-center">
                     {(
                       product?.price -
                       (product?.price * product.discount) / 100

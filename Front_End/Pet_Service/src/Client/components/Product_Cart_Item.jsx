@@ -38,9 +38,9 @@ const Product_Cart_Item = (props) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {!Number.isNaN(discountPrice) && discountPrice !== 0 && (
-            <div className="absolute bg-red-500 top-[10px] right-[10px] text-white p-2">
-              {discountPercentage}%
+          {discountPercentage > 0 && (
+            <div className=" absolute bg-red-500 top-[10px] right-[10px] text-white p-2">
+              {discountPercentage || 0}%
             </div>
           )}
 
@@ -57,17 +57,21 @@ const Product_Cart_Item = (props) => {
           <div className="pl-2 flex justify-between text-sm text-black font-medium">
             <div
               className={`${
-                !Number.isNaN(discountPrice) && discountPrice !== 0
+                !Number.isNaN(discountPrice) &&
+                discountPrice !== 0 &&
+                product.price !== discountPrice
                   ? "line-through text-gray-400"
                   : ""
               }`}
             >
               {product.price.toLocaleString()} đ
             </div>
-            <div className="text-red-400">
-              {!Number.isNaN(discountPrice) && discountPrice !== 0 && (
-                <div>{discountPrice.toLocaleString()} đ</div>
-              )}
+            <div className="text-red-500">
+              {!Number.isNaN(discountPrice) &&
+                discountPrice !== 0 &&
+                discountPrice !== product.price && (
+                  <div>{discountPrice.toLocaleString()} đ</div>
+                )}
             </div>
           </div>
           <div className="text-black text-sm ml-2 text-[12px] mt-[5px] ">

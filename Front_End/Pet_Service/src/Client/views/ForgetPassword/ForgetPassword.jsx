@@ -4,21 +4,26 @@ import { Row, Col } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import { forgetPassword } from "../../../services/userServices";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const handleClick = (e) => {
     e.preventDefault();
   };
 
   const handleForgetPassword = async () => {
-    const checkEmail = await forgetPassword(email);
-    if (checkEmail && checkEmail.errCode === 0) {
-      toast.success(checkEmail.message);
+    var emailRegex =
+      /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    var valid = emailRegex.test(email);
+    if (!valid) {
+      toast.error("Định dạng email chưa chính xác");
     } else {
-      toast.success(checkEmail.message);
+      const checkEmail = await forgetPassword(email);
+      if (checkEmail && checkEmail.errCode === 0) {
+        toast.success(checkEmail.message);
+      } else {
+        toast.success(checkEmail.message);
+      }
     }
   };
   return (
@@ -36,17 +41,17 @@ const ForgetPassword = () => {
                   Nhập emai để lấy lại mật khẩu
                 </span>
                 <form onClick={(e) => handleClick(e)}>
-                  <div className="form-label mt-2">
+                  <div className="form-label mt-4">
                     <label htmlFor="exampleInputEmail1" className="d-block">
-                      Nhập Email
+                      * Vui lòng nhập Email
                     </label>
                     <input
                       type="email"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
+                      id="email"
                       placeholder="Enter email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
                     />
                   </div>
                   <button

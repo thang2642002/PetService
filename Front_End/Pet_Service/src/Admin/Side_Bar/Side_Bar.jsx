@@ -124,7 +124,7 @@ const SideBar = (props) => {
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerServiceReview" />
-                Manager Service Review
+                Quản lý đánh giá dịch vụ
               </MenuItem>
               <MenuItem>
                 <Link to="/admin/managerPost" />

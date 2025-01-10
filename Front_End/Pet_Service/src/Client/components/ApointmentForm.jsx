@@ -323,7 +323,9 @@ const AppointmentForm = () => {
                 })}
             </Select>
           </div>
-
+          <div className="text-red-500 font-semibold text-sm italic bg-yellow-100 p-2 rounded-md shadow-sm">
+            * Lưu ý dịch vụ trong hộ sẽ tính 100.000/ngày *
+          </div>
           {/* End date input - only display if necessary */}
           {serviceId && (
             <div>
