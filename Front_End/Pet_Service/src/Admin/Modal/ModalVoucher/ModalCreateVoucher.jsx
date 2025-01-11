@@ -9,6 +9,7 @@ import "./ManagerVoucher.scss";
 
 const ModalCreateVoucher = (props) => {
   const { show, setShow, fetchAllVoucher } = props;
+  const today = new Date();
 
   const handleClose = () => {
     setShow(false);
@@ -95,6 +96,7 @@ const ModalCreateVoucher = (props) => {
                   onChange={(date) => setStartDate(date)}
                   className="form-control"
                   placeholderText="Select Start Date"
+                  minDate={today}
                 />
               </div>
             </div>
@@ -106,6 +108,7 @@ const ModalCreateVoucher = (props) => {
                   onChange={(date) => setEndDate(date)}
                   className="form-control"
                   placeholderText="Select End Date"
+                  minDate={startDate}
                 />
               </div>
             </div>
