@@ -131,6 +131,10 @@ const SideBar = (props) => {
                 Quản lý bài đăng
               </MenuItem>
               <MenuItem>
+                <Link to="/admin/managerVoucher" />
+                Quản lý mã giảm giá
+              </MenuItem>
+              <MenuItem>
                 <Link to="/admin/statistical" />
                 Thống kê
               </MenuItem>

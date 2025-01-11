@@ -90,10 +90,20 @@ const Category_Product = () => {
                 return product.price >= 20000 && product.price <= 50000;
               case "50000_100000":
                 return product.price >= 50000 && product.price <= 100000;
-              case "100000_200000":
-                return product.price >= 100000 && product.price <= 200000;
-              case "above_200000":
-                return product.price > 200000;
+              case "100000_500000":
+                return product.price >= 100000 && product.price <= 500000;
+
+              case "500000_1000000":
+                return product.price >= 500000 && product.price <= 1000000;
+
+              case "1000000_5000000":
+                return product.price >= 1000000 && product.price <= 5000000;
+
+              case "5000000_10000000":
+                return product.price >= 5000000 && product.price <= 10000000;
+
+              case "above_10000000":
+                return product.price > 10000000;
               default:
                 return false;
             }
@@ -157,8 +167,11 @@ const Category_Product = () => {
     { label: "Dưới 20.000đ", value: "under_20000" },
     { label: "20.000đ-50.000đ", value: "20000_50000" },
     { label: "50.000đ-100.000đ", value: "50000_100000" },
-    { label: "100.000đ-200.000đ", value: "100000_200000" },
-    { label: "Trên 200.000đ", value: "above_200000" },
+    { label: "100.000đ-500.000đ", value: "100000_500000" },
+    { label: "500.000đ-1.000.000đ", value: "500000_1000000" },
+    { label: "1.000.000đ-5.000.000đ", value: "1000000_5000000" },
+    { label: "5.000.000đ-10.000.000đ", value: "5000000_10000000" },
+    { label: "Trên 10.000.000đ", value: "above_10000000" },
   ];
 
   const sortOptions = [

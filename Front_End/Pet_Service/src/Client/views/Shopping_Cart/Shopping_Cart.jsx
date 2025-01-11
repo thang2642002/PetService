@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Shopping_Cart.scss";
 import { Row, Col, Container, Form } from "react-bootstrap";
+import Slider from "react-slick";
 import { toast } from "react-toastify";
 import { CloudFilled, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { MdDelete } from "react-icons/md";
@@ -9,6 +10,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCart, updateItemQuantity } from "../../../redux/Slices/cartSlices";
 import { getByCartId, updateCart } from "../../../services/cartService";
+import { getAllVoucher } from "../../../services/voucherServices";
+import Voucher from "../Voucher/Voucher";
 import {
   updateCartItem,
   deleteCartItem,
@@ -25,6 +28,7 @@ const Shopping_Cart = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [cartId, setCartId] = useState(0);
   const [dataCart, setDataCart] = useState([]);
+  const [listVoucher, setListVoucher] = useState([]);
   const { id } = useParams();
   const { user } = useSelector((state) => state.user);
 
@@ -175,9 +179,31 @@ const Shopping_Cart = () => {
       fetchListCartItem();
     }
   };
+
+  const fetchListVoucher = async () => {
+    try {
+      const data = await getAllVoucher();
+      if (data && data.errCode === 0) {
+        setListVoucher(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchListCartItem();
+    fetchListVoucher();
   }, []);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
 
   return (
     <div className="contents-carts-container container">
@@ -316,6 +342,15 @@ const Shopping_Cart = () => {
                         </Col>
                       </Row>
                     ))}
+                </div>
+                <div className="mt-4">
+                  <Slider {...settings}>
+                    {listVoucher.map((voucher) => (
+                      <div key={voucher.voucher_id}>
+                        <Voucher voucher={voucher} />
+                      </div>
+                    ))}
+                  </Slider>
                 </div>
               </div>
             </Col>

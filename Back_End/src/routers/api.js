@@ -21,6 +21,7 @@ import apiSendEmail from "./apiSendEmail";
 import apiContact from "./apiContact";
 import apiNotification from "./apiNotification";
 import apiPayments from "./apiPayments";
+import apiVoucher from "./apiVoucher";
 
 const apiInitWebRouter = (app) => {
   app.use("/v1/api/user", apiUser);
@@ -46,6 +47,7 @@ const apiInitWebRouter = (app) => {
   app.use("/v1/api/notification", apiNotification);
   app.use("/v1/api/email", apiSendEmail);
   app.use("/v1/api/payment", apiPayments);
+  app.use("/v1/api/voucher", apiVoucher);
 };
 
 export default apiInitWebRouter;

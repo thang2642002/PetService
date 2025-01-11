@@ -15,6 +15,7 @@ import ManagerCategory from "../Admin/Manager/ManagerCatagory";
 import ManagerAppointment from "../Admin/Manager/ManagerAppointment";
 import ManagerCarts from "../Admin/Manager/ManagerCarts";
 import ManagerPetReview from "../Admin/Manager/ManagerPetReview";
+import ManagerVoucher from "../Admin/Manager/ManagerVoucher";
 
 import LayoutDefault from "../Client/views/LayouDefault/LayoutDefault";
 import Home from "../Client/views/Home/Home";
@@ -61,6 +62,7 @@ export const routers = [
       { path: "managerCarts", element: <ManagerCarts /> },
       { path: "statistical", element: <Statistical /> },
       { path: "managerPetReview", element: <ManagerPetReview /> },
+      { path: "managerVoucher", element: <ManagerVoucher /> },
     ],
   },
 
