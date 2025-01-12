@@ -6,10 +6,10 @@ const Product_Carts = (props) => {
 
   return (
     <div className="mt-6">
-      <Row className="mt-4">
+      <Row className="mt-4 g-3">
         {paginatedProducts &&
           paginatedProducts.map((product, index) => (
-            <Col xs={12} sm={6} md={4} lg={3} key={index}>
+            <Col xs={12} sm={6} lg={3} key={index}>
               <Product_Cart_Item product={product} />
             </Col>
           ))}

@@ -35,3 +35,36 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .group-carts.mobile {
+    display: block;
+  }
+  .group_menu .group-carts.gr-main {
+    display: none;
+  }
+  .icon {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .group-carts.mobile {
+    display: none;
+  }
+  .gr-main {
+    display: block;
+  }
+}
+
+@media (min-width: 765px) and (max-width: 1025px) {
+  .group_menu.group-carts.mobile {
+    display: block;
+  }
+  .group_menu .group-carts.gr-main {
+    display: none;
+  }
+  .icon {
+    display: none;
+  }
+}

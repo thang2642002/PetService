@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Helmet } from "react-helmet";
+import "./Home.scss";
 
 import Group_Menu from "../../components/Group_Menu";
 import Slice from "../../components/Slice";
@@ -28,7 +29,7 @@ const Home = () => {
         <div data-aos="fade-right">
           <Slice />
         </div>
-        <div data-aos="fade-left">
+        <div data-aos="fade-left" className="promotion">
           <Promotion />
         </div>
         <div data-aos="fade-up">

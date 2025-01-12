@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCart, updateItemQuantity } from "../../../redux/Slices/cartSlices";
 import { getByCartId, updateCart } from "../../../services/cartService";
-import { getAllVoucher } from "../../../services/voucherServices";
+import { getAllVoucher, getVoucher } from "../../../services/voucherServices";
 import Voucher from "../Voucher/Voucher";
 import {
   updateCartItem,
@@ -31,7 +31,9 @@ const Shopping_Cart = () => {
   const [listVoucher, setListVoucher] = useState([]);
   const { id } = useParams();
   const { user } = useSelector((state) => state.user);
-
+  const [choseVoucher, setChoseVoucher] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [idVoucher, setIdVoucher] = useState();
   const fetchListCartItem = async () => {
     const data = await getByCartId(id);
     if (data && data.errCode === 0) {
@@ -51,9 +53,10 @@ const Shopping_Cart = () => {
   const handlePayment = async () => {
     try {
       const order = await createOrder(
-        calculateTotal(),
+        totalPrice,
         user?.data?.user_id,
-        cartId
+        cartId,
+        idVoucher
       );
 
       const selectedItems = listCartItem.filter((_, index) => check[index]);
@@ -190,10 +193,47 @@ const Shopping_Cart = () => {
       console.log(error);
     }
   };
+
+  const handleGetVoucher = async (id) => {
+    try {
+      const data = await getVoucher(id);
+      if (data && data.errCode === 0) {
+        console.log("data.data.end_date", new Date(data.data.end_date));
+        console.log("new Date()", new Date());
+        if (new Date(data.data.end_date) > new Date()) {
+          setChoseVoucher(data.data);
+          setIdVoucher(data.data.voucher_id);
+        } else {
+          toast.error("Voucher đã hết hạn");
+        }
+      } else {
+        toast.error("Voucher đã hết hạn");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const calculateVoucher = () => {
+    const price = calculateTotal();
+    const voucherDiscount =
+      calculateTotal() - calculateTotal() * (choseVoucher.discount / 100);
+    console.log("voucherDiscount", voucherDiscount);
+
+    isNaN(voucherDiscount)
+      ? setTotalPrice(price)
+      : setTotalPrice(voucherDiscount);
+  };
+
   useEffect(() => {
     fetchListCartItem();
     fetchListVoucher();
   }, []);
+
+  useEffect(() => {
+    calculateVoucher();
+  }, [choseVoucher, check]);
 
   const settings = {
     dots: true,
@@ -347,7 +387,10 @@ const Shopping_Cart = () => {
                   <Slider {...settings}>
                     {listVoucher.map((voucher) => (
                       <div key={voucher.voucher_id}>
-                        <Voucher voucher={voucher} />
+                        <Voucher
+                          voucher={voucher}
+                          handleGetVoucher={handleGetVoucher}
+                        />
                       </div>
                     ))}
                   </Slider>
@@ -365,9 +408,7 @@ const Shopping_Cart = () => {
                   </div>
                   <div className="sum-price">
                     <div className="title">Tổng tiền</div>
-                    <div className="price">
-                      {formatPrice(calculateTotal())} đ
-                    </div>
+                    <div className="price">{formatPrice(totalPrice)} đ</div>
                   </div>
                 </div>
                 <button className="btn" onClick={handlePayment}>

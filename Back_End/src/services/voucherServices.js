@@ -80,4 +80,19 @@ const deleteVoucher = async (id) => {
   }
 };
 
-module.exports = { getAllVoucher, createVoucher, updateVoucher, deleteVoucher };
+const getVoucher = async (id) => {
+  try {
+    const data = await db.Voucher.findByPk(id);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  getAllVoucher,
+  createVoucher,
+  updateVoucher,
+  deleteVoucher,
+  getVoucher,
+};

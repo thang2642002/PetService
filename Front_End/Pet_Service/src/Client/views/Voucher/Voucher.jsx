@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const Voucher = ({ voucher }) => {
+const Voucher = ({ voucher, handleGetVoucher }) => {
   return (
     <div className="max-w-sm mx-auto bg-gray-100 shadow-sm rounded-lg overflow-hidden p-3">
       <div className="flex justify-between items-start">
@@ -29,7 +29,10 @@ const Voucher = ({ voucher }) => {
           Số lượng: {voucher.quantity}
         </span>
       </div>
-      <button className="bg-blue-500 text-white text-xs py-1 px-2 rounded-md hover:bg-blue-600 focus:outline-none mt-3 w-full">
+      <button
+        className="text-white bg-blue-500  text-xs py-1 px-2 rounded-md hover:bg-blue-600 focus:outline-none mt-3 w-full"
+        onClick={() => handleGetVoucher(voucher.voucher_id)}
+      >
         Sử dụng
       </button>
     </div>

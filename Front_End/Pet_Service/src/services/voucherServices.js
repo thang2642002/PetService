@@ -55,4 +55,14 @@ const deleteVoucher = (id) => {
   return axios.delete(`/voucher/delete-voucher/${id}`);
 };
 
-export { getAllVoucher, createVoucher, updateVoucher, deleteVoucher };
+const getVoucher = (id) => {
+  return axios.get(`/voucher/get-voucher/${id}`);
+};
+
+export {
+  getAllVoucher,
+  createVoucher,
+  updateVoucher,
+  deleteVoucher,
+  getVoucher,
+};

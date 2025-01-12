@@ -23,8 +23,9 @@ const getAllOrder = async () => {
   }
 };
 
-const createOrder = async (total_amount, user_id, cart_id) => {
+const createOrder = async (total_amount, user_id, cart_id, id_voucher) => {
   try {
+    console.log("id_voucher", id_voucher);
     const createOrder = await db.Order.create({
       total_amount,
       status: "pending",
@@ -32,6 +33,13 @@ const createOrder = async (total_amount, user_id, cart_id) => {
       cart_id,
       order_date: new Date(),
     });
+    if (id_voucher) {
+      const voucher = await db.Voucher.findByPk(id_voucher);
+      console.log("voucher >>>>", voucher);
+      await voucher.update({
+        quantity: voucher.quantity - 1,
+      });
+    }
     return createOrder;
   } catch (error) {
     console.log(error);

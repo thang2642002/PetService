@@ -135,4 +135,35 @@ const deleteVoucher = async (req, res) => {
   }
 };
 
-module.exports = { getAllVoucher, createVoucher, updateVoucher, deleteVoucher };
+const getVoucher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const voucher = await voucherServices.getVoucher(id);
+    if (voucher) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Find voucher is the success",
+        data: voucher,
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Find voucher is the fails",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: -1,
+      message: "Server error, Find voucher is the fails",
+    });
+  }
+};
+
+module.exports = {
+  getAllVoucher,
+  createVoucher,
+  updateVoucher,
+  deleteVoucher,
+  getVoucher,
+};

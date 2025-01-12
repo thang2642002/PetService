@@ -11,8 +11,8 @@ const getByOrder = (order_id) => {
 const getByOrderUser = (user_id) => {
   return axios.get(`/order/get-oder-by-id/${user_id}`);
 };
-const createOrder = (total_amount, user_id, cart_id) => {
-  const data = { total_amount, user_id, cart_id };
+const createOrder = (total_amount, user_id, cart_id, id_voucher) => {
+  const data = { total_amount, user_id, cart_id, id_voucher };
   return axios.post("/order/create-order", data);
 };
 
