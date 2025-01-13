@@ -28,6 +28,7 @@ const TableVoucher = (props) => {
             <th scope="col">Voucher Type</th>
             <th scope="col">Discount</th>
             <th scope="col">Quantity</th>
+            <th scope="col">Total Discount</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@ const TableVoucher = (props) => {
                 <td>{item.voucher_type}</td>
                 <td>{item.discount}</td>
                 <td>{item.quantity}</td>
+                <td>{item.total_price}</td>
                 <td>
                   <button className="btn btn-secondary">View</button>
                   <button

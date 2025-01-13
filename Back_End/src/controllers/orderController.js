@@ -26,7 +26,6 @@ const getAllOrder = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const { total_amount, user_id, cart_id, id_voucher } = req.body;
-    console.log("id_voucher", id_voucher);
     const createOrder = await orderService.createOrder(
       total_amount,
       user_id,

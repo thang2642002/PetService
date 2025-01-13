@@ -60,3 +60,28 @@
     }
   }
 }
+
+@media (max-width: 769px) {
+  .header {
+    padding: 0 !important;
+    .menu {
+      padding: 0 !important;
+    }
+    .logo {
+      display: none;
+    }
+    .header-action {
+      // padding: 0 !important;
+      .user-info {
+        display: none;
+      }
+      .bell {
+        display: none;
+      }
+      .carts {
+        padding: 0 5px;
+        font-size: 14px;
+      }
+    }
+  }
+}

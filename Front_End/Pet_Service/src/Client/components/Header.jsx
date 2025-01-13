@@ -203,7 +203,7 @@ const Header = () => {
             placement="bottom"
             trigger={["click"]}
           >
-            <div className="relative cursor-pointer">
+            <div className="relative cursor-pointer bell">
               <FontAwesomeIcon
                 icon={faBell}
                 className="text-gray-700 text-2xl"

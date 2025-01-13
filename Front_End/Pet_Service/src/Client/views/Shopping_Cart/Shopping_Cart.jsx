@@ -34,6 +34,7 @@ const Shopping_Cart = () => {
   const [choseVoucher, setChoseVoucher] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [idVoucher, setIdVoucher] = useState();
+
   const fetchListCartItem = async () => {
     const data = await getByCartId(id);
     if (data && data.errCode === 0) {
@@ -198,11 +199,13 @@ const Shopping_Cart = () => {
     try {
       const data = await getVoucher(id);
       if (data && data.errCode === 0) {
-        console.log("data.data.end_date", new Date(data.data.end_date));
-        console.log("new Date()", new Date());
         if (new Date(data.data.end_date) > new Date()) {
-          setChoseVoucher(data.data);
-          setIdVoucher(data.data.voucher_id);
+          if (calculateTotal() >= data.data.total_price) {
+            setChoseVoucher(data.data);
+            setIdVoucher(data.data.voucher_id);
+          } else {
+            toast.error("Đơn hàng không phù hợp giảm giá");
+          }
         } else {
           toast.error("Voucher đã hết hạn");
         }
@@ -217,9 +220,11 @@ const Shopping_Cart = () => {
 
   const calculateVoucher = () => {
     const price = calculateTotal();
+    if (price === 0) {
+      setChoseVoucher({});
+    }
     const voucherDiscount =
       calculateTotal() - calculateTotal() * (choseVoucher.discount / 100);
-    console.log("voucherDiscount", voucherDiscount);
 
     isNaN(voucherDiscount)
       ? setTotalPrice(price)

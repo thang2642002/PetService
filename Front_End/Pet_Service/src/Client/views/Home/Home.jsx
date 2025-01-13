@@ -26,7 +26,7 @@ const Home = () => {
       </Helmet>
       <div className="container">
         <Group_Menu />
-        <div data-aos="fade-right">
+        <div data-aos="fade-right" className="promotion">
           <Slice />
         </div>
         <div data-aos="fade-left" className="promotion">

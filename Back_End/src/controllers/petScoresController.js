@@ -110,7 +110,6 @@ const checkHealth = async (req, res) => {
   try {
     const { symptoms } = req.body;
     const result = await petScoresService.checkPetHealth(symptoms);
-    console.log("result", result);
     if (result) {
       return res.status(200).json({
         errCode: 0,
