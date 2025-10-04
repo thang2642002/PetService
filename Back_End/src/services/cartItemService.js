@@ -76,45 +76,39 @@ const getAllCartItem = async () => {
   try {
     const data = await db.CartItem.findAll({
       include: [
-        {
-          model: db.Products,
-          as: "product_item",
-          required: false,
-        },
-        {
-          model: db.Pets,
-          as: "pet_item",
-          required: false,
-        },
+        { model: db.Products, as: "product_item", required: false },
+        { model: db.Pets, as: "pet_item", required: false },
       ],
     });
     return data;
   } catch (error) {
-    console.log(error);
+    console.error("Error in getAllCartItem service:", error.message);
+    throw error;
   }
 };
 
 const updateCartItem = async (cart_item_id, quantity, total_price) => {
   try {
     const cartItemUpdate = await db.CartItem.findByPk(cart_item_id);
-    if (!cartItemUpdate) {
-      return null;
-    }
+    if (!cartItemUpdate) return null;
+
     await cartItemUpdate.update({ quantity, total_price });
     return cartItemUpdate;
   } catch (error) {
-    console.log(error);
+    console.error("Error in updateCartItem service:", error.message);
+    throw error;
   }
 };
 
 const deleteCartItem = async (cart_item_id) => {
   try {
     const data = await db.CartItem.destroy({
-      where: { cart_item_id: cart_item_id },
+      where: { cart_item_id },
     });
     return data;
   } catch (error) {
-    console.log(error);
+    console.error("Error in deleteCartItem service:", error.message);
+    throw error;
   }
 };
 
