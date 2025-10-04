@@ -1,5 +1,5 @@
-import db from "../models/index";
-const { Sequelize } = require("sequelize");
+import db from "../models/index.js";
+import { Sequelize } from "sequelize";
 const getAllOrderItem = async () => {
   try {
     const getAllOrderItem = await db.OrderItem.findAll({
@@ -96,7 +96,7 @@ const updateStockProductOrPet = async (item_id, quantity) => {
   }
 };
 
-module.exports = {
+export default {
   getAllOrderItem,
   createOrderItem,
   updateOrderItem,

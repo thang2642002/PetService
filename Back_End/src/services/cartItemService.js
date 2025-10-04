@@ -1,5 +1,4 @@
-import { where } from "sequelize";
-import db from "../models/index";
+import db from "../models/index.js";
 import { validate as validateUUID } from "uuid";
 
 const isValidUUID = (id) => {
@@ -122,7 +121,7 @@ const deleteCartItem = async (cart_item_id) => {
   }
 };
 
-module.exports = {
+export default {
   createCartItem,
   getAllCartItem,
   updateCartItem,

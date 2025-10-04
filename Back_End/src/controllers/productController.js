@@ -1,4 +1,4 @@
-import productService from "../services/productService";
+import productService from "../services/productService.js";
 const getAllProduct = async (req, res) => {
   try {
     const getAllProduct = await productService.getAllProduct();
@@ -263,7 +263,7 @@ const getProductByCategory = async (req, res) => {
     });
   }
 };
-module.exports = {
+export default {
   getAllProduct,
   createProduct,
   updateProduct,

@@ -1,9 +1,8 @@
 import express from "express";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import apiInitWebRouter from "./routers/api.js";
 import cors from "cors";
-const db = require("./models/index");
+import db from "./models/index.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8088;

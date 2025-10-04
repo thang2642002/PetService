@@ -1,4 +1,4 @@
-import petScoresService from "../services/petScoresService";
+import petScoresService from "../services/petScoresService.js";
 
 const getAllPetScores = async (req, res) => {
   try {
@@ -133,7 +133,7 @@ const checkHealth = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPetScores,
   createPetScores,
   updatePetScores,

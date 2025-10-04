@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 const fetchPaginatedData = async (model, page, pageSize) => {
   try {
     const totalItems = await model.count();
@@ -68,7 +68,7 @@ const getPaginateProductSort = async ({
   }
 };
 
-module.exports = {
+export default {
   fetchPaginatedData,
   paginateProducts,
   getPaginateProductSort,

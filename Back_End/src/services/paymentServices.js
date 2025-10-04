@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllPayment = async () => {
   try {
@@ -41,4 +41,4 @@ const updatePayment = async (id) => {
   }
 };
 
-module.exports = { getAllPayment, createPayment, updatePayment };
+export default { getAllPayment, createPayment, updatePayment };

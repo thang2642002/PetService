@@ -1,11 +1,11 @@
-import db from "../models/index";
-const { Op } = require("sequelize");
-import { cloudinary } from "../config/cloudinaryConfig";
+import db from "../models/index.js";
+import { Op } from "sequelize";
+import { cloudinary } from "../config/cloudinaryConfig.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { jwtDecode } from "jwt-decode";
-import { sendEmailForgetPass } from "../services/sendEmailServices";
-require("dotenv").config();
+import { sendEmailForgetPass } from "../services/sendEmailServices.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const accessTokenSecret = process.env.ACCESS_TOKENS;
 const refreshTokenSecret = process.env.REFRESH_TOKENS;
@@ -247,7 +247,7 @@ const UpdatePassword = async (password, token) => {
   return updatePass;
 };
 
-module.exports = {
+export default {
   getAllUser,
   createUser,
   updateUser,

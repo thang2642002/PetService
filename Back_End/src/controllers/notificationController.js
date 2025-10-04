@@ -1,4 +1,4 @@
-import notificationServices from "../services/notificationServices";
+import notificationServices from "../services/notificationServices.js";
 
 const getAllNotification = async (req, res) => {
   try {
@@ -103,7 +103,7 @@ const deleteNotification = async (req, res) => {
     });
   }
 };
-module.exports = {
+export default {
   getAllNotification,
   createNotification,
   getUserNotification,

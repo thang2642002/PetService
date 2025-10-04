@@ -1,5 +1,5 @@
-import db from "../models/index";
-const { Op } = require("sequelize");
+import db from "../models/index.js";
+import { Op } from "sequelize";
 const getAllPetType = async () => {
   try {
     const allPetType = await db.Pet_Type.findAll();
@@ -68,7 +68,7 @@ const getById = async (id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPetType,
   createPetType,
   updatePetType,

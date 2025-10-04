@@ -1,4 +1,4 @@
-import petTypeService from "../services/petTypeService";
+import petTypeService from "../services/petTypeService.js";
 
 const getAllPetType = async (req, res) => {
   try {
@@ -151,7 +151,7 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPetType,
   createPetType,
   updatePetType,

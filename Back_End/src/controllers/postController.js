@@ -1,4 +1,4 @@
-import postService from "../services/postService";
+import postService from "../services/postService.js";
 
 const getAllPost = async (req, res) => {
   try {
@@ -160,7 +160,7 @@ const countPost = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPost,
   createPost,
   updatePost,

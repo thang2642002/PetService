@@ -1,4 +1,4 @@
-import productReviewService from "../services/productReviewService";
+import productReviewService from "../services/productReviewService.js";
 const getAllProductReview = async (req, res) => {
   try {
     const getAllProductReview =
@@ -138,7 +138,7 @@ const deleteProductReview = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllProductReview,
   getByProductReviewId,
   createProductReview,

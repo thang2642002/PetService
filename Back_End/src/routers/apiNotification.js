@@ -1,5 +1,5 @@
 import express from "express";
-import notificationController from "../controllers/notificationController";
+import notificationController from "../controllers/notificationController.js";
 
 const routes = express.Router();
 routes.get("/get-all-notification", notificationController.getAllNotification);

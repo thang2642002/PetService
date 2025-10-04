@@ -1,4 +1,4 @@
-import UserService from "../services/userService";
+import UserService from "../services/userService.js";
 const getAllUser = async (req, res) => {
   try {
     const getAllUser = await UserService.getAllUser();
@@ -383,7 +383,7 @@ const handleUpdatePassword = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllUser,
   createUser,
   updateUser,

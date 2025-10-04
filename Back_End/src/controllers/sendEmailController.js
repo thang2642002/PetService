@@ -1,9 +1,10 @@
-import sendEmailServices from "../services/sendEmailServices";
+import { sendEmail as sendOrderEmail } from "../services/sendEmailServices.js";
+
 const sendEmail = async (req, res) => {
   const { email, order } = req.body;
 
   try {
-    await sendEmailServices.sendEmail(email, order);
+    await sendOrderEmail(email, order); // gọi trực tiếp
     res.status(200).send("Đơn hàng đã được gửi email.");
   } catch (error) {
     console.log(error);
@@ -11,4 +12,4 @@ const sendEmail = async (req, res) => {
   }
 };
 
-module.exports = { sendEmail };
+export default sendEmail;

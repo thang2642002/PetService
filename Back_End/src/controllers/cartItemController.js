@@ -1,4 +1,4 @@
-import cartItemService from "../services/cartItemService";
+import cartItemService from "../services/cartItemService.js";
 
 const createCartItem = async (req, res) => {
   const { cart_id, item_id, quantity, total_price } = req.body;
@@ -99,7 +99,7 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   createCartItem,
   getAllCartItem,
   updateCartItem,

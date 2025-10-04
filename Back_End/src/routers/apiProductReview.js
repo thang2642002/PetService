@@ -1,5 +1,5 @@
 import express from "express";
-import productReviewController from "../controllers/productReviewController";
+import productReviewController from "../controllers/productReviewController.js";
 
 const routes = express.Router();
 routes.get(

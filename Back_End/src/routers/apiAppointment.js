@@ -1,9 +1,12 @@
 import express from "express";
-import appointmentController from "../controllers/appointmentController";
+import appointmentController from "../controllers/appointmentController.js";
 
 const routes = express.Router();
 routes.get("/get-all-appointment", appointmentController.getAllAppointment);
-routes.get("/get-user-pet-appointment/:code", appointmentController.getUserPetAppointment);
+routes.get(
+  "/get-user-pet-appointment/:code",
+  appointmentController.getUserPetAppointment
+);
 routes.get(
   "/get-by-id-appointment/:id",
   appointmentController.getAllAppointmentById

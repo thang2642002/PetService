@@ -1,5 +1,5 @@
-import paginateServices from "../services/paginateServices";
-import db from "../models/index";
+import paginateServices from "../services/paginateServices.js";
+import db from "../models/index.js";
 const getPaginate = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
@@ -71,7 +71,7 @@ const getPaginateProductSort = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getPaginate,
   getPaginateProduct,
   getPaginateProductSort,

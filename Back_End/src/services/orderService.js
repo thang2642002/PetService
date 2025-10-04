@@ -1,5 +1,5 @@
-import db from "../models/index";
-const { Op, fn, col } = require("sequelize");
+import db from "../models/index.js";
+import { Op, fn, col } from "sequelize";
 const getAllOrder = async () => {
   try {
     const getAllOrder = await db.Order.findAll({
@@ -238,7 +238,7 @@ const getOrderStatsByMonth = async (year, month) => {
   }
 };
 
-module.exports = {
+export default {
   getAllOrder,
   createOrder,
   updateOrder,

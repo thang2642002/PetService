@@ -1,6 +1,5 @@
-import { where } from "sequelize";
-import db from "../models/index";
-const crypto = require("crypto");
+import db from "../models/index.js";
+import crypto from "crypto";
 const getAllAppointment = async () => {
   try {
     const getAllAppointment = await db.Appointments.findAll({
@@ -127,7 +126,7 @@ const getUserPetAppointment = async (code) => {
   }
 };
 
-module.exports = {
+export default {
   getAllAppointment,
   getAllAppointmentById,
   createAppointment,

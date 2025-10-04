@@ -1,5 +1,4 @@
-import { where } from "sequelize";
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllCart = async () => {
   const data = await db.Carts.findAll({
@@ -85,7 +84,7 @@ const getByCartId = async (user_id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllCart,
   createCart,
   updateCart,

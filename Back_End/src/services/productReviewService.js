@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllProductReview = async () => {
   try {
@@ -81,7 +81,7 @@ const deleteProductReview = async (product_review_id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllProductReview,
   getProductReviewById,
   createProductReview,

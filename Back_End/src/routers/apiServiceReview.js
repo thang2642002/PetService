@@ -1,5 +1,5 @@
 import express from "express";
-import serviceReviewController from "../controllers/serviceReviewController";
+import serviceReviewController from "../controllers/serviceReviewController.js";
 const routes = express.Router();
 routes.get(
   "/get-all-service-review",

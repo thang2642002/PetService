@@ -1,4 +1,4 @@
-import voucherServices from "../services/voucherServices";
+import voucherServices from "../services/voucherServices.js";
 
 const getAllVoucher = async (req, res) => {
   try {
@@ -160,7 +160,7 @@ const getVoucher = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllVoucher,
   createVoucher,
   updateVoucher,

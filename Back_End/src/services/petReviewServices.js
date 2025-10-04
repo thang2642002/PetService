@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllPetReview = async () => {
   try {
@@ -79,7 +79,7 @@ const deletePetReview = async (pet_review_id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPetReview,
   getPetReviewById,
   createPetReview,

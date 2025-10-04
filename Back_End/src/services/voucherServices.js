@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllVoucher = async () => {
   try {
@@ -90,7 +90,7 @@ const getVoucher = async (id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllVoucher,
   createVoucher,
   updateVoucher,

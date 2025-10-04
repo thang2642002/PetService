@@ -1,4 +1,4 @@
-import categoryService from "../services/categoryService";
+import categoryService from "../services/categoryService.js";
 const getAllCategory = async (req, res) => {
   try {
     const getAllCategory = await categoryService.getAllCategory();
@@ -154,7 +154,7 @@ const findById = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllCategory,
   createCategory,
   deleteCategory,

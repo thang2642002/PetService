@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllNotification = async () => {
   try {
@@ -45,7 +45,7 @@ const deleteNotification = async (id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllNotification,
   createNotification,
   getUserNotification,

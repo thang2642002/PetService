@@ -1,5 +1,5 @@
-import transporter from "../config/configNodemailer";
-const sendEmail = (email, order) => {
+import transporter from "../config/configNodemailer.js";
+export const sendEmail = (email, order) => {
   if (!email || typeof email !== "string") {
     throw new Error("Email recipient is not defined or invalid.");
   }
@@ -79,7 +79,7 @@ const sendEmail = (email, order) => {
   return transporter.sendMail(mailOptions);
 };
 
-const sendEmailForgetPass = (email, token) => {
+export const sendEmailForgetPass = (email, token) => {
   const mailOptions = {
     from: "tranthang0369@gmail.com",
     to: email,
@@ -95,5 +95,3 @@ const sendEmailForgetPass = (email, token) => {
 
   return transporter.sendMail(mailOptions);
 };
-
-module.exports = { sendEmail, sendEmailForgetPass };

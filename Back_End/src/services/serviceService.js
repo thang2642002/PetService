@@ -1,5 +1,5 @@
-import db from "../models/index";
-const { Op } = require("sequelize");
+import db from "../models/index.js";
+import { Op } from "sequelize";
 const getAllService = async () => {
   try {
     const getAllService = await db.Services.findAll();
@@ -87,7 +87,7 @@ const countService = async () => {
   }
 };
 
-module.exports = {
+export default {
   getAllService,
   createService,
   updateService,

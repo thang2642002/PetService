@@ -1,6 +1,6 @@
 import express from "express";
-import petController from "../controllers/petController";
-const multer = require("multer");
+import petController from "../controllers/petController.js";
+import multer from "multer";
 const upload = multer({ dest: "uploads/" });
 
 const routes = express.Router();
@@ -17,6 +17,5 @@ routes.get("/find-by-id/:id", petController.findById);
 routes.get("/count-pet", petController.countPet);
 routes.get("/get-breed-pet", petController.getPetsByBreed);
 routes.get("/get-all-breed-pet", petController.getAllBreed);
-
 
 export default routes;

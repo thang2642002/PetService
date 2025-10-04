@@ -1,5 +1,5 @@
 import express from "express";
-import serviceController from "../controllers/serviceController";
+import serviceController from "../controllers/serviceController.js";
 
 const routes = express.Router();
 routes.get("/get-all-service", serviceController.getAllService);

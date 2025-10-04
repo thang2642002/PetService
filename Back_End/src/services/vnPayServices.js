@@ -1,5 +1,5 @@
-const crypto = require("crypto");
-const moment = require("moment");
+import crypto from "crypto";
+import moment from "moment";
 
 // Cấu hình VNPay
 const vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -115,7 +115,7 @@ const handleVNPayReturn = async (query) => {
   }
 };
 
-module.exports = {
+export default {
   createVNPayPayment,
   handleVNPayReturn,
 };

@@ -1,5 +1,5 @@
 import express from "express";
-import petScoresController from "../controllers/petScoresController";
+import petScoresController from "../controllers/petScoresController.js";
 const routes = express.Router();
 routes.get("/get-all-pet-scores", petScoresController.getAllPetScores);
 routes.post("/create-pet-scores", petScoresController.createPetScores);

@@ -1,5 +1,5 @@
 import express from "express";
-import categoryController from "../controllers/categoryController";
+import categoryController from "../controllers/categoryController.js";
 
 const routes = express.Router();
 routes.get("/get-all-category", categoryController.getAllCategory);

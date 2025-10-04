@@ -1,4 +1,4 @@
-import vnPayServices from "../services/vnPayServices";
+import vnPayServices from "../services/vnPayServices.js";
 
 const createPayment = async (req, res) => {
   try {
@@ -20,7 +20,7 @@ const handleReturn = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   createPayment,
   handleReturn,
 };

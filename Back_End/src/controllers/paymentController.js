@@ -1,4 +1,4 @@
-import paymentServices from "../services/paymentServices";
+import paymentServices from "../services/paymentServices.js";
 
 const getAllPayment = async (req, res) => {
   try {
@@ -77,4 +77,4 @@ const updatePayment = async (req, res) => {
   }
 };
 
-module.exports = { getAllPayment, createPayment, updatePayment };
+export default { getAllPayment, createPayment, updatePayment };

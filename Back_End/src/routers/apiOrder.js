@@ -1,5 +1,5 @@
 import express from "express";
-import orderController from "../controllers/orderController";
+import orderController from "../controllers/orderController.js";
 const routes = express.Router();
 routes.get("/get-all-order", orderController.getAllOrder);
 routes.get("/get-oder-by-id/:id", orderController.getOrderById);

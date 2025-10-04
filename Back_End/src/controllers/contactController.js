@@ -1,4 +1,4 @@
-import contactServices from "../services/contactServices";
+import contactServices from "../services/contactServices.js";
 
 const getAllContact = async (req, res) => {
   try {
@@ -53,7 +53,7 @@ const createContact = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllContact,
   createContact,
 };

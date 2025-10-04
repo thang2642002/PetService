@@ -1,4 +1,4 @@
-import appointmentService from "../services/appointmentServices";
+import appointmentService from "../services/appointmentServices.js";
 const getAllAppointment = async (req, res) => {
   try {
     const getAllAppointment = await appointmentService.getAllAppointment();
@@ -199,7 +199,7 @@ const getUserPetAppointment = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllAppointment,
   getAllAppointmentById,
   createAppointment,

@@ -1,4 +1,4 @@
-import userPetService from "../services/userPetService";
+import userPetService from "../services/userPetService.js";
 const getAllUserPet = async (req, res) => {
   try {
     const getAllUserPet = await userPetService.getAllUserPet();
@@ -157,7 +157,7 @@ const findByName = async (req, res) => {
     });
   }
 };
-module.exports = {
+export default {
   getAllUserPet,
   createUserPet,
   updateUserPet,

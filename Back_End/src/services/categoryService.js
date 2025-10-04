@@ -1,5 +1,5 @@
-import db from "../models/index";
-const { Op } = require("sequelize");
+import db from "../models/index.js";
+import { Op } from "sequelize";
 const getAllCategory = async () => {
   try {
     const getAllCategory = await db.Category.findAll();
@@ -68,7 +68,7 @@ const findById = async (category_id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllCategory,
   createCategory,
   deleteCategory,

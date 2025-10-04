@@ -1,4 +1,4 @@
-import petReviewService from "../services/petReviewServices";
+import petReviewService from "../services/petReviewServices.js";
 const getAllPetReview = async (req, res) => {
   try {
     const getAllPetReview = await petReviewService.getAllPetReview();
@@ -137,7 +137,7 @@ const deletePetReview = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllPetReview,
   getByPetReviewId,
   createPetReview,

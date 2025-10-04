@@ -1,6 +1,6 @@
-import db from "../models/index";
-const { Op } = require("sequelize");
-import { cloudinary } from "../config/cloudinaryConfig";
+import db from "../models/index.js";
+import { Op } from "sequelize";
+import { cloudinary } from "../config/cloudinaryConfig.js";
 
 const uploadImageToCloudinary = async (image) => {
   try {
@@ -217,7 +217,7 @@ const getAllBreed = async () => {
     console.log(error);
   }
 };
-module.exports = {
+export default {
   getAllPet,
   createPet,
   updatePet,

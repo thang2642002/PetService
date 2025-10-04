@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 const getAllServiceReview = async () => {
   try {
     const getAllServiceReview = await db.Service_Review.findAll({
@@ -65,7 +65,7 @@ const deleteServiceReview = async (service_review_id) => {
   }
 };
 
-module.exports = {
+export default {
   getAllServiceReview,
   createServiceReview,
   updateServiceReview,

@@ -1,4 +1,4 @@
-import db from "../models/index";
+import db from "../models/index.js";
 
 const getAllContact = async () => {
   try {
@@ -23,4 +23,4 @@ const createContact = async (user_name, email, phone, content) => {
   }
 };
 
-module.exports = { getAllContact, createContact };
+export default { getAllContact, createContact };

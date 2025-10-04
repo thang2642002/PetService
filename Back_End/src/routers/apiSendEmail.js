@@ -1,7 +1,8 @@
 import express from "express";
-import sendEmailController from "../controllers/sendEmailController";
+import sendEmail from "../controllers/sendEmailController.js";
+
 const routes = express.Router();
-routes.post("/send-email", sendEmailController.sendEmail);
-// routes.post("/send-email-forgetPass", sendEmailController.sendEmailForgetPass);
+
+routes.post("/send-email", sendEmail);
 
 export default routes;

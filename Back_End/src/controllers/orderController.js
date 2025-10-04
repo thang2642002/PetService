@@ -1,4 +1,4 @@
-import orderService from "../services/orderService";
+import orderService from "../services/orderService.js";
 const getAllOrder = async (req, res) => {
   try {
     const getAllOrder = await orderService.getAllOrder();
@@ -235,7 +235,7 @@ const getOrderStatsByMonth = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllOrder,
   createOrder,
   updateOrder,

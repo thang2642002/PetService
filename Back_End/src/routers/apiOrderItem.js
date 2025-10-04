@@ -1,5 +1,5 @@
 import express from "express";
-import orderItemController from "../controllers/orderItemController";
+import orderItemController from "../controllers/orderItemController.js";
 const routes = express.Router();
 routes.get("/get-all-order-item", orderItemController.getAllOrderItem);
 routes.post("/create-order-item", orderItemController.createOrderItem);

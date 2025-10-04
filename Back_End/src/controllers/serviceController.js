@@ -1,4 +1,4 @@
-import serviceService from "../services/serviceService";
+import serviceService from "../services/serviceService.js";
 
 const getAllService = async (req, res) => {
   try {
@@ -180,7 +180,7 @@ const countService = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllService,
   createService,
   updateService,

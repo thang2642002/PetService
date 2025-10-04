@@ -1,5 +1,5 @@
-import db from "../models/index";
-import { cloudinary } from "../config/cloudinaryConfig";
+import db from "../models/index.js";
+import { cloudinary } from "../config/cloudinaryConfig.js";
 const getAllPost = async () => {
   try {
     const getAllPost = await db.Post.findAll();
@@ -79,7 +79,7 @@ const countPost = async () => {
   }
 };
 
-module.exports = {
+export default {
   getAllPost,
   createPost,
   updatePost,

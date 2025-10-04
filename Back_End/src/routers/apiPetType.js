@@ -1,5 +1,5 @@
 import express from "express";
-import petTypeController from "../controllers/petTypeController";
+import petTypeController from "../controllers/petTypeController.js";
 
 const routes = express.Router();
 routes.get("/get-all-pet-type", petTypeController.getAllPetType);

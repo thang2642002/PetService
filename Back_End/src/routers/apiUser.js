@@ -1,6 +1,6 @@
 import express from "express";
-import userController from "../controllers/userControler";
-import { upload } from "../config/cloudinaryConfig";
+import userController from "../controllers/userControler.js";
+import { upload } from "../config/cloudinaryConfig.js";
 
 const routes = express.Router();
 routes.get("/get-all-user", userController.getAllUser);

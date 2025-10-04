@@ -1,4 +1,4 @@
-import CartService from "../services/cartService";
+import CartService from "../services/cartService.js";
 const getAllCart = async (req, res) => {
   try {
     const data = await CartService.getAllCart();
@@ -121,7 +121,7 @@ const getByCartId = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllCart,
   createCart,
   updateCart,

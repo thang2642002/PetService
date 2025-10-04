@@ -1,4 +1,4 @@
-import orderItemService from "../services/orderItemService";
+import orderItemService from "../services/orderItemService.js";
 const getAllOrderItem = async (req, res) => {
   try {
     const getAllOrderItem = await orderItemService.getAllOrderItem();
@@ -135,7 +135,7 @@ const updateStockProductOrPet = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAllOrderItem,
   createOrderItem,
   updateOrderItem,
