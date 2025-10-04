@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+import { Model, DataTypes } from "sequelize";
 
-module.exports = (sequelize) => {
+export default (sequelize) => {
   class Pet_Type extends Model {}
 
   Pet_Type.init(
@@ -28,8 +28,8 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: 'Pet_Type',
-      tableName: 'Pet_Type',
+      modelName: "Pet_Type",
+      tableName: "Pet_Type",
       timestamps: true,
     }
   );
@@ -37,8 +37,8 @@ module.exports = (sequelize) => {
   // Thiết lập mối quan hệ hasMany với bảng Pets
   Pet_Type.associate = (models) => {
     Pet_Type.hasMany(models.Pets, {
-      foreignKey: 'pet_type_id',
-      as: 'pets',
+      foreignKey: "pet_type_id",
+      as: "pets",
     });
   };
 

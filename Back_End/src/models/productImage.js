@@ -1,5 +1,5 @@
 "use strict";
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Product_Image = sequelize.define(
     "Product_Image",
     {

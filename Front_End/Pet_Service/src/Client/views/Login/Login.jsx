@@ -109,7 +109,7 @@ const Login = () => {
                 <form onClick={(e) => handleClick(e)}>
                   <div className="form-label mt-2">
                     <label htmlFor="exampleInputEmail1" className="d-block">
-                      Email address
+                      Email address-(admin@gmail.com)
                     </label>
                     <input
                       type="email"
@@ -127,7 +127,7 @@ const Login = () => {
                   </div>
                   <div className="form-group mt-2 position-relative">
                     <label htmlFor="exampleInputPassword1" className="d-block">
-                      Password
+                      Password-(123456)
                     </label>
                     <input
                       type={isShowPassword ? "text" : "password"}

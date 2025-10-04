@@ -1,5 +1,5 @@
 "use strict";
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Service_Review = sequelize.define(
     "Service_Review", // Tên model
     {

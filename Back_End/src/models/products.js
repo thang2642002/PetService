@@ -1,7 +1,6 @@
 "use strict";
-const { v4: uuidv4 } = require("uuid");
-
-module.exports = (sequelize, DataTypes) => {
+import { v4 as uuidv4 } from "uuid";
+export default (sequelize, DataTypes) => {
   const Products = sequelize.define(
     "Products",
     {
@@ -32,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       discount: {
-        type: DataTypes.FLOAT, 
+        type: DataTypes.FLOAT,
         allowNull: true,
-        defaultValue: 0, 
+        defaultValue: 0,
       },
       images: {
-        type: DataTypes.JSON, 
+        type: DataTypes.JSON,
         allowNull: true,
       },
       createdAt: {
@@ -52,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Products", 
+      tableName: "Products",
       timestamps: true,
     }
   );

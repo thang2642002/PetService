@@ -1,9 +1,7 @@
 import db from "../models/index.js";
 import { validate as validateUUID } from "uuid";
 
-const isValidUUID = (id) => {
-  return validateUUID(id);
-};
+const isValidUUID = (id) => validateUUID(id);
 
 const createCartItem = async ({ cart_id, item_id, quantity, total_price }) => {
   try {
@@ -68,7 +66,6 @@ const createCartItem = async ({ cart_id, item_id, quantity, total_price }) => {
     };
   } catch (error) {
     console.error("Error in createCartItem service:", error.message);
-    console.error(error.stack);
     throw new Error(
       "Server error occurred while creating or updating cart item."
     );

@@ -45,8 +45,6 @@ const getPaginateProductSort = async ({
 }) => {
   const offset = (page - 1) * limit;
   const orderCondition = [];
-  console.log("offset", offset);
-
   if (sortBy && order) {
     orderCondition.push([sortBy, order]);
   }

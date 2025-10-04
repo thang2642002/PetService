@@ -310,7 +310,6 @@ const countUser = async (req, res) => {
 const handleForgetPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("email", email);
     const forgetPass = await UserService.forgetPassword(email);
     if (forgetPass) {
       return res.status(200).json({
@@ -360,8 +359,6 @@ const handleGetToken = async (req, res) => {
 const handleUpdatePassword = async (req, res) => {
   try {
     const { password, token } = req.body;
-    console.log("password", password);
-    console.log("token", token);
     const updatePass = await UserService.UpdatePassword(password, token);
     if (updatePass) {
       return res.status(200).json({

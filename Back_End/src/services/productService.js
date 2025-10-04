@@ -216,15 +216,10 @@ const getProductStatisticsByCategory = async () => {
       },
     });
 
-    const categoryData = categories.map(
-      (category) => (
-        console.log("check category", category),
-        {
-          category: category.name,
-          count: category.products.length,
-        }
-      )
-    );
+    const categoryData = categories.map((category) => ({
+      category: category.name,
+      count: category.products.length,
+    }));
 
     const totalProducts = categoryData.reduce(
       (sum, category) => sum + category.count,
