@@ -188,7 +188,7 @@ const findByDiscount = async () => {
     const discountedProducts = await db.Products.findAll({
       where: {
         discount: {
-          [Op.gt]: 0, // Tìm sản phẩm có discount > 0
+          [Op.gt]: 0,
         },
       },
     });
@@ -216,26 +216,21 @@ const getProductStatisticsByCategory = async () => {
       },
     });
 
-    console.log("categories", categories);
-
-    // Tính số lượng sản phẩm trong mỗi thể loại
     const categoryData = categories.map(
       (category) => (
         console.log("check category", category),
         {
           category: category.name,
-          count: category.products.length, // Số lượng sản phẩm trong thể loại
+          count: category.products.length,
         }
       )
     );
 
-    // Tính tổng số sản phẩm
     const totalProducts = categoryData.reduce(
       (sum, category) => sum + category.count,
       0
     );
 
-    // Tính phần trăm cho mỗi thể loại
     const categoryPercentage = categoryData.map((category) => ({
       ...category,
       percentage: ((category.count / totalProducts) * 100).toFixed(2),

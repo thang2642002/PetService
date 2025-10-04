@@ -1,11 +1,10 @@
 import crypto from "crypto";
 import moment from "moment";
 
-// Cấu hình VNPay
 const vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-const vnpHashSecret = "GY3CPFOFKEYPO8I8AK20O24SQPWP8UE5"; // Thay thế với khóa bí mật của bạn
+const vnpHashSecret = "GY3CPFOFKEYPO8I8AK20O24SQPWP8UE5";
 const vnpReturnUrl = "http://localhost:5173/order-details";
-const vnpTmnCode = "54VUB9H7"; // Thay với mã TMN của bạn
+const vnpTmnCode = "54VUB9H7";
 
 /**
  * Tạo URL thanh toán VNPay

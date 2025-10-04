@@ -1,4 +1,3 @@
-// models/Product_Review.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Product_Review = sequelize.define(

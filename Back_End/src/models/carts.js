@@ -1,4 +1,3 @@
-// models/Carts.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Carts = sequelize.define(
@@ -37,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   Carts.associate = function (models) {
     Carts.belongsTo(models.User, {
       foreignKey: {
-        name: "user_id",  
+        name: "user_id",
         allowNull: false,
       },
       as: "user",

@@ -11,7 +11,6 @@ const __dirname = path.dirname(__filename);
 const basename = path.basename(__filename);
 const db = {};
 
-// Khởi tạo Sequelize với thông tin từ .env
 const sequelize = new Sequelize.Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -24,7 +23,6 @@ const sequelize = new Sequelize.Sequelize(
   }
 );
 
-// Đọc tất cả file model trong thư mục này (trừ index.js)
 const files = fs
   .readdirSync(__dirname)
   .filter(

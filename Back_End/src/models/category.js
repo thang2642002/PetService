@@ -1,4 +1,3 @@
-// models/Category.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(

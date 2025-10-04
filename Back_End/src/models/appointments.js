@@ -1,4 +1,3 @@
-// models/Appointments.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Appointments = sequelize.define(

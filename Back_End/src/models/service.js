@@ -1,4 +1,3 @@
-// models/Services.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Services = sequelize.define(

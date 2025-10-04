@@ -1,4 +1,3 @@
-import e from "express";
 import petService from "../services/petService.js";
 
 const getAllPet = async (req, res) => {

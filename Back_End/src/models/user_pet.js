@@ -1,4 +1,3 @@
-// models/UserPet.js
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const UserPet = sequelize.define(
