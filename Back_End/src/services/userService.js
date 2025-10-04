@@ -1,7 +1,7 @@
 import db from "../models/index";
 const { Op } = require("sequelize");
 import { cloudinary } from "../config/cloudinaryConfig";
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { jwtDecode } from "jwt-decode";
 import { sendEmailForgetPass } from "../services/sendEmailServices";
@@ -29,8 +29,8 @@ const createUser = async (
   avatar
 ) => {
   try {
-    var salt = bcrypt.genSaltSync(10);
-    var hashPass = bcrypt.hashSync(password, salt);
+    var salt = bcryptjs.genSaltSync(10);
+    var hashPass = bcryptjs.hashSync(password, salt);
     const dataUser = await db.User.create({
       email,
       password: hashPass,
@@ -133,8 +133,8 @@ const handleRegister = async (email, user_name, phone, address, password) => {
   if (existingUser) {
     return { message: "User already exists" };
   }
-  var salt = bcrypt.genSaltSync(10);
-  var hashPass = bcrypt.hashSync(password, salt);
+  var salt = bcryptjs.genSaltSync(10);
+  var hashPass = bcryptjs.hashSync(password, salt);
   const newUser = await db.User.create({
     email: email,
     user_name: user_name,
@@ -162,7 +162,7 @@ const handleLogin = async (email, password) => {
       };
     }
 
-    const isPasswordValid = bcrypt.compareSync(password, login.password);
+    const isPasswordValid = bcryptjs.compareSync(password, login.password);
     const key = "agsusniidkkkkklkslskshgaikkdlkfldkdsjsmsnbjdsmfdkfd";
 
     if (!isPasswordValid) {
@@ -238,8 +238,8 @@ const UpdatePassword = async (password, token) => {
   let updatePass = null;
   if (getToken && getToken.id) {
     const user = await db.User.findByPk(getToken.id);
-    var salt = bcrypt.genSaltSync(10);
-    var hashPass = bcrypt.hashSync(password, salt);
+    var salt = bcryptjs.genSaltSync(10);
+    var hashPass = bcryptjs.hashSync(password, salt);
     updatePass = await user.update({
       password: hashPass,
     });
