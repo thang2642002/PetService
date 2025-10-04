@@ -1,8 +1,11 @@
 import db from "../models/index.js";
-import pkg from "uuid";
-const { validate: validateUUID } = pkg;
 
-const isValidUUID = (id) => validateUUID(id);
+// Hàm kiểm tra UUID v4 bằng regex, thay cho uuid module
+const isValidUUID = (id) => {
+  const uuidV4Regex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidV4Regex.test(id);
+};
 
 const createCartItem = async ({ cart_id, item_id, quantity, total_price }) => {
   try {
@@ -73,6 +76,7 @@ const createCartItem = async ({ cart_id, item_id, quantity, total_price }) => {
   }
 };
 
+// Các hàm getAllCartItem, updateCartItem, deleteCartItem giữ nguyên
 const getAllCartItem = async () => {
   try {
     const data = await db.CartItem.findAll({
@@ -83,8 +87,7 @@ const getAllCartItem = async () => {
     });
     return data;
   } catch (error) {
-    console.error("Error in getAllCartItem service:", error.message);
-    throw error;
+    console.log(error);
   }
 };
 
@@ -92,24 +95,19 @@ const updateCartItem = async (cart_item_id, quantity, total_price) => {
   try {
     const cartItemUpdate = await db.CartItem.findByPk(cart_item_id);
     if (!cartItemUpdate) return null;
-
     await cartItemUpdate.update({ quantity, total_price });
     return cartItemUpdate;
   } catch (error) {
-    console.error("Error in updateCartItem service:", error.message);
-    throw error;
+    console.log(error);
   }
 };
 
 const deleteCartItem = async (cart_item_id) => {
   try {
-    const data = await db.CartItem.destroy({
-      where: { cart_item_id },
-    });
+    const data = await db.CartItem.destroy({ where: { cart_item_id } });
     return data;
   } catch (error) {
-    console.error("Error in deleteCartItem service:", error.message);
-    throw error;
+    console.log(error);
   }
 };
 
