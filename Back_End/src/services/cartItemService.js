@@ -1,5 +1,6 @@
 import db from "../models/index.js";
-import { validate as validateUUID } from "uuid";
+import pkg from "uuid";
+const { validate: validateUUID } = pkg;
 
 const isValidUUID = (id) => validateUUID(id);
 
