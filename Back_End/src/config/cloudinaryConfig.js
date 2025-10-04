@@ -1,12 +1,15 @@
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Cấu hình Cloudinary
 cloudinary.config({
-  cloud_name: "dktvrhmka",
-  api_key: "742228376334399",
-  api_secret: "s6GOxo2VSM4909B7erHCgDKI1xQ",
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 // Cấu hình lưu trữ trên Cloudinary
